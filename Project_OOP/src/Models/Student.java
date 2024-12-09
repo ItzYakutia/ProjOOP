@@ -18,10 +18,10 @@ public class Student extends User {
         super(username, password, userId, nameFirst, nameLast, email);
         this.gpa = gpa;
         this.yearOfStudy = yearOfStudy;
-        setCredits(credits); // Apply validation for credits
+        setCredits(credits); 
         this.courses = courses;
         this.transcript = transcript;
-        checkFailingGrades(); // Check failing grades upon initialization
+        checkFailingGrades();
         this.studentOrganization = studentOrganization;
     }
 
@@ -72,7 +72,7 @@ public class Student extends User {
 
     public void setTranscript(Map<Course, Mark> transcript) {
         this.transcript = transcript;
-        checkFailingGrades(); // Re-check failing grades after updating transcript
+        checkFailingGrades(); 
     }
 
     public String getStudentOrganization() {
