@@ -1,27 +1,27 @@
 package Models;
 
 import java.util.List;
+import Models.Title;
 
 public class Teacher extends Employee {
 
-    private String title; // Звание преподавателя (например, Professor, Lecturer)
+    private Title title; // Звание преподавателя (например, Professor, Lecturer)
     private List<Course> courses; // Список курсов, которые ведёт преподаватель
     private List<Message> complaints; // Список жалоб на студентов или другие вопросы
 
     public Teacher(String username, String password, String userId, String nameFirst, String nameLast, String email,
-                   int workingYears, String title, List<Course> courses, List<Message> complaints) {
-        super(username, password);
-        this.workingYears = workingYears;
+                   Title title, List<Course> courses, List<Message> complaints) {
+        super(username, password, userId, nameFirst, nameLast, email);
         this.title = title;
         this.courses = courses;
         this.complaints = complaints;
     }
 
-    public String getTitle() {
+    public Title getTitle() {
         return title;
     }
 
-    public void setTitle(String title) {
+    public void setTitle(Title title) {
         this.title = title;
     }
 
@@ -48,7 +48,6 @@ public class Teacher extends Employee {
                 ", userId='" + getUserId() + '\'' +
                 ", name='" + getNameFirst() + " " + getNameLast() + '\'' +
                 ", email='" + getEmail() + '\'' +
-                ", workingYears=" + workingYears +
                 ", title='" + title + '\'' +
                 ", courses=" + courses +
                 ", complaints=" + complaints +
