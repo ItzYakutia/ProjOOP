@@ -1,3 +1,5 @@
+package Models;
+
 import java.util.List;
 
 public class Dean extends Employee {
@@ -45,3 +47,4 @@ public class Dean extends Employee {
         proposals.forEach(proposal -> System.out.println("Reviewing course proposal: " + proposal.getName()));
     }
 }
+
