@@ -1,3 +1,5 @@
+package Models;
+
 public class Rector {
     private static Rector instance; // Singleton instance
     private String name;
