@@ -1,5 +1,4 @@
 import java.util.List;
-import java.util.Objects;
 
 public class Dean extends Employee {
     private String facultyName;
@@ -27,48 +26,22 @@ public class Dean extends Employee {
         this.managedDepartments = managedDepartments;
     }
 
-    public void manageFaculty(String facultyName, boolean action) {
-        System.out.println("Managing faculty: " + facultyName + ", action: " + (action ? "Activate" : "Deactivate"));
+    public void manageFaculty(String department, boolean action) {
+        if (action) {
+            System.out.println("Activating department: " + department);
+        } else {
+            System.out.println("Deactivating department: " + department);
+        }
     }
 
-    public void approveResearchFunding(String researchId, double amount) {
-        System.out.println("Approved research funding for research ID: " + researchId + " with amount: $" + amount);
+    public void approveResearchFunding(String researchId, double amount) throws InsufficientFundsException {
+        if (amount < 0) {
+            throw new InsufficientFundsException("Cannot allocate negative funding for research ID: " + researchId);
+        }
+        System.out.println("Approved funding of $" + amount + " for research ID: " + researchId);
     }
 
     public void reviewCourseProposals(List<Course> proposals) {
-        System.out.println("Reviewing course proposals:");
-        proposals.forEach(proposal -> System.out.println("- " + proposal.getName()));
-    }
-
-    public void viewStudentGrades(String studentId) {
-        System.out.println("Viewing grades for student ID: " + studentId);
-    }
-
-    public void signDocument(String documentId) {
-        System.out.println("Document " + documentId + " signed by the Dean.");
-    }
-
-    @Override
-    public String toString() {
-        return "Dean{" +
-                "name='" + getName() + '\'' +
-                ", id='" + getId() + '\'' +
-                ", facultyName='" + facultyName + '\'' +
-                ", managedDepartments=" + managedDepartments +
-                '}';
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Dean)) return false;
-        Dean dean = (Dean) o;
-        return Objects.equals(getId(), dean.getId()) &&
-                Objects.equals(facultyName, dean.facultyName);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(getId(), facultyName);
+        proposals.forEach(proposal -> System.out.println("Reviewing course proposal: " + proposal.getName()));
     }
 }
