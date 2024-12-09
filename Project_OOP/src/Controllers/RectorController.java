@@ -12,7 +12,16 @@ public class RectorController {
             rector.manageBudget(amount);
             rectorView.displayUniversityBudget(rector.getUniversityBudget());
         } catch (InsufficientFundsException e) {
-            rectorView.displayMessage(e.getMessage());
+            rectorView.displayErrorMessage(e.getMessage());
+        }
+    }
+
+    public void assignSupervisor(Researcher researcher) {
+        try {
+            rector.assignSupervisor(researcher);
+            rectorView.displayMessage("Supervisor assigned successfully.");
+        } catch (LowHIndexException e) {
+            rectorView.displayErrorMessage(e.getMessage());
         }
     }
 }
