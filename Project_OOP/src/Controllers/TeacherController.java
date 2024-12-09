@@ -2,139 +2,72 @@ package Controllers;
 
 import Models.*;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class TeacherController {
 
     private List<Teacher> teachers;
     private List<Student> students;
-    private List<Lesson> lessons;
     private List<Course> courses;
 
-    public TeacherController(List<Teacher> teachers, List<Student> students, List<Lesson> lessons, List<Course> courses) {
+    public TeacherController(List<Teacher> teachers, List<Student> students, List<Course> courses) {
         this.teachers = teachers;
         this.students = students;
-        this.lessons = lessons;
         this.courses = courses;
     }
 
     /**
-     * Установить оценку студенту за урок.
+     * Добавить жалобу для преподавателя.
      */
-    public void setMark(String studentId, int mark, String lessonId) {
-        Student student = findStudentById(studentId);
-        Lesson lesson = findLessonById(lessonId);
-
-        if (student == null || lesson == null) {
-            System.out.println("Error: Student or lesson not found.");
-            return;
+    public void sendComplaint(Teacher teacher, String text, UrgencyLevel urgencyLevel) {
+        if (text == null || text.isBlank()) {
+            throw new IllegalArgumentException("Complaint text cannot be null or empty.");
         }
-
-        Mark studentMark = new Mark(student, lesson.getCourse(), mark, 0, 0);
-        student.getTranscript().put(lesson.getCourse(), studentMark);
-        System.out.println("Mark set successfully for student " + student.getNameFirst() + ".");
+        teacher.getComplaints().add(text + " (" + urgencyLevel + ")");
+        System.out.println("Complaint added: " + text + " (Urgency: " + urgencyLevel + ")");
     }
 
     /**
-     * Отметить посещаемость студента.
+     * Просмотр студентов, зарегистрированных на курс.
      */
-    public void makeAttendance(String studentId, String lessonId, int att) {
-        Student student = findStudentById(studentId);
-        Lesson lesson = findLessonById(lessonId);
-
-        if (student == null || lesson == null) {
-            System.out.println("Error: Student or lesson not found.");
-            return;
-        }
-
-        System.out.println("Attendance marked for student " + student.getNameFirst() + " for lesson " + lessonId + ".");
-    }
-
-    /**
-     * Отправить жалобу на студента.
-     */
-    public void sentComplaint(String studentId, String lessonId, String text, String urgencyLevel) {
-        Student student = findStudentById(studentId);
-        Lesson lesson = findLessonById(lessonId);
-
-        if (student == null || lesson == null) {
-            System.out.println("Error: Student or lesson not found.");
-            return;
-        }
-
-        System.out.println("Complaint sent for student " + student.getNameFirst() + ": " + text + " (Urgency: " + urgencyLevel + ")");
-    }
-
-    /**
-     * Просмотр курса.
-     */
-    public Course viewCourse(String courseId) {
+    public List<Student> viewStudents(Teacher teacher, String courseId) {
         Course course = findCourseById(courseId);
         if (course == null) {
-            System.out.println("Error: Course not found.");
+            System.out.println("Course not found.");
+            return null;
         }
-        return course;
+        if (!teacher.getCourses().contains(course)) {
+            System.out.println("Teacher does not teach this course.");
+            return null;
+        }
+        return course.getStudents();
+    }
+
+    /**
+     * Просмотр информации о курсе.
+     */
+    public Course viewCourse(String courseId) {
+        return findCourseById(courseId);
     }
 
     /**
      * Просмотр информации о студенте.
      */
     public Student viewStudent(String studentId) {
-        Student student = findStudentById(studentId);
-        if (student == null) {
-            System.out.println("Error: Student not found.");
-        }
-        return student;
+        return findStudentById(studentId);
     }
 
     /**
      * Отправка сообщения сотруднику.
      */
-    public void sentMessage(String text, String employeeId) {
-        System.out.println("Message to employee " + employeeId + ": " + text);
-    }
-
-    /**
-     * Просмотр студентов на уроке.
-     */
-    public List<Student> viewStudents(String lessonId) {
-        Lesson lesson = findLessonById(lessonId);
-        if (lesson == null) {
-            System.out.println("Error: Lesson not found.");
-            return new ArrayList<>();
-        }
-
-        System.out.println("Students for lesson " + lessonId + ":");
-        return lesson.getCourse().getStudents();
-    }
-
-    /**
-     * Загрузка учебного плана.
-     */
-    public void loadSyllabus(Syllabus syllabus) {
-        System.out.println("Syllabus loaded: " + syllabus.getTitle());
-    }
-
-    /**
-     * Отправка сообщения.
-     */
-    public void sentMessage(String text, String recipientId) {
-        System.out.println("Message to " + recipientId + ": " + text);
+    public void sendMessage(Teacher teacher, String text, String recipientId) {
+        System.out.println("Teacher " + teacher.getNameFirst() + " sent message to " + recipientId + ": " + text);
     }
 
     // Вспомогательные методы
     private Student findStudentById(String studentId) {
         return students.stream()
                 .filter(student -> student.getUserId().equals(studentId))
-                .findFirst()
-                .orElse(null);
-    }
-
-    private Lesson findLessonById(String lessonId) {
-        return lessons.stream()
-                .filter(lesson -> lesson.getLessonId().equals(lessonId))
                 .findFirst()
                 .orElse(null);
     }
@@ -146,3 +79,4 @@ public class TeacherController {
                 .orElse(null);
     }
 }
+
