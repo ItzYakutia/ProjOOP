@@ -8,7 +8,7 @@ public enum Title {
 
     private final String displayTitle;
 
-    Title(String displayName) {
+    Title(String displayTitle) {
         this.displayTitle = displayTitle;
     }
 
