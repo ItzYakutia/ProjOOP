@@ -1,5 +1,5 @@
 public class Rector {
-    private static Rector instance;
+    private static Rector instance; // Singleton instance
     private String name;
     private double universityBudget;
 
@@ -15,19 +15,25 @@ public class Rector {
         return instance;
     }
 
-    public void manageBudget(double amount) throws InsufficientFundsException {
-        if (amount < 0 && Math.abs(amount) > universityBudget) {
-            throw new InsufficientFundsException("Not enough budget for this operation!");
-        }
-        universityBudget += amount;
-        System.out.println("Updated budget: $" + universityBudget);
-    }
-
     public String getName() {
         return name;
     }
 
     public double getUniversityBudget() {
         return universityBudget;
+    }
+
+    public void manageBudget(double amount) throws InsufficientFundsException {
+        if (amount < 0 && Math.abs(amount) > universityBudget) {
+            throw new InsufficientFundsException("Not enough budget for this operation!");
+        }
+        universityBudget += amount;
+    }
+
+    public void assignSupervisor(Researcher researcher) throws LowHIndexException {
+        if (researcher.getHIndex() < 3) {
+            throw new LowHIndexException("H-Index is too low for supervising!");
+        }
+        System.out.println("Supervisor assigned: " + researcher.getName());
     }
 }
