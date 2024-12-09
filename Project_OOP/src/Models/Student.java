@@ -18,9 +18,10 @@ public class Student extends User {
         super(username, password, userId, nameFirst, nameLast, email);
         this.gpa = gpa;
         this.yearOfStudy = yearOfStudy;
-        this.credits = credits;
+        setCredits(credits); // Apply validation for credits
         this.courses = courses;
         this.transcript = transcript;
+        checkFailingGrades(); // Check failing grades upon initialization
         this.studentOrganization = studentOrganization;
     }
 
@@ -71,6 +72,7 @@ public class Student extends User {
 
     public void setTranscript(Map<Course, Mark> transcript) {
         this.transcript = transcript;
+        checkFailingGrades(); // Re-check failing grades after updating transcript
     }
 
     public String getStudentOrganization() {
@@ -79,6 +81,13 @@ public class Student extends User {
 
     public void setStudentOrganization(String studentOrganization) {
         this.studentOrganization = studentOrganization;
+    }
+
+    private void checkFailingGrades() {
+        long failCount = transcript.values().stream().filter(mark -> mark.isFailing()).count();
+        if (failCount > 3) {
+            throw new IllegalStateException("Students cannot fail more than 3 times");
+        }
     }
 
     @Override
