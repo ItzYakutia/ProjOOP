@@ -33,9 +33,4 @@ public class FinanceManagerController {
         System.out.println("Managing finances for department ID: " + departmentId + " with amount: " + amount);
         // Logic to handle finances
     }
-
-    public void sentMessage(String text, String email) {
-        System.out.println("Message sent to recipient email: " + email + " - " + text);
-        // Logic to send the message
-    }
 }
