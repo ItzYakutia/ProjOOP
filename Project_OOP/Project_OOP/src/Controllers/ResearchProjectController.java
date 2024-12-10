@@ -1,3 +1,5 @@
+package Controllers;
+
 public class ResearchProjectController {
     private ResearchProject project;
     private ResearchProjectView projectView;
