@@ -1,3 +1,5 @@
+package Controllers;
+
 public class RectorController {
     private Rector rector;
     private RectorView rectorView;
