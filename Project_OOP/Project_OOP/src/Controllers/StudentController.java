@@ -17,16 +17,13 @@ public class StudentController {
         this.news = news;
     }
 
-    /**
-     * Просмотр всех доступных курсов.
-     */
+    // Просмотр всех доступных курсов
     public List<Course> viewCourses() {
         return courses;
     }
 
-    /**
-     * Регистрация студента на курс.
-     */
+    // Регистрация студента на курс
+    
     public void registerForCourse(String studentId, String courseId) {
         Student student = findStudentById(studentId);
         Course course = findCourseById(courseId);
@@ -43,9 +40,7 @@ public class StudentController {
         }
     }
 
-    /**
-     * Просмотр оценок студента по конкретному курсу.
-     */
+    //Просмотр оценок студента по курсу
     public List<Mark> viewMarks(String courseName, String studentId) {
         Student student = findStudentById(studentId);
         if (student == null) {
@@ -58,9 +53,8 @@ public class StudentController {
                 .collect(Collectors.toList());
     }
 
-    /**
-     * Просмотр транскрипта студента.
-     */
+    // Просмотр транскрипта студента
+     
     public void viewTranscript(String studentId) {
         Student student = findStudentById(studentId);
         if (student == null) {
@@ -72,9 +66,8 @@ public class StudentController {
         });
     }
 
-    /**
-     * Оценка курса студентом.
-     */
+    //Оценка курса студентом
+ 
     public void rateCourse(String courseId, int rating, String feedback) {
         Course course = findCourseById(courseId);
         if (course == null) {
@@ -89,9 +82,8 @@ public class StudentController {
         // Здесь можно добавить сохранение рейтинга и отзыва
     }
 
-    /**
-     * Запрос на вступление в организацию.
-     */
+    //Запрос на вступление в организацию
+     
     public void requestToJoinOrganization(String orgName, String studentId) {
         Student student = findStudentById(studentId);
         if (student == null) {
@@ -99,12 +91,10 @@ public class StudentController {
             return;
         }
         System.out.println("Request from student " + student.getNameFirst() + " to join organization: " + orgName);
-        // Логика обработки запроса на вступление
     }
 
-    /**
-     * Запрос информации о курсе.
-     */
+    //Запрос инфо о курсе
+ 
     public String requestCourseInfo(String courseId) {
         Course course = findCourseById(courseId);
         if (course == null) {
@@ -113,9 +103,8 @@ public class StudentController {
         return "Course: " + course.getName() + ", Description: " + course.getDescription();
     }
 
-    /**
-     * Просмотр новостей для студента.
-     */
+    //Просмотр новостей для студента.
+     
     public List<News> viewNews(String studentId) {
         Student student = findStudentById(studentId);
         if (student == null) {
@@ -123,14 +112,6 @@ public class StudentController {
             return null;
         }
         return news;
-    }
-
-    /**
-     * Отправка сообщения.
-     */
-    public void sendMessage(String text, String recipientId) {
-        System.out.println("Message to " + recipientId + ": " + text);
-        // Логика для отправки сообщения
     }
 
     // Вспомогательные методы для поиска студента и курса
