@@ -1,6 +1,6 @@
 package Models;
 
-public class Rector {
+public class Rector extends Employee {
     private static Rector instance; 
     private String name;
     private double universityBudget;
