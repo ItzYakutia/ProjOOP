@@ -1,4 +1,4 @@
-package Views
+package Views;
 
 public class RectorView {
     public void displayUniversityBudget(double budget) {
