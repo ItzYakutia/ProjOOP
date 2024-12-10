@@ -1,3 +1,5 @@
+package Views
+
 public class RectorView {
     public void displayUniversityBudget(double budget) {
         System.out.println("Current University Budget: $" + budget);
