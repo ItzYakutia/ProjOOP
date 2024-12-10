@@ -1,3 +1,5 @@
+package Models;
+
 public class ResearchPaper {
     private String title;
     private String authors;
