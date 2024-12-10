@@ -1,7 +1,6 @@
 package Controllers;
 
 import Models.*;
-
 import java.util.List;
 
 public class TeacherController {
@@ -16,9 +15,8 @@ public class TeacherController {
         this.courses = courses;
     }
 
-    /**
-     * Добавить жалобу для преподавателя.
-     */
+    //Добавить жалобу 
+    
     public void sendComplaint(Teacher teacher, String text, UrgencyLevel urgencyLevel) {
         if (text == null || text.isBlank()) {
             throw new IllegalArgumentException("Complaint text cannot be null or empty.");
@@ -27,9 +25,8 @@ public class TeacherController {
         System.out.println("Complaint added: " + text + " (Urgency: " + urgencyLevel + ")");
     }
 
-    /**
-     * Просмотр студентов, зарегистрированных на курс.
-     */
+    //Просмотр студентов, зарегистрированных на курс
+     
     public List<Student> viewStudents(Teacher teacher, String courseId) {
         Course course = findCourseById(courseId);
         if (course == null) {
@@ -43,25 +40,14 @@ public class TeacherController {
         return course.getStudents();
     }
 
-    /**
-     * Просмотр информации о курсе.
-     */
+    // Просмотр инфо о курсе
     public Course viewCourse(String courseId) {
         return findCourseById(courseId);
     }
 
-    /**
-     * Просмотр информации о студенте.
-     */
+    // Просмотр инфо о студенте
     public Student viewStudent(String studentId) {
         return findStudentById(studentId);
-    }
-
-    /**
-     * Отправка сообщения сотруднику.
-     */
-    public void sendMessage(Teacher teacher, String text, String recipientId) {
-        System.out.println("Teacher " + teacher.getNameFirst() + " sent message to " + recipientId + ": " + text);
     }
 
     // Вспомогательные методы
