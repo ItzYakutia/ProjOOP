@@ -1,7 +1,7 @@
 package Models;
 
 public class Rector {
-    private static Rector instance; // Singleton instance
+    private static Rector instance; 
     private String name;
     private double universityBudget;
 
