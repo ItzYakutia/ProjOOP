@@ -3,7 +3,7 @@ package Models;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Researcher extends Employee {
+public class Researcher extends User {
     private double hIndex;
     private List<ResearchPaper> researchPapers;
 
