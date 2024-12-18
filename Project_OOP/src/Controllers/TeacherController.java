@@ -17,33 +17,65 @@ public class TeacherController {
         this.courses = courses;
     }
 
-    // Добавление нового преподавателя с проверкой уникальности
-    public void addTeacher(Teacher newTeacher) {
-        if (teachers.stream().anyMatch(teacher -> teacher.equals(newTeacher))) {
-            System.out.println("Error: Teacher already exists.");
-            return;
+    // Просмотр курсов преподавателя
+    public List<Course> viewCourses(String teacherId) {
+        Teacher teacher = findTeacherById(teacherId);
+        if (teacher == null) {
+            throw new IllegalArgumentException("Teacher not found.");
         }
-        teachers.add(newTeacher);
-        System.out.println("Teacher added successfully: " + newTeacher.getNameFirst() + " " + newTeacher.getNameLast());
+        return teacher.getCourses();
     }
 
-    // Удаление преподавателя
-    public void removeTeacher(Teacher teacherToRemove) {
-        if (teachers.remove(teacherToRemove)) { // Используется equals
-            System.out.println("Teacher removed successfully: " + teacherToRemove.getNameFirst() + " " + teacherToRemove.getNameLast());
-        } else {
-            System.out.println("Error: Teacher not found.");
-        }
-    }
-
-    // Установка оценки для студента по курсу
-    public void setMark(String studentId, String courseId, double attestation1, double attestation2, double finalExam) {
-        Student student = findStudentById(studentId);
+    // Управление курсами (добавление/удаление студентов)
+    public void manageCourse(String teacherId, String courseId, String studentId, boolean isAdd) {
+        Teacher teacher = findTeacherById(teacherId);
         Course course = findCourseById(courseId);
+        Student student = findStudentById(studentId);
 
-        if (student == null || course == null) {
-            System.out.println("Error: Student or course not found.");
-            return;
+        if (teacher == null || course == null || student == null) {
+            throw new IllegalArgumentException("Teacher, course, or student not found.");
+        }
+
+        if (!teacher.getCourses().contains(course)) {
+            throw new IllegalArgumentException("This course is not assigned to the teacher.");
+        }
+
+        if (isAdd) {
+            course.addStudent(student);
+            student.addCourse(course);
+            System.out.println("Student added to course successfully.");
+        } else {
+            course.removeStudent(student);
+            student.removeCourse(course);
+            System.out.println("Student removed from course successfully.");
+        }
+    }
+
+    // Просмотр студентов и их информации на курсе
+    public List<Student> viewStudents(String courseId) {
+        Course course = findCourseById(courseId);
+        if (course == null) {
+            throw new IllegalArgumentException("Course not found.");
+        }
+        return course.getStudents();
+    }
+
+    // Выставление оценок
+    public void putMarks(String teacherId, String studentId, String courseId, double attestation1, double attestation2, double finalExam) {
+        Teacher teacher = findTeacherById(teacherId);
+        Course course = findCourseById(courseId);
+        Student student = findStudentById(studentId);
+
+        if (teacher == null || course == null || student == null) {
+            throw new IllegalArgumentException("Teacher, course, or student not found.");
+        }
+
+        if (!teacher.getCourses().contains(course)) {
+            throw new IllegalArgumentException("Teacher is not assigned to this course.");
+        }
+
+        if (attestation1 < 0 || attestation1 > 100 || attestation2 < 0 || attestation2 > 100 || finalExam < 0 || finalExam > 100) {
+            throw new IllegalArgumentException("Marks must be between 0 and 100.");
         }
 
         Mark mark = student.getTranscript().get(course);
@@ -57,17 +89,35 @@ public class TeacherController {
             mark.setTotal(attestation1 + attestation2 + finalExam);
         }
 
-        System.out.println("Mark set successfully for student: " + student.getNameFirst() + " " + student.getNameLast());
+        System.out.println("Marks updated successfully.");
     }
 
-    // Отправка жалобы на студента декану
-    public void sendComplaint(String studentId, String courseId, String text, UrgencyLevel urgency) {
+    // Отправка сообщений другим сотрудникам
+    public void sendMessage(String teacherId, String recipientId, String messageText) {
+        Teacher sender = findTeacherById(teacherId);
+        Employee recipient = findEmployeeById(recipientId);
+
+        if (sender == null || recipient == null) {
+            throw new IllegalArgumentException("Sender or recipient not found.");
+        }
+
+        Message message = new Message(sender, recipient, messageText);
+        sender.sendMessage(message);
+        System.out.println("Message sent successfully.");
+    }
+
+    // Отправка жалоб на студента
+    public void sendComplaint(String teacherId, String studentId, String courseId, String text, UrgencyLevel urgency) {
+        Teacher teacher = findTeacherById(teacherId);
         Student student = findStudentById(studentId);
         Course course = findCourseById(courseId);
 
-        if (student == null || course == null) {
-            System.out.println("Error: Student or course not found.");
-            return;
+        if (teacher == null || student == null || course == null) {
+            throw new IllegalArgumentException("Teacher, student, or course not found.");
+        }
+
+        if (!teacher.getCourses().contains(course)) {
+            throw new IllegalArgumentException("Teacher is not assigned to this course.");
         }
 
         String complaint = "Complaint about student: " + student.getNameFirst() + " " + student.getNameLast() +
@@ -75,62 +125,19 @@ public class TeacherController {
                 ", Urgency: " + urgency +
                 ", Text: " + text;
 
-        Teacher teacher = findTeacherByCourse(course);
-        if (teacher != null) {
-            teacher.addComplaint(complaint);
-            System.out.println("Complaint sent successfully.");
-        } else {
-            System.out.println("Error: Teacher not found for the specified course.");
-        }
+        teacher.addComplaint(complaint);
+        System.out.println("Complaint sent successfully.");
     }
 
-    // Просмотр списка студентов на курсе
-    public List<Student> viewStudents(String courseId) {
-        Course course = findCourseById(courseId);
-        if (course == null) {
-            System.out.println("Course not found.");
-            return null;
-        }
-        return course.getStudents();
+    // Вспомогательные методы
+
+    private Teacher findTeacherById(String teacherId) {
+        return teachers.stream()
+                .filter(teacher -> teacher.getUserId().equals(teacherId))
+                .findFirst()
+                .orElse(null);
     }
 
-    // Просмотр информации о курсе
-    public Course viewCourse(String courseId) {
-        Course course = findCourseById(courseId);
-        if (course == null) {
-            System.out.println("Course not found.");
-            return null;
-        }
-        return course;
-    }
-
-    // Просмотр информации о студенте
-    public Student viewStudent(String studentId) {
-        Student student = findStudentById(studentId);
-        if (student == null) {
-            System.out.println("Student not found.");
-            return null;
-        }
-        return student;
-    }
-
-    // Отправка сообщения другому сотруднику
-    public void sendMessage(String text, String employeeId) {
-        System.out.println("Message sent to employee ID: " + employeeId + ". Text: " + text);
-    }
-
-    // Загрузка силлабуса для курса
-    public void loadSyllabus(String courseId, Syllabus syllabus) {
-        Course course = findCourseById(courseId);
-        if (course == null) {
-            System.out.println("Course not found.");
-            return;
-        }
-        course.setSyllabus(syllabus);
-        System.out.println("Syllabus loaded successfully for course: " + course.getName());
-    }
-
-    // Вспомогательные методы для поиска преподавателей, студентов и курсов
     private Student findStudentById(String studentId) {
         return students.stream()
                 .filter(student -> student.getUserId().equals(studentId))
@@ -145,9 +152,9 @@ public class TeacherController {
                 .orElse(null);
     }
 
-    private Teacher findTeacherByCourse(Course course) {
+    private Employee findEmployeeById(String employeeId) {
         return teachers.stream()
-                .filter(teacher -> teacher.getCourses().contains(course)) // equals используется для сравнения курса
+                .filter(teacher -> teacher.getUserId().equals(employeeId))
                 .findFirst()
                 .orElse(null);
     }
