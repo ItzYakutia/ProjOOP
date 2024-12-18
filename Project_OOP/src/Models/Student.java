@@ -1,5 +1,6 @@
 package Models;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -18,7 +19,7 @@ public class Student extends User {
         this.gpa = gpa;
         this.year = year;
         this.credits = credits;
-        this.courses = courses;
+        this.courses = courses != null ? courses : new ArrayList<>();
         this.transcript = transcript;
     }
 
@@ -52,11 +53,19 @@ public class Student extends User {
     }
 
     public void addCourse(Course course) {
+        // Предотвращаем добавление курса, если студент уже зарегистрирован на него
+        if (courses.contains(course)) {
+            System.out.println("Error: Student is already registered for the course: " + course.getName());
+            return;
+        }
         courses.add(course);
+        credits += course.getCredits();
     }
 
     public void removeCourse(Course course) {
-        courses.remove(course);
+        if (courses.remove(course)) {
+            credits -= course.getCredits();
+        }
     }
 
     public Map<Course, Mark> getTranscript() {
@@ -67,7 +76,7 @@ public class Student extends User {
         this.transcript = transcript;
     }
 
-    // Реализация equals для сравнения студентов по userId
+    // Реализация equals для проверки уникальности курса в списке курсов студента
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -91,9 +100,7 @@ public class Student extends User {
                 ", gpa=" + gpa +
                 ", year=" + year +
                 ", credits=" + credits +
+                ", courses=" + courses.size() +
                 '}';
-    }
-}
-
     }
 }
