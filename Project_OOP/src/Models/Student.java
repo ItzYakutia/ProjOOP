@@ -64,7 +64,7 @@ public void setMajor(String major) {
     public void addCourse(Course course) {
         // Предотвращаем добавление курса, если студент уже зарегистрирован на него
         if (courses.contains(course)) {
-            System.out.println("Error: Student is already registered for the course: " + course.getName());
+throw new IllegalArgumentException("Student is already registered for the course: " + course.getName());
             return;
         }
         courses.add(course);
@@ -72,9 +72,10 @@ public void setMajor(String major) {
     }
 
     public void removeCourse(Course course) {
-        if (courses.remove(course)) {
-            credits -= course.getCredits();
-        }
+        if (!courses.contains(course)) {
+    throw new IllegalArgumentException("Student is not registered for the course: " + course.getName());
+     }
+
     }
 
     public Map<Course, Mark> getTranscript() {
