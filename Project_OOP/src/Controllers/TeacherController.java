@@ -17,6 +17,13 @@ public class TeacherController {
         this.courses = courses;
     }
 
+    // Сортировка преподавателей по фамилии (алфавитно)
+    public List<Teacher> sortTeachersByLastName() {
+        return teachers.stream()
+                .sorted(Comparator.comparing(Teacher::getNameLast))
+                .collect(Collectors.toList());
+    }
+    
     // Просмотр курсов преподавателя
     public List<Course> viewCourses(String teacherId) {
         Teacher teacher = findTeacherById(teacherId);
