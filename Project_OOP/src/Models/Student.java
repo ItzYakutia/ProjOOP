@@ -12,6 +12,8 @@ public class Student extends User {
     private int credits; // Общее количество кредитов
     private List<Course> courses; // Список курсов, на которые записан студент
     private Map<Course, Mark> transcript; // Транскрипт с оценками по курсам
+    private String major; // Основная специальность студента
+
 
     public Student(String username, String password, String userId, String nameFirst, String nameLast, String email,
                    double gpa, int year, int credits, List<Course> courses, Map<Course, Mark> transcript) {
@@ -24,6 +26,13 @@ public class Student extends User {
     }
 
     // Геттеры и сеттеры
+    public String getMajor() {
+    return major;
+}
+
+public void setMajor(String major) {
+    this.major = major;
+}
     public double getGpa() {
         return gpa;
     }
