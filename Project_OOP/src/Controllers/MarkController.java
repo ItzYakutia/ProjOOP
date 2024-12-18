@@ -1,12 +1,7 @@
 package Controllers;
 
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import Models.*;
-import Views.*;
+import java.util.*;
 
 public class MarkController {
 
@@ -37,18 +32,29 @@ public class MarkController {
         System.out.println("Mark set successfully for student " + student.getNameFirst() + " in course " + course.getName() + ".");
     }
 
-    // Получение транскрипта студента
-    public Map<Course, Mark> getTranscript(Student student) {
-        Map<Course, Mark> transcript = new HashMap<>();
-        for (Mark mark : marks) {
-            if (mark.getStudent().equals(student)) {
-                transcript.put(mark.getCourse(), mark);
-            }
+    // Просмотр транскрипта студента
+    public void viewTranscript(String studentId) {
+        Student student = findStudentById(studentId);
+
+        if (student == null) {
+            System.out.println("Error: Student not found.");
+            return;
         }
-        return transcript;
+
+        // Проверка: есть ли транскрипт
+        if (student.getTranscript() == null || student.getTranscript().isEmpty()) {
+            System.out.println("Transcript is empty. No marks are available for this student.");
+            return;
+        }
+
+        // Вывод транскрипта
+        System.out.println("Transcript for student: " + student.getNameFirst() + " " + student.getNameLast());
+        student.getTranscript().forEach((course, mark) -> {
+            System.out.println("Course: " + course.getName() + ", Mark: " + mark.getTotal());
+        });
     }
 
-    // Проверка, провалил ли студент указанный курс
+    // Проверка, провалил ли студент курс
     public boolean isCourseFailed(Student student, Course course) {
         Mark mark = findMark(student, course);
         return mark != null && mark.getTotal() < 50;
@@ -113,4 +119,14 @@ public class MarkController {
                 .findFirst()
                 .orElse(null);
     }
+
+    // Вспомогательный метод для поиска студента по ID
+    private Student findStudentById(String studentId) {
+        return marks.stream()
+                .map(Mark::getStudent)
+                .filter(student -> student.getUserId().equals(studentId))
+                .findFirst()
+                .orElse(null);
+    }
 }
+
