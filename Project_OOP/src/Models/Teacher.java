@@ -32,11 +32,17 @@ public class Teacher extends Employee {
     }
 
     public void addCourse(Course course) {
-        courses.add(course);
+        if (!courses.contains(course)) { // Проверка на уникальность курса
+            courses.add(course);
+        }
     }
 
     public void removeCourse(Course course) {
-        courses.remove(course);
+        if (courses.contains(course)) { // Проверка существования курса
+            courses.remove(course);
+        } else {
+            System.out.println("Error: Course not found.");
+        }
     }
 
     public List<String> getComplaints() {
