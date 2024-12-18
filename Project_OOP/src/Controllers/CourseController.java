@@ -15,6 +15,22 @@ public class CourseController {
         this.teachers = teachers;
         this.students = students;
     }
+    
+     // Сортировка курсов по названию (алфавитно)
+    public List<Course> sortCoursesByName() {
+        return courses.stream()
+                .sorted(Comparator.comparing(Course::getName))
+                .collect(Collectors.toList());
+    }
+
+    // Сортировка курсов по количеству студентов (по убыванию)
+    public List<Course> sortCoursesByStudentCount() {
+        return courses.stream()
+                .sorted(Comparator.comparingInt(course -> course.getStudents().size()).reversed())
+                .collect(Collectors.toList());
+    }
+
+
 
     // Добавление нового курса
     public void addCourse(Course course) {
