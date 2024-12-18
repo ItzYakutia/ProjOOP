@@ -24,7 +24,7 @@ public class CourseController {
             return;
         }
 
-        // Проверка, что преподаватель уже назначен на этот курс
+        // Используем equals для проверки, добавлен ли уже преподаватель
         if (course.getTeachers().contains(teacher)) {
             System.out.println("Error: Teacher " + teacher.getNameFirst() + " " + teacher.getNameLast() +
                     " is already assigned to the course " + course.getName());
@@ -39,6 +39,7 @@ public class CourseController {
 
     // Добавление нового курса
     public void addCourse(Course course) {
+        // Проверка с использованием equals
         if (courses.contains(course)) {
             System.out.println("Error: Course " + course.getName() + " already exists.");
             return;
@@ -54,7 +55,7 @@ public class CourseController {
             System.out.println("Error: Course not found.");
             return;
         }
-        courses.remove(course);
+        courses.remove(course); // equals используется для удаления
         System.out.println("Course " + course.getName() + " removed successfully.");
     }
 
@@ -83,14 +84,14 @@ public class CourseController {
     // Вспомогательные методы для поиска курса и преподавателя
     private Course findCourseById(String courseId) {
         return courses.stream()
-                .filter(course -> course.getCourseId().equals(courseId))
+                .filter(course -> course.getCourseId().equals(courseId)) // equals используется для поиска
                 .findFirst()
                 .orElse(null);
     }
 
     private Teacher findTeacherById(String teacherId) {
         return teachers.stream()
-                .filter(teacher -> teacher.getUserId().equals(teacherId))
+                .filter(teacher -> teacher.getUserId().equals(teacherId)) // equals используется для поиска
                 .findFirst()
                 .orElse(null);
     }
