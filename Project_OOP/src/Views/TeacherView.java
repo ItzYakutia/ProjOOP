@@ -26,6 +26,16 @@ public class TeacherView {
         System.out.println("Error: " + errorMessage);
     }
 
+    // Отображение основной информации о преподавателе
+    public void displayTeacherInfo(Teacher teacher) {
+        System.out.println("Teacher Information:");
+        System.out.println("Name: " + teacher.getNameFirst() + " " + teacher.getNameLast());
+        System.out.println("Title: " + teacher.getTitle());
+        System.out.println("Working Years: " + teacher.getWorkingYears());
+        System.out.println("Number of Courses: " + teacher.getCourses().size());
+        System.out.println("Number of Complaints: " + teacher.getComplaints().size());
+    }
+
     // Показ списка студентов, зарегистрированных на курс
     public void displayStudentsInCourse(List<Student> students, Course course) {
         System.out.println("Students registered for course: " + course.getName());
@@ -68,19 +78,6 @@ public class TeacherView {
             System.out.println("- Name: " + course.getName());
             System.out.println("- Description: " + course.getDescription());
             System.out.println("- Credits: " + course.getCredits());
-        }
-    }
-
-    // Показ информации о студенте
-    public void displayStudentInfo(Student student) {
-        if (student == null) {
-            System.out.println("Student not found.");
-        } else {
-            System.out.println("Student Information:");
-            System.out.println("- Name: " + student.getNameFirst() + " " + student.getNameLast());
-            System.out.println("- GPA: " + student.getGpa());
-            System.out.println("- Year: " + student.getYear());
-            System.out.println("- Credits: " + student.getCredits());
         }
     }
 
