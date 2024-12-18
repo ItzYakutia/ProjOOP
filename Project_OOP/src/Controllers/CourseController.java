@@ -59,7 +59,7 @@ public class CourseController {
                 " successfully assigned to course " + course.getName());
     }
 
-    // Регистрация студента на курс с учетом специфики типов курсов
+    // Регистрация студента на курс
     public void registerStudentToCourse(String studentId, String courseId) {
         Course course = findCourseById(courseId);
         if (course == null) {
@@ -79,12 +79,6 @@ public class CourseController {
             return;
         }
 
-        // Проверка специфики типов курсов
-        if (!isCourseAllowedForStudent(student, course)) {
-            System.out.println("Error: Course " + course.getName() + " is not allowed for this student.");
-            return;
-        }
-
         // Проверка на повторную регистрацию
         if (course.getStudents().contains(student)) {
             System.out.println("Error: Student " + student.getNameFirst() + " " + student.getNameLast() +
@@ -100,29 +94,11 @@ public class CourseController {
                 " successfully registered for course " + course.getName());
     }
 
-    // Метод для проверки, разрешен ли курс для студента
+    // Метод для проверки, разрешён ли курс для студента
     private boolean isCourseAllowedForStudent(Student student, Course course) {
-        String studentMajor = student.getMajor();
-        String courseSchool = course.getSchool(); // Предполагается, что у курса есть поле "school"
-
-        // Если курс Major и школа курса совпадает с основной школой студента
-        if (course.getCourseType() == CourseType.MAJOR && studentMajor.equals(courseSchool)) {
-            return true;
-        }
-
-        // Если курс Minor, можно разрешить в зависимости от логики (например, если студент берет Minor по этой школе)
-        if (course.getCourseType() == CourseType.MINOR) {
-            // Дополнительная логика для Minor курсов
-            return true; // Предполагаем, что Minor курсы доступны
-        }
-
-        // Если курс Free Elective, разрешаем независимо от школы
-        if (course.getCourseType() == CourseType.FREE_ELECTIVE) {
-            return true;
-        }
-
-        // Во всех остальных случаях курс не разрешен
-        return false;
+        // В текущей версии этот метод можно реализовать упрощённо,
+        // потому что специфика типа (Major, Minor, Free Elective) уже определяется CourseType
+        return true; // Все типы курсов допустимы
     }
 
     // Просмотр информации о курсе
