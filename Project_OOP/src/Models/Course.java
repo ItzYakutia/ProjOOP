@@ -1,123 +1,79 @@
 package Models;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class Course {
 
     private String courseId; // Уникальный идентификатор курса
     private String name; // Название курса
     private String description; // Описание курса
-    private int credits; // Количество кредитов за курс
-    private List<Teacher> instructors; // Преподаватели, ведущие курс
-    private List<Student> students; // Студенты, зарегистрированные на курс
-    private List<Lesson> lessons; // Занятия в рамках курса
-    private LessonType type;
+    private int credits; // Количество кредитов
+    private CourseType courseType; // Тип курса (Major, Minor, Free Elective)
+    private List<Student> students; // Список студентов, зарегистрированных на курс
+    private List<Teacher> teachers; // Список преподавателей, назначенных на курс
+    private Syllabus syllabus; // Силлабус курса
 
-    public Course(String courseId, String name, String description, int credits,
-                  List<Teacher> instructors, List<Student> students, List<Lesson> lessons, LessonType type) {
+    public Course(String courseId, String name, String description, int credits, CourseType courseType) {
         this.courseId = courseId;
         this.name = name;
         this.description = description;
         this.credits = credits;
-        this.instructors = instructors;
-        this.students = students;
-        this.lessons = lessons;
-        this.setType(type);
+        this.courseType = courseType;
+        this.students = new ArrayList<>();
+        this.teachers = new ArrayList<>();
     }
 
+    // Геттеры и сеттеры
     public String getCourseId() {
         return courseId;
-    }
-
-    public void setCourseId(String courseId) {
-        this.courseId = courseId;
     }
 
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public String getDescription() {
         return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
     }
 
     public int getCredits() {
         return credits;
     }
 
-    public void setCredits(int credits) {
-        if (credits < 1 || credits > 10) {
-            throw new IllegalArgumentException("Credits must be between 1 and 10");
-        }
-        this.credits = credits;
-    }
-
-    public List<Teacher> getInstructors() {
-        return instructors;
-    }
-
-    public void setInstructors(List<Teacher> instructors) {
-        this.instructors = instructors;
+    public CourseType getCourseType() {
+        return courseType;
     }
 
     public List<Student> getStudents() {
         return students;
     }
 
-    public void setStudents(List<Student> students) {
-        this.students = students;
+    public List<Teacher> getTeachers() {
+        return teachers;
     }
 
-    public List<Lesson> getLessons() {
-        return lessons;
-    }
-
-    public void setLessons(List<Lesson> lessons) {
-        this.lessons = lessons;
+    public void addTeacher(Teacher teacher) {
+        teachers.add(teacher); // Проверка уникальности выполняется в Controller
     }
 
     public void addStudent(Student student) {
-        students.add(student);
+        students.add(student); // Аналогично, проверка выполняется в Controller
     }
 
-    public void removeStudent(Student student) {
-        students.remove(student);
-    }
-
-    public void addLesson(Lesson lesson) {
-        lessons.add(lesson);
-    }
-
-    public void removeLesson(Lesson lesson) {
-        lessons.remove(lesson);
-    }
-
+    // Реализация equals для сравнения курсов
     @Override
-    public String toString() {
-        return "Course{" +
-                "courseId='" + courseId + '\'' +
-                ", name='" + name + '\'' +
-                ", description='" + description + '\'' +
-                ", credits=" + credits +
-                ", instructors=" + instructors +
-                ", students=" + students +
-                ", lessons=" + lessons +
-                '}';
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Course course = (Course) o;
+        return courseId.equals(course.courseId); // Сравнение по уникальному courseId
     }
 
-	public LessonType getType() {
-		return type;
-	}
-
-	public void setType(LessonType type) {
-		this.type = type;
-	}
+    // Реализация hashCode
+    @Override
+    public int hashCode() {
+        return Objects.hash(courseId);
+    }
 }
