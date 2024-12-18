@@ -11,8 +11,8 @@ public class Course {
     private String description; // Описание курса
     private int credits; // Количество кредитов
     private CourseType courseType; // Тип курса (Major, Minor, Free Elective)
-    private List<Student> students; // Список студентов, зарегистрированных на курс
-    private List<Teacher> teachers; // Список преподавателей, назначенных на курс
+    private List<Student> students; // Список студентов
+    private List<Teacher> teachers; // Список преподавателей
     private Syllabus syllabus; // Силлабус курса
 
     public Course(String courseId, String name, String description, int credits, CourseType courseType) {
@@ -54,24 +54,35 @@ public class Course {
         return teachers;
     }
 
+    public Syllabus getSyllabus() {
+        return syllabus;
+    }
+
+    public void setSyllabus(Syllabus syllabus) {
+        this.syllabus = syllabus;
+    }
+
     public void addTeacher(Teacher teacher) {
-        teachers.add(teacher); // Проверка уникальности выполняется в Controller
+        if (!teachers.contains(teacher)) {
+            teachers.add(teacher);
+        }
     }
 
     public void addStudent(Student student) {
-        students.add(student); // Аналогично, проверка выполняется в Controller
+        if (!students.contains(student)) {
+            students.add(student);
+        }
     }
 
-    // Реализация equals для сравнения курсов
+    // Реализация equals и hashCode
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Course course = (Course) o;
-        return courseId.equals(course.courseId); // Сравнение по уникальному courseId
+        return courseId.equals(course.courseId);
     }
 
-    // Реализация hashCode
     @Override
     public int hashCode() {
         return Objects.hash(courseId);
