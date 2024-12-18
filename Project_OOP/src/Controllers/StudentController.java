@@ -20,6 +20,30 @@ public class StudentController {
         this.teachers = teachers;
     }
 
+    // Сортировка студентов по имени (алфавитно)
+    public List<Student> sortStudentsByName() {
+        return students.stream()
+                .sorted(Comparator.comparing(Student::getNameFirst).thenComparing(Student::getNameLast))
+                .collect(Collectors.toList());
+    }
+
+    // Сортировка студентов по GPA (по убыванию)
+    public List<Student> sortStudentsByGPA() {
+        return students.stream()
+                .sorted(Comparator.comparingDouble(Student::getGpa).reversed())
+                .collect(Collectors.toList());
+    }
+    // Пример использования сортировки для конкретного курса
+    public List<Student> sortStudentsInCourseByGPA(String courseId) {
+        Course course = findCourseById(courseId);
+        if (course == null) {
+            throw new IllegalArgumentException("Course not found.");
+        }
+        return course.getStudents().stream()
+                .sorted(Comparator.comparingDouble(Student::getGpa).reversed())
+                .collect(Collectors.toList());
+    }
+    
     // Просмотр всех доступных курсов
     public List<Course> viewCourses() {
         return courses;
