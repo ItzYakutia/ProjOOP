@@ -80,3 +80,16 @@ public class Lesson {
                 '}';
     }
 }
+@Override
+public boolean equals(Object o) {
+    if (this == o) return true; // Проверка на ссылочную равность
+    if (o == null || getClass() != o.getClass()) return false; // Проверка на тип
+    Lesson lesson = (Lesson) o;
+    return lessonId.equals(lesson.lessonId); // Сравнение по уникальному полю
+}
+
+@Override
+public int hashCode() {
+    return Objects.hash(lessonId); // Генерация хэш-кода на основе lessonId
+}
+
