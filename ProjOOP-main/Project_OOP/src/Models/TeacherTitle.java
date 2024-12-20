@@ -1,0 +1,5 @@
+package Models;
+
+public enum TeacherTitle {
+    TUTOR, LECTOR, SENIOR_LECTOR, PROFESSOR
+}
