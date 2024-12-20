@@ -62,11 +62,7 @@ public class Teacher extends Employee {
         return getUserId().equals(teacher.getUserId());
     }
 
-    // Реализация hashCode для использования в хэш-таблицах
-    @Override
-    public int hashCode() {
-        return Objects.hash(getUserId());
-    }
+
 
     // Реализация toString для удобного вывода информации о преподавателе
     @Override
