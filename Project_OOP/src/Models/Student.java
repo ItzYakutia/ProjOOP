@@ -94,13 +94,7 @@ throw new IllegalArgumentException("Student is already registered for the course
         Student student = (Student) o;
         return getUserId().equals(student.getUserId());
     }
-
-    // Реализация hashCode для использования в хэш-таблицах
-    @Override
-    public int hashCode() {
-        return Objects.hash(getUserId());
-    }
-
+    
     // Реализация toString для удобного вывода информации о студенте
     @Override
     public String toString() {
