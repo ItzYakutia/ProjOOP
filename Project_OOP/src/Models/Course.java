@@ -82,9 +82,4 @@ public class Course {
         Course course = (Course) o;
         return courseId.equals(course.courseId);
     }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(courseId);
-    }
 }
