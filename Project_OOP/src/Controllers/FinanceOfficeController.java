@@ -1,48 +1,49 @@
 package Controllers;
 
-import Models.FinanceOffice;
-import Models.Employee;
+import Models.*;
+import Views.*;
 import java.util.List;
 import java.util.Map;
 
 public class FinanceOfficeController {
 
     private FinanceOffice financeOffice;
+    private FinanceOfficeView view;
 
-    public FinanceOfficeController(FinanceOffice financeOffice) {
+    public FinanceOfficeController(FinanceOffice financeOffice, FinanceOfficeView view) {
         this.financeOffice = financeOffice;
+        this.view = view;
     }
 
-    public boolean processExpenseRequest(int requestId) {
-        System.out.println("Processing expense request with ID: " + requestId);
-        boolean isProcessed = true; 
-        return isProcessed;
+    public void displayProfile() {
+        view.displayProfile(financeOffice);
     }
 
-    public boolean allocateFunds(int departmentId, double amount) {
-        System.out.println("Allocating funds to department ID: " + departmentId + " with amount: " + amount);
-        boolean isAllocated = true; 
-        return isAllocated;
+    public void processExpenseRequests(List<ExpenseRequest> requests) {
+        view.displayProcessedRequests(requests);
     }
 
-    public void generateTransactionLog() {
-        System.out.println("Generating transaction log for Finance Office: " + financeOffice.getOfficeName());
+    public void manageSalaries() {
+        Map<String, Double> salaries = financeOffice.getEmployeeSalaries();
+        view.displaySalaryDetails(salaries);
     }
 
-    public void manageSalaries(List<Employee> employees) {
-        System.out.println("Managing salaries for employees in Finance Office: " + financeOffice.getOfficeName());
-        for (Employee employee : employees) {
-            System.out.println("Processing salary for employee: " + employee.getUserId());
-        }
-    }
-
-    public void updateSalary(String userId, double salary) {
+    public void updateEmployeeSalary(String userId, double salary) {
         Map<String, Double> salaries = financeOffice.getEmployeeSalaries();
         if (salaries.containsKey(userId)) {
             salaries.put(userId, salary);
-            System.out.println("Updated salary for employee ID: " + userId + " to: " + salary);
+            view.displaySalaryDetails(salaries);
         } else {
-            System.out.println("Employee ID: " + userId + " not found in Finance Office.");
+            System.out.println("Employee not found: " + userId);
         }
+    }
+
+    public void allocateFunds(int departmentId, double amount) {
+        boolean success = financeOffice.allocateFunds(departmentId, amount);
+        view.displayAllocationConfirmation(success);
+    }
+
+    public void displayTransactionLog(List<Transaction> transactions) {
+        view.displayTransactionLog(transactions);
     }
 }
