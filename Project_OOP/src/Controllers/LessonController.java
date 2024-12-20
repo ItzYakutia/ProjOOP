@@ -23,7 +23,7 @@ public class LessonController {
 
     // Добавление нового урока
     public void addLesson(String lessonId, LessonType type, LocalDateTime dateTime, Course course, Teacher teacher, String room) {
-        Course course1 = findCourseById(lessonId);
+        Course course1 = findCourseById(course.getCourseId()); // Исправление
 
         if (course1 == null) {
             System.out.println("Course not found.");
@@ -66,7 +66,7 @@ public class LessonController {
         }
 
         lesson.setTeacher(teacher);
-        System.out.println("Teacher " + teacher.getNameFirst() + " assigned to lesson: " + lesson.getTopic());
+        System.out.println("Teacher " + teacher.getNameFirst() + " assigned to lesson: " + lesson.getLessonId()); // Исправление
     }
 
     // Проверка посещаемости студентов на уроке
@@ -83,7 +83,7 @@ public class LessonController {
                 .filter(student -> student != null)
                 .collect(Collectors.toList());
 
-        System.out.println("Attendance marked for lesson: " + lesson.getTopic());
+        System.out.println("Attendance marked for lesson: " + lesson.getLessonId());
         attendingStudents.forEach(student ->
                 System.out.println("Student present: " + student.getNameFirst() + " " + student.getNameLast()));
     }
