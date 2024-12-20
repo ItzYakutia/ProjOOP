@@ -53,14 +53,6 @@ public class Course {
         return teachers;
     }
 
-    public Syllabus getSyllabus() {
-        return syllabus;
-    }
-
-    public void setSyllabus(Syllabus syllabus) {
-        this.syllabus = syllabus;
-    }
-
     public void addTeacher(Teacher teacher) {
         if (!teachers.contains(teacher)) {
             teachers.add(teacher);
