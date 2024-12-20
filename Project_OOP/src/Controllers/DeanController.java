@@ -1,11 +1,10 @@
 package Controllers;
 
-import java.util.List;
-
-import javax.naming.InsufficientResourcesException;
-
 import Models.*;
-import Views.*;
+import Views.DeanView;
+import java.util.List;
+import javax.naming.InsufficientResourcesException;
+import Exceptions.InvalidCourseException;
 
 public class DeanController {
     private Dean dean;
@@ -31,7 +30,26 @@ public class DeanController {
     }
 
     public void reviewCourseProposals(List<Course> proposals) {
-        dean.reviewCourseProposals(proposals);
-        deanView.displayCourseProposals(proposals);
+        try {
+            dean.reviewCourseProposals(proposals);
+            deanView.displayCourseProposals(proposals);
+        } catch (InvalidCourseException e) {
+            deanView.displayMessage(e.getMessage());
+        }
+    }
+
+    public void assignTeacherToCourse(Teacher teacher, Course course) {
+        dean.assignTeacherToCourse(teacher, course);
+        deanView.displayTeacherAssignment(teacher.getNameFirst(), course.getName());
+    }
+
+    public void signDocument(String document) {
+        dean.signDocument(document);
+        deanView.displayMessage("Document signed: " + document);
+    }
+
+    public void viewStudentPerformance(List<Student> students) {
+        dean.viewStudentPerformance(students);
+        deanView.displayStudentPerformance(students);
     }
 }
