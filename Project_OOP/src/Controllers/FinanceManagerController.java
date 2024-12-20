@@ -1,32 +1,51 @@
 package Controllers;
 
-import Models.FinanceManager;
+import Models.*;
+import Views.*;
 import java.util.List;
 
 public class FinanceManagerController {
 
     private FinanceManager financeManager;
+    private FinanceManagerView view;
 
-    public FinanceManagerController(FinanceManager financeManager) {
+    public FinanceManagerController(FinanceManager financeManager, FinanceManagerView view) {
         this.financeManager = financeManager;
+        this.view = view;
     }
 
     public void viewBudgetReport() {
-        System.out.println("Viewing budget report for: " + financeManager.getDepartment());
-        //
+        BudgetReport report = new BudgetReport(1_000_000, 600_000, 400_000);
+        view.displayBudgetReport(report);
     }
 
-    public boolean approveExpenseRequest(int requestId) {
-        System.out.println("Approving expense request with ID: " + requestId);
-        boolean isApproved = true; 
-        return isApproved;
+    public void approveExpenseRequest(int requestId) {
+        boolean isApproved = true; // Simulate approval logic
+        view.displayApprovalConfirmation(isApproved);
     }
 
     public void generateFinancialReport() {
-        System.out.println("Generating financial report for department: " + financeManager.getDepartment());
+        FinancialReport report = new FinancialReport(1_000_000, 600_000, 200_000);
+        view.displayFinancialReport(report);
     }
 
     public void manageFinances(int departmentId, double amount) {
-        System.out.println("Managing finances for department ID: " + departmentId + " with amount: " + amount);
+        // Simulate finance management
+        Allocation allocation = new Allocation(departmentId, amount);
+        List<Allocation> allocations = List.of(allocation); // Placeholder
+        view.displayAllocations(allocations);
+    }
+
+    public void viewTransactionHistory() {
+        // Simulate transactions history
+        List<Transaction> transactions = List.of(
+            new Transaction("T001", "Purchase of supplies", 5000.0),
+            new Transaction("T002", "Team building event", 3000.0)
+        );
+        view.displayTransactionHistory(transactions);
+    }
+
+    public void displayProfile() {
+        view.displayProfile(financeManager);
     }
 }
