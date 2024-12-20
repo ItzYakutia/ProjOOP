@@ -6,13 +6,11 @@ import javax.naming.InsufficientResourcesException;
 
 public class Dean extends Employee {
     private String facultyName;
-    private List<String> managedDepartments;
 
     public Dean(String username, String password, String userId, String nameFirst, String nameLast, String email,
-    		List<String> managedDepartments, String facultyName) {
+    		String facultyName) {
     		super(username, password, userId, nameFirst, nameLast, email);
     		this.facultyName = facultyName;
-    		this.managedDepartments = managedDepartments;
     }
 
     public String getFacultyName() {
@@ -21,14 +19,6 @@ public class Dean extends Employee {
 
     public void setFacultyName(String facultyName) {
         this.facultyName = facultyName;
-    }
-
-    public List<String> getManagedDepartments() {
-        return managedDepartments;
-    }
-
-    public void setManagedDepartments(List<String> managedDepartments) {
-        this.managedDepartments = managedDepartments;
     }
 
     public void manageFaculty(String department, boolean action) {
