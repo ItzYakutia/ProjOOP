@@ -88,8 +88,5 @@ public boolean equals(Object o) {
     return lessonId.equals(lesson.lessonId); // Сравнение по уникальному полю
 }
 
-@Override
-public int hashCode() {
-    return Objects.hash(lessonId); // Генерация хэш-кода на основе lessonId
 }
 
