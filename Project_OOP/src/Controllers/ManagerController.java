@@ -7,9 +7,13 @@ import java.util.List;
 public class ManagerController {
 
     private List<Course> courses;
+    private List<Student> students;
+    private List<Teacher> teachers;
 
     public ManagerController() {
         this.courses = new ArrayList<>();
+        this.students = new ArrayList<>();
+        this.teachers = new ArrayList<>();
     }
 
     public void createLesson(Course course) {
@@ -39,11 +43,6 @@ public class ManagerController {
         System.out.println("Teacher with email: " + email + " assigned to lesson ID: " + lessonId);
     }
 
-    public void createReport() {
-        System.out.println("Report created.");
-        // 
-    }
-
     public void manageNews(String text, String title, String type) {
         switch (type.toLowerCase()) {
             case "add":
@@ -60,14 +59,26 @@ public class ManagerController {
         }
     }
 
-    public Student viewStudent(String studentId) {
-        System.out.println("Viewing details for student ID: " + studentId);
-		return null;
+    public Student viewStudent(String email) {
+        for (Student student : students) {
+            if (student.getEmail().equals(email)) {
+                System.out.println("Found student: " + student);
+                return student;
+            }
+        }
+        System.out.println("No student found with email: " + email);
+        return null;
     }
 
     public Teacher viewTeacher(String email) {
-        System.out.println("Viewing details for teacher ID: " + email);
-		return null;
+        for (Teacher teacher : teachers) {
+            if (teacher.getEmail().equals(email)) {
+                System.out.println("Found teacher: " + teacher);
+                return teacher;
+            }
+        }
+        System.out.println("No teacher found with email: " + email);
+        return null;
     }
 
     public List<Course> viewCourses() {
