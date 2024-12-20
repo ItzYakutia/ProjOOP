@@ -3,8 +3,6 @@ package Controllers;
 import Models.*;
 import Views.DeanView;
 import java.util.List;
-import javax.naming.InsufficientResourcesException;
-import Exceptions.InvalidCourseException;
 
 public class DeanController {
     private Dean dean;
@@ -15,41 +13,31 @@ public class DeanController {
         this.deanView = deanView;
     }
 
-    public void manageFaculty(String department, boolean action) {
-        dean.manageFaculty(department, action);
-        deanView.displayMessage("Faculty " + department + " has been " + (action ? "activated" : "deactivated"));
+    public void displayMenu() {
+        deanView.displayMenu(dean);
     }
 
-    public void approveFunding(String researchId, double amount) {
-        try {
-            dean.approveResearchFunding(researchId, amount);
-            deanView.displayFundingApproval(researchId, amount);
-        } catch (InsufficientResourcesException e) {
-            deanView.displayMessage(e.getMessage());
-        }
+    public void manageFaculty() {
+        deanView.manageFaculty(dean);
     }
 
-    public void reviewCourseProposals(List<Course> proposals) {
-        try {
-            dean.reviewCourseProposals(proposals);
-            deanView.displayCourseProposals(proposals);
-        } catch (InvalidCourseException e) {
-            deanView.displayMessage(e.getMessage());
-        }
+    public void approveFunding() {
+        deanView.approveFunding(dean);
     }
 
-    public void assignTeacherToCourse(Teacher teacher, Course course) {
-        dean.assignTeacherToCourse(teacher, course);
-        deanView.displayTeacherAssignment(teacher.getNameFirst(), course.getName());
+    public void reviewCourseProposals() {
+        deanView.reviewCourseProposals(dean);
     }
 
-    public void signDocument(String document) {
-        dean.signDocument(document);
-        deanView.displayMessage("Document signed: " + document);
+    public void assignTeacherToCourse() {
+        deanView.assignTeacherToCourse(dean);
     }
 
-    public void viewStudentPerformance(List<Student> students) {
-        dean.viewStudentPerformance(students);
-        deanView.displayStudentPerformance(students);
+    public void signDocument() {
+        deanView.signDocument(dean);
+    }
+
+    public void viewStudentPerformance() {
+        deanView.viewStudentPerformance(dean);
     }
 }
