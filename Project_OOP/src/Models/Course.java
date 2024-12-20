@@ -13,7 +13,6 @@ public class Course {
     private CourseType courseType; // Тип курса (Major, Minor, Free Elective)
     private List<Student> students; // Список студентов
     private List<Teacher> teachers; // Список преподавателей
-    private Syllabus syllabus; // Силлабус курса
 
     public Course(String courseId, String name, String description, int credits, CourseType courseType) {
         this.courseId = courseId;
@@ -74,7 +73,7 @@ public class Course {
         }
     }
 
-    // Реализация equals и hashCode
+    // Реализация equals 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
