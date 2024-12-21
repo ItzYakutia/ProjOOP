@@ -1,4 +1,3 @@
-
 package Models;
 
 import java.util.ArrayList;
@@ -16,7 +15,7 @@ public class Student extends User {
     private Specialty specialty; // Специальность студента (enum)
     private List<String> organizations; // Организации, членом которых является студент
     private boolean isHeadOfOrganization; // Является ли студент главой какой-либо организации
-    private Researcher researchSupervisor; // Супервизор если студент на 4 курсе
+    private Researcher researchSupervisor; // Супервизор для студентов 4-го курса
 
     public Student(String username, String password, String userId, String nameFirst, String nameLast, String email,
                    double gpa, int year, int credits, List<Course> courses, Map<Course, Mark> transcript, Specialty specialty) {
@@ -88,6 +87,14 @@ public class Student extends User {
         isHeadOfOrganization = headOfOrganization;
     }
 
+    public Researcher getResearchSupervisor() {
+        return researchSupervisor;
+    }
+
+    public void setResearchSupervisor(Researcher researchSupervisor) {
+        this.researchSupervisor = researchSupervisor;
+    }
+
     // Добавление студента в организацию
     public void joinOrganization(String organizationName) {
         if (!organizations.contains(organizationName)) {
@@ -109,6 +116,7 @@ public class Student extends User {
         credits += course.getCredits();
     }
 
+    // Удаление курса
     public void removeCourse(Course course) {
         if (!courses.contains(course)) {
             throw new IllegalArgumentException("Student is not registered for the course: " + course.getName());
@@ -116,22 +124,31 @@ public class Student extends User {
         courses.remove(course);
         credits -= course.getCredits();
     }
-    
-    public Researcher getResearchSupervisor() {
-        return researchSupervisor;
+
+    // Проверка количества проваленных курсов
+    public boolean hasExceededFailLimit() {
+        long failedCourses = transcript.values().stream()
+                .filter(mark -> mark.getTotal() < 50)
+                .count();
+        return failedCourses > 3;
     }
 
-    public void setResearchSupervisor(Researcher researchSupervisor) {
-        this.researchSupervisor = researchSupervisor;
+    // Сортировка курсов по названию
+    public List<Course> getCoursesSortedByName() {
+        return courses.stream()
+                .sorted((c1, c2) -> c1.getName().compareToIgnoreCase(c2.getName()))
+                .toList();
     }
 
-    // Метод для получения уведомлений
-    @Override
-    public void receiveNotification(String message) {
-        System.out.println("Notification for student " + getNameFirst() + " " + getNameLast() + ": " + message);
+    // Оценка преподавателя
+    public void rateTeacher(Teacher teacher, int rating) {
+        if (rating < 1 || rating > 5) {
+            throw new IllegalArgumentException("Rating must be between 1 and 5.");
+        }
+        teacher.addRating(rating);
     }
 
-    // Реализация equals для сравнения студентов по уникальному userId
+    // Реализация equals и hashCode
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -140,7 +157,6 @@ public class Student extends User {
         return getUserId().equals(student.getUserId());
     }
 
-    // Реализация hashCode для использования в коллекциях
     @Override
     public int hashCode() {
         return Objects.hash(getUserId());
