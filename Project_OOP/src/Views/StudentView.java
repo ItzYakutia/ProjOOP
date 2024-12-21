@@ -78,6 +78,12 @@ public class StudentView {
                 " successfully rated with " + rating + " stars.");
     }
 
+    // Отображение средней оценки преподавателя
+public void displayTeacherAverageRating(Teacher teacher) {
+    System.out.println("Teacher " + teacher.getNameFirst() + " " + teacher.getNameLast() +
+            " has an average rating of: " + teacher.getAverageRating());
+}
+    
     // Показ информации о преподавателе
     public void displayTeacherInfo(Teacher teacher) {
         System.out.println("Teacher Information:");
