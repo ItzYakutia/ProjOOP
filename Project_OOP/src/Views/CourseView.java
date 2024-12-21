@@ -2,73 +2,140 @@ package Views;
 
 import Models.*;
 
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class CourseView {
 
-    // Отображение успешного добавления курса
-    public void displayCourseAdded(Course course) {
-        System.out.println("Course added successfully: " + course.getName() + " (" + course.getCourseId() + ")");
+    // Сортировка курсов по названию
+    public void displaySortedCoursesByName(List<Course> courses) {
+        List<Course> sortedCourses = courses.stream()
+                .sorted(Comparator.comparing(Course::getName))
+                .collect(Collectors.toList());
+
+        System.out.println("Courses sorted by name:");
+        for (Course course : sortedCourses) {
+            System.out.println("- " + course.getName() + " (" + course.getCredits() + " credits)");
+        }
     }
 
-    // Отображение ошибки при добавлении курса
-    public void displayCourseAdditionError(String errorMessage) {
-        System.out.println("Error adding course: " + errorMessage);
+    // Сортировка курсов по количеству студентов
+    public void displaySortedCoursesByStudentCount(List<Course> courses) {
+        List<Course> sortedCourses = courses.stream()
+                .sorted(Comparator.comparingInt(course -> course.getStudents().size()).reversed())
+                .collect(Collectors.toList());
+
+        System.out.println("Courses sorted by student count:");
+        for (Course course : sortedCourses) {
+            System.out.println("- " + course.getName() + " (" + course.getStudents().size() + " students)");
+        }
     }
 
-    // Отображение успешного удаления курса
-    public void displayCourseRemoved(Course course) {
-        System.out.println("Course removed successfully: " + course.getName() + " (" + course.getCourseId() + ")");
+    // Добавление нового курса
+    public void addCourse(Course course, List<Course> courses) {
+        if (courses.contains(course)) {
+            System.out.println("Error: Course " + course.getName() + " already exists.");
+            return;
+        }
+        courses.add(course);
+        System.out.println("Course " + course.getName() + " added successfully.");
     }
 
-    // Отображение ошибки при удалении курса
-    public void displayCourseRemovalError(String errorMessage) {
-        System.out.println("Error removing course: " + errorMessage);
-    }
-
-    // Отображение информации о курсе
-    public void displayCourseInfo(Course course) {
+    // Удаление курса
+    public void removeCourse(String courseId, List<Course> courses) {
+        Course course = findCourseById(courseId, courses);
         if (course == null) {
-            System.out.println("Course not found.");
+            System.out.println("Error: Course not found.");
+            return;
+        }
+        courses.remove(course);
+        System.out.println("Course " + course.getName() + " removed successfully.");
+    }
+
+    // Назначение преподавателя на курс
+    public void assignTeacherToCourse(String teacherId, String courseId, List<Course> courses, List<Teacher> teachers) {
+        Course course = findCourseById(courseId, courses);
+        Teacher teacher = findTeacherById(teacherId, teachers);
+
+        if (course == null || teacher == null) {
+            System.out.println("Error: Course or teacher not found.");
+            return;
+        }
+
+        if (course.getTeachers().contains(teacher)) {
+            System.out.println("Error: Teacher is already assigned to the course.");
+            return;
+        }
+
+        course.addTeacher(teacher);
+        teacher.addCourse(course);
+        System.out.println("Teacher " + teacher.getNameFirst() + " " + teacher.getNameLast() +
+                " assigned to course " + course.getName());
+    }
+
+    // Регистрация студента на курс
+    public void registerStudentToCourse(String studentId, String courseId, List<Course> courses, List<Student> students) {
+        Course course = findCourseById(courseId, courses);
+        Student student = findStudentById(studentId, students);
+
+        if (course == null || student == null) {
+            System.out.println("Error: Course or student not found.");
+            return;
+        }
+
+        if (student.getCredits() + course.getCredits() > 21) {
+            System.out.println("Error: Student cannot register for more than 21 credits.");
+            return;
+        }
+
+        if (course.getStudents().contains(student)) {
+            System.out.println("Error: Student is already registered for this course.");
+            return;
+        }
+
+        course.addStudent(student);
+        student.addCourse(course);
+        student.setCredits(student.getCredits() + course.getCredits());
+        System.out.println("Student " + student.getNameFirst() + " " + student.getNameLast() +
+                " successfully registered for course " + course.getName());
+    }
+
+    // Просмотр информации о курсе
+    public void displayCourseInfo(String courseId, List<Course> courses) {
+        Course course = findCourseById(courseId, courses);
+        if (course == null) {
+            System.out.println("Error: Course not found.");
             return;
         }
 
         System.out.println("Course Information:");
         System.out.println("- Name: " + course.getName());
-        System.out.println("- ID: " + course.getCourseId());
         System.out.println("- Description: " + course.getDescription());
         System.out.println("- Credits: " + course.getCredits());
-        System.out.println("- Course Type: " + course.getCourseType());
-        System.out.println("- Teachers:");
-        for (Teacher teacher : course.getTeachers()) {
-            System.out.println("  * " + teacher.getNameFirst() + " " + teacher.getNameLast() + " (" + teacher.getTitle() + ")");
-        }
-        System.out.println("- Students:");
-        for (Student student : course.getStudents()) {
-            System.out.println("  * " + student.getNameFirst() + " " + student.getNameLast() + " (ID: " + student.getUserId() + ")");
-        }
+        System.out.println("- Enrolled Students: " + course.getStudents().size());
+        System.out.println("- Assigned Teachers: " + course.getTeachers().size());
     }
 
-    // Отображение списка всех курсов
-    public void displayAllCourses(List<Course> courses) {
-        if (courses.isEmpty()) {
-            System.out.println("No courses available.");
-            return;
-        }
-        System.out.println("Available Courses:");
-        for (Course course : courses) {
-            System.out.println("- " + course.getName() + " (" + course.getCourseId() + ")");
-        }
+    // Вспомогательные методы
+    private Course findCourseById(String courseId, List<Course> courses) {
+        return courses.stream()
+                .filter(course -> course.getCourseId().equals(courseId))
+                .findFirst()
+                .orElse(null);
     }
 
-    // Отображение успешного назначения преподавателя на курс
-    public void displayTeacherAssigned(Teacher teacher, Course course) {
-        System.out.println("Teacher " + teacher.getNameFirst() + " " + teacher.getNameLast() +
-                " successfully assigned to course " + course.getName());
+    private Teacher findTeacherById(String teacherId, List<Teacher> teachers) {
+        return teachers.stream()
+                .filter(teacher -> teacher.getUserId().equals(teacherId))
+                .findFirst()
+                .orElse(null);
     }
 
-    // Отображение ошибки при назначении преподавателя
-    public void displayTeacherAssignmentError(String errorMessage) {
-        System.out.println("Error assigning teacher: " + errorMessage);
+    private Student findStudentById(String studentId, List<Student> students) {
+        return students.stream()
+                .filter(student -> student.getUserId().equals(studentId))
+                .findFirst()
+                .orElse(null);
     }
 }
