@@ -1,54 +1,22 @@
 package Views;
 
-import java.util.List;
+import Models.*;
 
 public class FinanceOfficeView {
 
-    public void displayProcessedRequests(List<ExpenseRequest> requests) {
-        System.out.println("Processed Expense Requests:");
-        for (ExpenseRequest request : requests) {
-            System.out.println(request);
-        }
-    }
-
-    public void displaySalaryDetails(List<Salary> salaries) {
-        System.out.println("Salary Details:");
-        for (Salary salary : salaries) {
-            System.out.println(salary);
-        }
-    }
-
-    public void displayInvoiceDetails(List<Invoice> invoices) {
-        System.out.println("Invoice Details:");
-        for (Invoice invoice : invoices) {
-            System.out.println(invoice);
-        }
+    public void displayMessage(String message) {
+        System.out.println(message);
     }
 
     public void displayAllocationConfirmation(boolean success) {
         if (success) {
-            System.out.println("Allocation completed successfully.");
+            System.out.println("Funds allocated successfully.");
         } else {
-            System.out.println("Allocation failed.");
-        }
-    }
-
-    public void displayTransactionLog(List<Transaction> transactions) {
-        System.out.println("Transaction Log:");
-        for (Transaction transaction : transactions) {
-            System.out.println(transaction);
-        }
-    }
-
-    public void displayCommunicationMessages(List<Message> messages) {
-        System.out.println("Messages:");
-        for (Message message : messages) {
-            System.out.println(message);
+            System.out.println("Failed to allocate funds.");
         }
     }
 
     public void displayProfile(FinanceOffice office) {
-        System.out.println("Finance Office Profile:");
-        System.out.println(office);
+        System.out.println("Finance Office Profile:\n" + office);
     }
 }
