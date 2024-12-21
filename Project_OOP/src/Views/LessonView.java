@@ -6,34 +6,40 @@ import java.util.List;
 
 public class LessonView {
 
-    // Отображение сообщения об успехе
+    // Вывод сообщения об успешном добавлении/удалении урока
     public void displaySuccessMessage(String message) {
         System.out.println("SUCCESS: " + message);
     }
 
-    // Отображение сообщения об ошибке
+    // Вывод сообщения об ошибке
     public void displayErrorMessage(String message) {
-        System.err.println("ERROR: " + message);
+        System.out.println("ERROR: " + message);
     }
 
-    // Отображение информации об уроке
+    // Отображение расписания студента
+    public void displayStudentSchedule(Student student, List<Lesson> lessons) {
+        System.out.println("Schedule for Student: " + student.getNameFirst() + " " + student.getNameLast());
+        lessons.stream()
+                .filter(lesson -> lesson.getCourse().getEnrolledStudents().contains(student))
+                .forEach(this::displayLessonInfo);
+    }
+
+    // Отображение расписания преподавателя
+    public void displayTeacherSchedule(Teacher teacher, List<Lesson> lessons) {
+        System.out.println("Schedule for Teacher: " + teacher.getNameFirst() + " " + teacher.getNameLast());
+        lessons.stream()
+                .filter(lesson -> lesson.getTeacher().equals(teacher))
+                .forEach(this::displayLessonInfo);
+    }
+
+    // Вывод информации об уроке
     public void displayLessonInfo(Lesson lesson) {
-        System.out.println("Lesson Information:");
-        System.out.println("- Lesson ID: " + lesson.getLessonId());
-        System.out.println("- Type: " + lesson.getType());
-        System.out.println("- Date and Time: " + lesson.getDateTime());
-        System.out.println("- Course: " + lesson.getCourse().getName());
-        System.out.println("- Teacher: " + (lesson.getTeacher() != null
-                ? lesson.getTeacher().getNameFirst() + " " + lesson.getTeacher().getNameLast()
-                : "Not assigned"));
-        System.out.println("- Room: " + lesson.getRoom());
-    }
-
-    // Отображение уроков для курса
-    public void displayLessonsForCourse(Course course, List<Lesson> lessons) {
-        System.out.println("Lessons for Course: " + course.getName());
-        for (Lesson lesson : lessons) {
-            displayLessonInfo(lesson);
-        }
+        System.out.println("Lesson ID: " + lesson.getLessonId());
+        System.out.println("Course: " + lesson.getCourse().getName());
+        System.out.println("Type: " + lesson.getType());
+        System.out.println("Time: " + lesson.getStartTime() + " - " + lesson.getEndTime());
+        System.out.println("Room: " + lesson.getRoom());
+        System.out.println("Teacher: " + lesson.getTeacher().getNameLast() + " " + lesson.getTeacher().getNameFirst().charAt(0) + ".");
+        System.out.println("---------------");
     }
 }
