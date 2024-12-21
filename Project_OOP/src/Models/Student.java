@@ -1,3 +1,4 @@
+
 package Models;
 
 import java.util.ArrayList;
@@ -15,6 +16,7 @@ public class Student extends User {
     private Specialty specialty; // Специальность студента (enum)
     private List<String> organizations; // Организации, членом которых является студент
     private boolean isHeadOfOrganization; // Является ли студент главой какой-либо организации
+    private Researcher researchSupervisor; // Супервизор если студент на 4 курсе
 
     public Student(String username, String password, String userId, String nameFirst, String nameLast, String email,
                    double gpa, int year, int credits, List<Course> courses, Map<Course, Mark> transcript, Specialty specialty) {
@@ -113,6 +115,14 @@ public class Student extends User {
         }
         courses.remove(course);
         credits -= course.getCredits();
+    }
+    
+    public Researcher getResearchSupervisor() {
+        return researchSupervisor;
+    }
+
+    public void setResearchSupervisor(Researcher researchSupervisor) {
+        this.researchSupervisor = researchSupervisor;
     }
 
     // Метод для получения уведомлений
