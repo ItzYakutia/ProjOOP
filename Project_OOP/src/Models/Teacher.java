@@ -6,22 +6,22 @@ import java.util.List;
 import java.util.Objects;
 
 public class Teacher extends Employee {
-
     private Title title; // Звание преподавателя (LECTOR, SENIOR_LECTOR, PROFESSOR, etc.)
     private List<Course> courses; // Курсы, которые ведет преподаватель
     private List<String> complaints; // Жалобы на студентов
-    private List<ResearchPaper> researchPapers; // Научные статьи (если преподаватель является исследователем)
-    private List<ResearchProject> researchProjects; // Исследовательские проекты (если преподаватель является исследователем)
+    private Researcher researcherProfile; // Профиль исследователя (если есть)
 
     // Конструктор
     public Teacher(String username, String password, String userId, String nameFirst, String nameLast, String email,
-                   int workingYears, Title title) {
-        super(username, password, userId, nameFirst, nameLast, email, workingYears);
+                   Title title) {
+        super(username, password, userId, nameFirst, nameLast, email);
         this.title = title;
         this.courses = new ArrayList<>();
         this.complaints = new ArrayList<>();
-        this.researchPapers = new ArrayList<>();
-        this.researchProjects = new ArrayList<>();
+        // Если учитель является PROFESSOR, создаём профиль Researcher
+        if (title == Title.PROFESSOR) {
+            this.researcherProfile = new Researcher(username, userId, nameFirst, nameLast, email, password);
+        }
     }
 
     // Геттеры и сеттеры
@@ -41,26 +41,22 @@ public class Teacher extends Employee {
         return complaints;
     }
 
-    public List<ResearchPaper> getResearchPapers() {
-        return researchPapers;
+    public Researcher getResearcherProfile() {
+        return researcherProfile;
     }
 
-    public List<ResearchProject> getResearchProjects() {
-        return researchProjects;
+    // Метод для проверки, является ли преподаватель Researcher
+    public boolean isResearcher() {
+        return researcherProfile != null;
     }
 
-    // Методы управления курсами
-    public void addCourse(Course course) {
-        if (!courses.contains(course)) {
-            courses.add(course);
-        }
-    }
-
-    public void removeCourse(Course course) {
-        if (courses.contains(course)) {
-            courses.remove(course);
+    // Превращение в Researcher (для преподавателей, которые не PROFESSOR)
+    public void becomeResearcher() {
+        if (researcherProfile == null) {
+            this.researcherProfile = new Researcher(getUsername(), getUserId(), getNameFirst(), getNameLast(), getEmail(), getPassword());
+            System.out.println(getNameFirst() + " " + getNameLast() + " is now a Researcher.");
         } else {
-            throw new IllegalArgumentException("Course not found.");
+            System.out.println(getNameFirst() + " " + getNameLast() + " is already a Researcher.");
         }
     }
 
@@ -75,7 +71,7 @@ public class Teacher extends Employee {
                 ", Text: " + text;
         complaints.add(complaint);
     }
-
+    
     // Методы работы с оценками
     public void assignMark(Student student, Course course, double attestation1, double attestation2, double finalExam) {
         if (!courses.contains(course)) {
@@ -98,39 +94,24 @@ public class Teacher extends Employee {
 
     // Методы работы с научными статьями
     public void addResearchPaper(ResearchPaper paper) {
-        researchPapers.add(paper);
+        if (!isResearcher()) {
+            throw new IllegalStateException("This teacher is not a Researcher.");
+        }
+        researcherProfile.addResearchPaper(paper);
     }
 
     public void printResearchPapers(Comparator<ResearchPaper> comparator) {
-        researchPapers.stream().sorted(comparator).forEach(System.out::println);
+        if (!isResearcher()) {
+            throw new IllegalStateException("This teacher is not a Researcher.");
+        }
+        researcherProfile.printPapers(comparator);
     }
 
     public int calculateHIndex() {
-        // Расчет h-индекса на основе количества цитирований статей
-        researchPapers.sort(Comparator.comparingInt(ResearchPaper::getCitations).reversed());
-        int hIndex = 0;
-        for (int i = 0; i < researchPapers.size(); i++) {
-            if (researchPapers.get(i).getCitations() >= i + 1) {
-                hIndex = i + 1;
-            } else {
-                break;
-            }
+        if (!isResearcher()) {
+            throw new IllegalStateException("This teacher is not a Researcher.");
         }
-        return hIndex;
-    }
-
-    // Методы работы с исследовательскими проектами
-    public void addResearchProject(ResearchProject project) {
-        if (!researchProjects.contains(project)) {
-            researchProjects.add(project);
-        }
-    }
-
-    public void joinResearchProject(ResearchProject project) throws CustomException {
-        if (!this.title.equals(Title.PROFESSOR)) {
-            throw new CustomException("Only professors can join this research project.");
-        }
-        addResearchProject(project);
+        return researcherProfile.calculateHIndex();
     }
 
     // Переопределение методов equals, hashCode и toString
@@ -153,11 +134,14 @@ public class Teacher extends Employee {
                 "userId='" + getUserId() + '\'' +
                 ", name='" + getNameFirst() + " " + getNameLast() + '\'' +
                 ", title=" + title +
-                ", workingYears=" + getWorkingYears() +
                 ", courses=" + courses.size() +
                 ", complaints=" + complaints.size() +
-                ", researchPapers=" + researchPapers.size() +
-                ", researchProjects=" + researchProjects.size() +
+                ", isResearcher=" + isResearcher() +
                 '}';
+    }
+
+    @Override
+    public void receiveNotification(String message) {
+        System.out.println("Notification for Teacher " + getNameFirst() + ": " + message);
     }
 }
