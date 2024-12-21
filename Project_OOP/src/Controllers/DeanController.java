@@ -1,8 +1,8 @@
 package Controllers;
 
-import Models.*;
+import Models.Dean;
+import Models.Teacher;
 import Views.DeanView;
-import java.util.List;
 
 public class DeanController {
     private Dean dean;
@@ -13,31 +13,28 @@ public class DeanController {
         this.deanView = deanView;
     }
 
-    public void displayMenu() {
-        deanView.displayMenu(dean);
+    public void approveCourse(String courseName) {
+        dean.approveCourse(courseName);
+        deanView.displayApprovalMessage(courseName);
     }
 
-    public void manageFaculty() {
-        deanView.manageFaculty(dean);
+    public void assignTeacher(String courseName, Teacher teacher) {
+        dean.assignTeacher(courseName, teacher);
+        deanView.displayTeacherAssignment(teacher.getFirstName(), courseName);
     }
 
-    public void approveFunding() {
-        deanView.approveFunding(dean);
+    public void reviewResearchProject(String projectTitle) {
+        boolean approved = dean.reviewResearchProject(projectTitle);
+        deanView.displayResearchProjectReview(projectTitle, approved);
     }
 
-    public void reviewCourseProposals() {
-        deanView.reviewCourseProposals(dean);
+    public void manageDepartment(String departmentName, boolean activate) {
+        dean.manageDepartment(departmentName, activate);
+        deanView.displayDepartmentManagement(departmentName, activate);
     }
 
-    public void assignTeacherToCourse() {
-        deanView.assignTeacherToCourse(dean);
-    }
-
-    public void signDocument() {
-        deanView.signDocument(dean);
-    }
-
-    public void viewStudentPerformance() {
-        deanView.viewStudentPerformance(dean);
+    public void signDocument(String documentName) {
+        dean.signDocument(documentName);
+        deanView.displayDocumentSign(documentName);
     }
 }
