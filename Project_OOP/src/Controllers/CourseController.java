@@ -40,10 +40,22 @@ public class CourseController {
         Course course = findCourseById(courseId, courses);
         if (course == null) {
             courseView.displayErrorMessage("Course not found.");
-        } else if (!course.addTeacher(teacher)) {
+        } else if (!course.addTeacher(teacher)) { // Метод добавления учителя в Course
             courseView.displayErrorMessage("Teacher is already assigned to the course.");
         } else {
             courseView.displaySuccessMessage("Teacher assigned to course: " + teacher.getNameFirst() + " " + teacher.getNameLast());
+        }
+    }
+
+    // Удаление преподавателя с курса
+    public void removeTeacherFromCourse(Teacher teacher, String courseId, List<Course> courses) {
+        Course course = findCourseById(courseId, courses);
+        if (course == null) {
+            courseView.displayErrorMessage("Course not found.");
+        } else if (!course.removeTeacher(teacher)) { // Метод удаления учителя из Course
+            courseView.displayErrorMessage("Teacher is not assigned to the course.");
+        } else {
+            courseView.displaySuccessMessage("Teacher removed from course: " + teacher.getNameFirst() + " " + teacher.getNameLast());
         }
     }
 
@@ -52,10 +64,22 @@ public class CourseController {
         Course course = findCourseById(courseId, courses);
         if (course == null) {
             courseView.displayErrorMessage("Course not found.");
-        } else if (!course.addStudent(student)) {
+        } else if (!course.addStudent(student)) { // Метод добавления студента в Course
             courseView.displayErrorMessage("Student is already registered for this course.");
         } else {
             courseView.displaySuccessMessage("Student registered to course: " + student.getNameFirst() + " " + student.getNameLast());
+        }
+    }
+
+    // Удаление студента с курса
+    public void unregisterStudentFromCourse(Student student, String courseId, List<Course> courses) {
+        Course course = findCourseById(courseId, courses);
+        if (course == null) {
+            courseView.displayErrorMessage("Course not found.");
+        } else if (!course.removeStudent(student)) { // Метод удаления студента из Course
+            courseView.displayErrorMessage("Student is not registered for this course.");
+        } else {
+            courseView.displaySuccessMessage("Student removed from course: " + student.getNameFirst() + " " + student.getNameLast());
         }
     }
 
@@ -83,6 +107,24 @@ public class CourseController {
                     .sorted(Comparator.comparingDouble(Student::getGpa).reversed())
                     .toList();
             courseView.displaySortedStudents(sortedStudents, "GPA");
+        }
+    }
+
+    // Сортировка курсов по количеству студентов
+    public void sortCoursesByStudentCount(List<Course> courses) {
+        List<Course> sortedCourses = courses.stream()
+                .sorted(Comparator.comparingInt(course -> course.getStudents().size()).reversed())
+                .toList();
+        courseView.displaySortedCourses(sortedCourses, "student count");
+    }
+
+    // Просмотр информации о курсе
+    public void viewCourseInfo(String courseId, List<Course> courses) {
+        Course course = findCourseById(courseId, courses);
+        if (course == null) {
+            courseView.displayErrorMessage("Course not found.");
+        } else {
+            courseView.displayCourseInfo(course);
         }
     }
 
