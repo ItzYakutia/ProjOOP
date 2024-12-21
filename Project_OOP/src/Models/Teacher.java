@@ -11,6 +11,8 @@ public class Teacher extends Employee {
     private List<String> complaints; // Жалобы на студентов
     private Researcher researcherProfile; // Профиль исследователя (если есть)
     private List<Integer> ratings; // Оценки преподавателю (1-5)
+    private List<ResearchProject> researchProjects; // Список исследовательских проектов
+
 
     // Конструктор
     public Teacher(String username, String password, String userId, String nameFirst, String nameLast, String email,
@@ -92,6 +94,42 @@ public class Teacher extends Employee {
             mark.setTotal(attestation1 + attestation2 + finalExam);
         }
     }
+//создать новый проект и добавить его в свой список:
+    public void addResearchProject(ResearchProject project) {
+    if (project == null) {
+        throw new IllegalArgumentException("Project cannot be null.");
+    }
+    if (!researchProjects.contains(project)) {
+        researchProjects.add(project); // Добавляем проект в список
+        System.out.println("Research project '" + project.getTitle() + "' added successfully.");
+    } else {
+        throw new IllegalArgumentException("This project is already in the teacher's list.");
+    }
+}
+//преподавателю присоединиться к существующему проекту:
+    public void joinResearchProject(ResearchProject project) {
+    if (project == null) {
+        throw new IllegalArgumentException("Project cannot be null.");
+    }
+    if (!researchProjects.contains(project)) {
+        researchProjects.add(project); // Присоединяем преподавателя к проекту
+        project.addMember(this); // Добавляем преподавателя как участника проекта
+        System.out.println("Successfully joined the research project: " + project.getTitle());
+    } else {
+        throw new IllegalArgumentException("Teacher is already part of this project.");
+    }
+}
+    //список всех научных статей, связанных с преподавателем:
+    public void getResearchPapers() {
+    if (!isResearcher()) {
+        throw new IllegalStateException("This teacher is not a Researcher.");
+    }
+
+    System.out.println("Research papers for " + getNameFirst() + " " + getNameLast() + ":");
+    researcherProfile.printPapers(null); // Вывод всех статей через профиль исследователя
+}
+
+
 
     // Методы работы с научными статьями
     public void addResearchPaper(ResearchPaper paper) {
