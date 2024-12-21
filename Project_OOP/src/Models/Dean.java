@@ -3,19 +3,11 @@ package Models;
 import Models.Teacher;
 
 public class Dean extends Employee {
-    private static Dean instance;
     private Faculty faculty;
 
-    private Dean(String username, String userId, String firstName, String lastName, String email, Faculty faculty, String password) {
+    public Dean(String username, String userId, String firstName, String lastName, String email, Faculty faculty, String password) {
         super(username, userId, firstName, lastName, email, password);
         this.faculty = faculty;
-    }
-
-    public static Dean getInstance(String username, String userId, String firstName, String lastName, String email, Faculty faculty, String password) {
-        if (instance == null) {
-            instance = new Dean(username, userId, firstName, lastName, email, faculty, password);
-        }
-        return instance;
     }
 
     public Faculty getFaculty() {
@@ -51,7 +43,8 @@ public class Dean extends Employee {
         System.out.println("Dean " + getNameFirst() + " signed the document: " + documentName);
     }
 
-	@Override
-	public void receiveNotification(String message) {		
-	}
+    @Override
+    public void receiveNotification(String message) {
+        System.out.println("Dean " + getNameFirst() + " received notification: " + message);
+    }
 }
