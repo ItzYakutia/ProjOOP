@@ -1,30 +1,23 @@
 package Views;
 
 import Models.ResearchPaper;
-import Models.ResearchProject;
+import Models.Format;
 
-import java.util.List;
+public class ResearchPaperView {
 
-public class ResearcherView {
-    public void displayResearchPapers(List<ResearchPaper> papers) {
-        System.out.println("Research Papers:");
-        for (ResearchPaper paper : papers) {
-            System.out.println("- " + paper);
-        }
+    public void displayPaperDetails(ResearchPaper paper) {
+        System.out.println("Research Paper Details:");
+        System.out.println("- Title: " + paper.getTitle());
+        System.out.println("- Authors: " + String.join(", ", paper.getAuthors()));
+        System.out.println("- Journal: " + paper.getJournal());
+        System.out.println("- Date: " + paper.getDate());
+        System.out.println("- Citations: " + paper.getCitations());
+        System.out.println("- Pages: " + paper.getPages());
+        System.out.println("- DOI: " + paper.getDoi());
     }
 
-    public void displayHIndex(int hIndex) {
-        System.out.println("Researcher's H-index: " + hIndex);
-    }
-
-    public void displayProjects(List<ResearchProject> projects) {
-        System.out.println("Research Projects:");
-        for (ResearchProject project : projects) {
-            System.out.println("- " + project.getTopic());
-        }
-    }
-
-    public void displayMessage(String message) {
-        System.out.println(message);
+    public void displayCitation(String citation) {
+        System.out.println("Citation:");
+        System.out.println(citation);
     }
 }
