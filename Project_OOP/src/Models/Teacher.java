@@ -114,6 +114,20 @@ public class Teacher extends Employee {
         return researcherProfile.calculateHIndex();
     }
 
+    
+    // Добавление оценки преподавателю
+    public void addRating(int rating) {
+        if (rating < 1 || rating > 5) {
+            throw new IllegalArgumentException("Rating must be between 1 and 5.");
+        }
+        ratings.add(rating);
+    }
+
+    // Вычисление средней оценки преподавателя
+    public double getAverageRating() {
+        return ratings.isEmpty() ? 0.0 : ratings.stream().mapToInt(Integer::intValue).average().orElse(0.0);
+    }
+    
     // Переопределение методов equals, hashCode и toString
     @Override
     public boolean equals(Object o) {
