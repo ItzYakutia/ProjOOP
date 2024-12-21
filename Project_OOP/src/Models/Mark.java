@@ -12,10 +12,9 @@ public class Mark {
     public Mark(Student student, Course course, double attestation1, double attestation2, double finalExam) {
         this.student = student;
         this.course = course;
-        this.attestation1 = attestation1;
-        this.attestation2 = attestation2;
-        this.finalExam = finalExam;
-        calculateTotal(); // Автоматический подсчёт итоговой оценки при создании
+        setAttestation1(attestation1);
+        setAttestation2(attestation2);
+        setFinalExam(finalExam);
     }
 
     public Student getStudent() {
@@ -39,8 +38,9 @@ public class Mark {
     }
 
     public void setAttestation1(double attestation1) {
+        validateMark(attestation1);
         this.attestation1 = attestation1;
-        calculateTotal(); // Пересчёт итоговой оценки
+        calculateTotal();
     }
 
     public double getAttestation2() {
@@ -48,8 +48,9 @@ public class Mark {
     }
 
     public void setAttestation2(double attestation2) {
+        validateMark(attestation2);
         this.attestation2 = attestation2;
-        calculateTotal(); // Пересчёт итоговой оценки
+        calculateTotal();
     }
 
     public double getFinalExam() {
@@ -57,8 +58,9 @@ public class Mark {
     }
 
     public void setFinalExam(double finalExam) {
+        validateMark(finalExam);
         this.finalExam = finalExam;
-        calculateTotal(); // Пересчёт итоговой оценки
+        calculateTotal();
     }
 
     public double getTotal() {
@@ -66,22 +68,16 @@ public class Mark {
     }
 
     private void calculateTotal() {
-        this.total = (attestation1 * 0.3) + (attestation2 * 0.3) + (finalExam * 0.4); // Весовая схема
+        this.total = attestation1 * 0.3 + attestation2 * 0.3 + finalExam * 0.4;
     }
 
-    @Override
-    public String toString() {
-        return "Mark{" +
-                "student=" + student.getNameFirst() + " " + student.getNameLast() +
-                ", course=" + course.getName() +
-                ", attestation1=" + attestation1 +
-                ", attestation2=" + attestation2 +
-                ", finalExam=" + finalExam +
-                ", total=" + total +
-                '}';
+    private void validateMark(double mark) {
+        if (mark < 0 || mark > 100) {
+            throw new IllegalArgumentException("Mark must be between 0 and 100.");
+        }
     }
 
-	public void setTotal(double total2) {
-		this.total = total2;
-	}
+    public boolean isPassed() {
+        return total >= 50;
+    }
 }
