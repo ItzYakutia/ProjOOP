@@ -1,7 +1,7 @@
 package Controllers;
 
-import Models.*;
-import Views.*;
+import Models.Rector;
+import Views.RectorView;
 
 public class RectorController {
     private Rector rector;
@@ -12,21 +12,35 @@ public class RectorController {
         this.rectorView = rectorView;
     }
 
-    public void updateBudget(double amount) {
-        try {
-            rector.manageBudget(amount);
-            rectorView.displayUniversityBudget(rector.getUniversityBudget());
-        } catch (InsufficientFundsException e) {
-            rectorView.displayErrorMessage(e.getMessage());
-        }
+    public void manageBudget() {
+        rectorView.manageBudget(rector);
     }
 
-    public void assignSupervisor(Researcher researcher) {
-        try {
-            rector.assignSupervisor(researcher);
-            rectorView.displayMessage("Supervisor assigned successfully.");
-        } catch (LowHIndexException e) {
-            rectorView.displayErrorMessage(e.getMessage());
-        }
+    public void approveProgram() {
+        rectorView.approveProgram(rector);
+    }
+
+    public void revokeProgram() {
+        rectorView.revokeProgram(rector);
+    }
+
+    public void appointDean() {
+        rectorView.appointDean(rector);
+    }
+
+    public void overseeResearchProjects() {
+        rectorView.overseeResearchProjects(rector);
+    }
+
+    public void addressUniversityIssues() {
+        rectorView.addressUniversityIssues(rector);
+    }
+
+    public void signDocument() {
+        rectorView.signDocument(rector);
+    }
+
+    public void displayMenu() {
+        rectorView.displayMenu(rector);
     }
 }
