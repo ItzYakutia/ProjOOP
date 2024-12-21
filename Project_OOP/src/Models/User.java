@@ -1,7 +1,5 @@
 package Models;
 
-import Models.Role;
-
 public abstract class User {
     private String username;
     protected String password;
@@ -77,6 +75,10 @@ public abstract class User {
     public void setEmail(String email) {
         this.email = email;
     }
+    
+    public void setPassword(String password) {
+        this.password = password;
+    }
 
     @Override
     public String toString() {
@@ -88,4 +90,6 @@ public abstract class User {
                ", email='" + email + '\'' +
                '}';
     }
+    
+    public abstract void receiveNotification(String message);
 }
