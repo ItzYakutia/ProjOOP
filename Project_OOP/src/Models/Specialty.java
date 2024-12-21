@@ -1,17 +1,17 @@
 package Models;
 
 public enum Specialty {
-
-    SOFTWARE_ENGINEERING("Software Engineering", "SITE"),
-    COMPUTER_SCIENCE("Computer Science", "SITE"),
-    PETROLEUM_ENGINEERING("Petroleum Engineering", "Oil and Gas"),
-    MECHANICAL_ENGINEERING("Mechanical Engineering", "Engineering"),
-    ELECTRICAL_ENGINEERING("Electrical Engineering", "Engineering");
+    SOFTWARE_ENGINEERING("Software Engineering", School.SITE),
+    COMPUTER_SCIENCE("Computer Science", School.SITE),
+    INFORMATION_SECURITY("Information Security", School.SITE),
+    FINANCE("Finance", School.BS),
+    MANAGEMENT("Management", School.BS),
+    MARKETING("Marketing", School.BS);
 
     private final String displayName;
-    private final String school; // Школа, к которой относится специальность
+    private final School school;
 
-    Specialty(String displayName, String school) {
+    Specialty(String displayName, School school) {
         this.displayName = displayName;
         this.school = school;
     }
@@ -20,7 +20,7 @@ public enum Specialty {
         return displayName;
     }
 
-    public String getSchool() {
+    public School getSchool() {
         return school;
     }
 }
