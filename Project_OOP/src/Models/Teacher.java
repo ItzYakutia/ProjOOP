@@ -149,9 +149,10 @@ public class Teacher extends Employee {
                 ", name='" + getNameFirst() + " " + getNameLast() + '\'' +
                 ", title=" + title +
                 ", courses=" + courses.size() +
+                ", averageRating=" + getAverageRating() +
                 ", complaints=" + complaints.size() +
                 ", isResearcher=" + isResearcher() +
-                '}';
+                '}' ;
     }
 
     @Override
