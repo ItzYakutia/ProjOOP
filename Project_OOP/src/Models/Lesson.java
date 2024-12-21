@@ -20,7 +20,7 @@ public class Lesson {
         this.room = room;
     }
 
-	public String getLessonId() {
+    public String getLessonId() {
         return lessonId;
     }
 
@@ -69,6 +69,19 @@ public class Lesson {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Lesson lesson = (Lesson) o;
+        return lessonId.equals(lesson.lessonId);
+    }
+
+    @Override
+    public int hashCode() {
+        return lessonId.hashCode();
+    }
+
+    @Override
     public String toString() {
         return "Lesson{" +
                 "lessonId='" + lessonId + '\'' +
@@ -80,13 +93,3 @@ public class Lesson {
                 '}';
     }
 }
-@Override
-public boolean equals(Object o) {
-    if (this == o) return true; // Проверка на ссылочную равность
-    if (o == null || getClass() != o.getClass()) return false; // Проверка на тип
-    Lesson lesson = (Lesson) o;
-    return lessonId.equals(lesson.lessonId); // Сравнение по уникальному полю
-}
-
-}
-
