@@ -1,7 +1,5 @@
 package Models;
 
-import java.util.Date;
-
 public class Allocation {
     private int departmentId;
     private double amount;
@@ -27,20 +25,11 @@ public class Allocation {
         this.amount = amount;
     }
 
-    public Date getAllocationDate() {
-        return allocationDate;
-    }
-
-    public void setAllocationDate(Date allocationDate) {
-        this.allocationDate = allocationDate;
-    }
-
     @Override
     public String toString() {
         return "Allocation{" +
                 "departmentId=" + departmentId +
                 ", amount=" + amount +
-                ", allocationDate=" + allocationDate +
                 '}';
     }
 }
