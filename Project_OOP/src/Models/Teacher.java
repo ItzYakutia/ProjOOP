@@ -72,13 +72,7 @@ public class Teacher extends Employee {
                 ", Text: " + text;
         complaints.add(complaint);
     }
-
-    // Отправка сообщения другому сотруднику
-    public void sendMessage(Employee recipient, String text) {
-        Message message = new Message(this, recipient, text);
-        messages.add(message);
-        recipient.receiveMessage(message);
-    }
+    
 
     @Override
     public void receiveNotification(String message) {
