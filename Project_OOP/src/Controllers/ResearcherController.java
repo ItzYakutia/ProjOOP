@@ -1,7 +1,11 @@
-import java.util.List;
+package Controllers;
 
-import Models.*;
-import Views.*;
+import Models.ResearchPaper;
+import Models.ResearchProject;
+import Models.Researcher;
+import Views.ResearcherView;
+
+import java.util.Comparator;
 
 public class ResearcherController {
     private Researcher researcher;
@@ -14,17 +18,21 @@ public class ResearcherController {
 
     public void addResearchPaper(ResearchPaper paper) {
         researcher.addResearchPaper(paper);
-        System.out.println("Research paper added: " + paper.getTitle());
+        researcherView.displayMessage("Added a new research paper: " + paper.getTitle());
+    }
+
+    public void addResearchProject(ResearchProject project) {
+        researcher.addResearchProject(project);
+        researcherView.displayMessage("Joined the research project: " + project.getTopic());
+    }
+
+    public void printPapers(Comparator<ResearchPaper> comparator) {
+        researcher.printPapers(comparator);
+        researcherView.displayResearchPapers(researcher.getResearchPapers());
     }
 
     public void calculateHIndex() {
-        int hIndex = 0;
-        List<ResearchPaper> papers = researcher.getResearchPapers();
-        for (int i = 0; i < papers.size(); i++) {
-            if (papers.get(i).getCitations() >= i + 1) {
-                hIndex++;
-            }
-        }
+        int hIndex = researcher.calculateHIndex();
         researcherView.displayHIndex(hIndex);
     }
 }
