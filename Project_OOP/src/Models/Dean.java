@@ -3,19 +3,19 @@ package Models;
 import Models.Teacher;
 
 public class Dean extends Employee {
-    private Faculty faculty;
+    private School school;
 
-    public Dean(String username, String userId, String firstName, String lastName, String email, Faculty faculty, String password) {
+    public Dean(String username, String userId, String firstName, String lastName, String email, School school, String password) {
         super(username, userId, firstName, lastName, email, password);
-        this.faculty = faculty;
+        this.school = school;
     }
 
-    public Faculty getFaculty() {
-        return faculty;
+    public School getSchool() {
+        return school;
     }
 
-    public void setFaculty(Faculty faculty) {
-        this.faculty = faculty;
+    public void setSchool(School school) {
+        this.school = school;
     }
 
     public void approveCourse(String courseName) {
