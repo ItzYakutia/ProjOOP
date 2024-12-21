@@ -52,14 +52,6 @@ public class AdminView {
         }
     }
 
-    public void displaySettingsUpdateConfirmation(boolean success) {
-        if (success) {
-            System.out.println("System settings updated successfully.");
-        } else {
-            System.out.println("Failed to update system settings.");
-        }
-    }
-
     public void displayMessages(List<Message> messages) {
         System.out.println("Messages:");
         for (Message message : messages) {
