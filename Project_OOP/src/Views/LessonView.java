@@ -1,85 +1,41 @@
-package Views;
+package Controllers;
 
-import Models.Lesson;
-import Models.LessonType;
+import Models.*;
+import Views.LessonView;
 
-import java.time.format.DateTimeFormatter;
+import java.time.LocalDateTime;
 import java.util.List;
 
-public class LessonView {
+public class LessonController {
 
-    private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+    private final LessonView lessonView;
 
-    // Отображение информации об уроке
-    public void displayLessonInfo(Lesson lesson) {
-        if (lesson == null) {
-            System.out.println("Lesson not found.");
-            return;
-        }
-        System.out.println("Lesson Information:");
-        System.out.println("Lesson ID: " + lesson.getLessonId());
-        System.out.println("Type: " + lesson.getType());
-        System.out.println("Date and Time: " + lesson.getDateTime().format(FORMATTER));
-        System.out.println("Course: " + lesson.getCourse().getName());
-        System.out.println("Teacher: " + (lesson.getTeacher() != null
-                ? lesson.getTeacher().getNameFirst() + " " + lesson.getTeacher().getNameLast()
-                : "Not assigned"));
-        System.out.println("Room: " + lesson.getRoom());
+    public LessonController(LessonView lessonView) {
+        this.lessonView = lessonView;
     }
 
-    // Отображение списка уроков
-    public void displayLessonList(List<Lesson> lessons) {
-        if (lessons.isEmpty()) {
-            System.out.println("No lessons available.");
-            return;
-        }
-        System.out.println("List of Lessons:");
-        for (Lesson lesson : lessons) {
-            System.out.println("- Lesson ID: " + lesson.getLessonId() +
-                    ", Type: " + lesson.getType() +
-                    ", Date and Time: " + lesson.getDateTime().format(FORMATTER) +
-                    ", Room: " + lesson.getRoom());
-        }
+    // Добавление урока
+    public void addLesson(String lessonId, LessonType type, LocalDateTime dateTime, Course course, Teacher teacher, String room, List<Lesson> lessons) {
+        lessonView.addLesson(lessonId, type, dateTime, course, teacher, room, lessons);
     }
 
-    // Сообщение об успешном добавлении урока
-    public void displayLessonAdded(Lesson lesson) {
-        System.out.println("Lesson added successfully:");
-        displayLessonInfo(lesson);
+    // Удаление урока
+    public void removeLesson(String lessonId, List<Lesson> lessons) {
+        lessonView.removeLesson(lessonId, lessons);
     }
 
-    // Сообщение об ошибке добавления урока
-    public void displayLessonAdditionError(String errorMessage) {
-        System.out.println("Error adding lesson: " + errorMessage);
+    // Назначение преподавателя на урок
+    public void assignTeacherToLesson(String lessonId, String teacherId, List<Lesson> lessons, List<Teacher> teachers) {
+        lessonView.assignTeacherToLesson(lessonId, teacherId, lessons, teachers);
     }
 
-    // Сообщение об успешном удалении урока
-    public void displayLessonRemoved(String lessonId) {
-        System.out.println("Lesson removed successfully: Lesson ID = " + lessonId);
+    // Проверка посещаемости
+    public void markAttendance(String lessonId, List<String> studentIds, List<Lesson> lessons, List<Student> students) {
+        lessonView.markAttendance(lessonId, studentIds, lessons, students);
     }
 
-    // Сообщение об ошибке удаления урока
-    public void displayLessonRemovalError(String errorMessage) {
-        System.out.println("Error removing lesson: " + errorMessage);
-    }
-
-    // Сообщение об успешном назначении преподавателя
-    public void displayTeacherAssigned(String lessonId, String teacherName) {
-        System.out.println("Teacher " + teacherName + " assigned successfully to Lesson ID: " + lessonId);
-    }
-
-    // Сообщение об ошибке назначения преподавателя
-    public void displayTeacherAssignmentError(String errorMessage) {
-        System.out.println("Error assigning teacher: " + errorMessage);
-    }
-
-    // Сообщение об успешной отметке посещаемости
-    public void displayAttendanceMarked(String lessonId) {
-        System.out.println("Attendance marked successfully for Lesson ID: " + lessonId);
-    }
-
-    // Сообщение об ошибке отметки посещаемости
-    public void displayAttendanceError(String errorMessage) {
-        System.out.println("Error marking attendance: " + errorMessage);
+    // Получение уроков по курсу
+    public void getLessonsForCourse(String courseId, List<Course> courses) {
+        lessonView.getLessonsForCourse(courseId, courses);
     }
 }
