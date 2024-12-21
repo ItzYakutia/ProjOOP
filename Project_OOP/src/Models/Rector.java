@@ -1,11 +1,19 @@
 package Models;
 
 public class Rector extends Employee {
+    private static Rector instance;
     private double universityBudget;
 
-    public Rector(String username, String userId, String firstName, String lastName, String email, double budget, String password) {
+    private Rector(String username, String userId, String firstName, String lastName, String email, double budget, String password) {
         super(username, userId, firstName, lastName, email, password);
         this.universityBudget = budget;
+    }
+
+    public static Rector getInstance(String username, String userId, String firstName, String lastName, String email, double budget, String password) {
+        if (instance == null) {
+            instance = new Rector(username, userId, firstName, lastName, email, budget, password);
+        }
+        return instance;
     }
 
     public double getUniversityBudget() {
@@ -36,7 +44,8 @@ public class Rector extends Employee {
         System.out.println("Rector " + getNameFirst() + " signed the agreement: " + agreementName);
     }
 
-	@Override
-	public void receiveNotification(String message) {		
-	}
+    @Override
+    public void receiveNotification(String message) {
+        System.out.println("Rector " + getNameFirst() + " received notification: " + message);
+    }
 }
