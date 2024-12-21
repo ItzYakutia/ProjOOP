@@ -23,7 +23,7 @@ public class CourseView {
     // Сортировка курсов по количеству студентов
     public void displaySortedCoursesByStudentCount(List<Course> courses) {
         List<Course> sortedCourses = courses.stream()
-                .sorted(Comparator.comparingInt(course -> course.getStudents().size()).reversed())
+                .sorted(Comparator.comparingInt(course -> ((Course) course).getStudents().size()).reversed())
                 .collect(Collectors.toList());
 
         System.out.println("Courses sorted by student count:");
