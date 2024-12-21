@@ -3,6 +3,7 @@ package Controllers;
 import Models.*;
 import Views.CourseView;
 
+import java.util.Comparator;
 import java.util.List;
 
 public class CourseController {
@@ -58,13 +59,30 @@ public class CourseController {
         }
     }
 
-    // Просмотр информации о курсе
-    public void viewCourseInfo(String courseId, List<Course> courses) {
+    // Сортировка студентов по имени
+    public void sortStudentsByName(String courseId, List<Course> courses) {
         Course course = findCourseById(courseId, courses);
         if (course == null) {
             courseView.displayErrorMessage("Course not found.");
         } else {
-            courseView.displayCourseInfo(course);
+            List<Student> sortedStudents = course.getStudents().stream()
+                    .sorted(Comparator.comparing(Student::getNameFirst)
+                            .thenComparing(Student::getNameLast))
+                    .toList();
+            courseView.displaySortedStudents(sortedStudents, "name");
+        }
+    }
+
+    // Сортировка студентов по GPA
+    public void sortStudentsByGPA(String courseId, List<Course> courses) {
+        Course course = findCourseById(courseId, courses);
+        if (course == null) {
+            courseView.displayErrorMessage("Course not found.");
+        } else {
+            List<Student> sortedStudents = course.getStudents().stream()
+                    .sorted(Comparator.comparingDouble(Student::getGpa).reversed())
+                    .toList();
+            courseView.displaySortedStudents(sortedStudents, "GPA");
         }
     }
 
