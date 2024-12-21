@@ -2,103 +2,184 @@ package Views;
 
 import Models.*;
 
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class TeacherView {
 
-    // Показ успешного добавления преподавателя
-    public void displayTeacherAdded(Teacher teacher) {
-        System.out.println("Teacher added successfully: " + teacher.getNameFirst() + " " + teacher.getNameLast());
-    }
+    // Сортировка преподавателей по фамилии
+    public void displaySortedTeachersByLastName(List<Teacher> teachers) {
+        List<Teacher> sortedTeachers = teachers.stream()
+                .sorted(Comparator.comparing(Teacher::getNameLast))
+                .collect(Collectors.toList());
 
-    // Показ ошибки при добавлении преподавателя
-    public void displayTeacherAdditionError(String errorMessage) {
-        System.out.println("Error: " + errorMessage);
-    }
-
-    // Показ успешного удаления преподавателя
-    public void displayTeacherRemoved(Teacher teacher) {
-        System.out.println("Teacher removed successfully: " + teacher.getNameFirst() + " " + teacher.getNameLast());
-    }
-
-    // Показ ошибки при удалении преподавателя
-    public void displayTeacherRemovalError(String errorMessage) {
-        System.out.println("Error: " + errorMessage);
-    }
-
-    // Отображение основной информации о преподавателе
-    public void displayTeacherInfo(Teacher teacher) {
-        System.out.println("Teacher Information:");
-        System.out.println("Name: " + teacher.getNameFirst() + " " + teacher.getNameLast());
-        System.out.println("Title: " + teacher.getTitle());
-        System.out.println("Working Years: " + teacher.getWorkingYears());
-        System.out.println("Number of Courses: " + teacher.getCourses().size());
-        System.out.println("Number of Complaints: " + teacher.getComplaints().size());
-    }
-
-    // Показ списка студентов, зарегистрированных на курс
-    public void displayStudentsInCourse(List<Student> students, Course course) {
-        System.out.println("Students registered for course: " + course.getName());
-        if (students.isEmpty()) {
-            System.out.println("No students registered for this course.");
-        } else {
-            for (Student student : students) {
-                System.out.println("- " + student.getNameFirst() + " " + student.getNameLast() + " (ID: " + student.getUserId() + ")");
-            }
+        System.out.println("Sorted Teachers by Last Name:");
+        for (Teacher teacher : sortedTeachers) {
+            System.out.println("- " + teacher.getNameLast() + ", " + teacher.getNameFirst());
         }
     }
 
-    // Показ успешного выставления оценки
-    public void displayMarkSetSuccess(Student student, Course course, Mark mark) {
-        System.out.println("Mark set successfully for student: " + student.getNameFirst() + " " + student.getNameLast());
-        System.out.println("Course: " + course.getName() + ", Total Mark: " + mark.getTotal());
+    // Просмотр курсов преподавателя
+    public void displayTeacherCourses(String teacherId, List<Teacher> teachers) {
+        Teacher teacher = findTeacherById(teacherId, teachers);
+        if (teacher == null) {
+            System.out.println("Teacher not found.");
+            return;
+        }
+
+        System.out.println("Courses for teacher " + teacher.getNameFirst() + " " + teacher.getNameLast() + ":");
+        for (Course course : teacher.getCourses()) {
+            System.out.println("- " + course.getName());
+        }
     }
 
-    // Показ ошибки при выставлении оценки
-    public void displayMarkSetError(String errorMessage) {
-        System.out.println("Error: " + errorMessage);
+    // Управление курсами (добавление/удаление студентов)
+    public void manageCourse(String teacherId, String courseId, String studentId, boolean isAdd, 
+                             List<Teacher> teachers, List<Course> courses, List<Student> students) {
+        Teacher teacher = findTeacherById(teacherId, teachers);
+        Course course = findCourseById(courseId, courses);
+        Student student = findStudentById(studentId, students);
+
+        if (teacher == null || course == null || student == null) {
+            System.out.println("Teacher, course, or student not found.");
+            return;
+        }
+
+        if (!teacher.getCourses().contains(course)) {
+            System.out.println("This course is not assigned to the teacher.");
+            return;
+        }
+
+        if (isAdd) {
+            course.addStudent(student);
+            student.addCourse(course);
+            System.out.println("Student added to course successfully.");
+        } else {
+            course.removeStudent(student);
+            student.removeCourse(course);
+            System.out.println("Student removed from course successfully.");
+        }
     }
 
-    // Показ успешной отправки жалобы
-    public void displayComplaintSent(String complaint) {
-        System.out.println("Complaint sent successfully: " + complaint);
-    }
-
-    // Показ ошибки при отправке жалобы
-    public void displayComplaintError(String errorMessage) {
-        System.out.println("Error: " + errorMessage);
-    }
-
-    // Показ информации о курсе
-    public void displayCourseInfo(Course course) {
+    // Просмотр студентов на курсе
+    public void displayStudentsInCourse(String courseId, List<Course> courses) {
+        Course course = findCourseById(courseId, courses);
         if (course == null) {
             System.out.println("Course not found.");
-        } else {
-            System.out.println("Course Information:");
-            System.out.println("- Name: " + course.getName());
-            System.out.println("- Description: " + course.getDescription());
-            System.out.println("- Credits: " + course.getCredits());
+            return;
+        }
+
+        System.out.println("Students in course " + course.getName() + ":");
+        for (Student student : course.getStudents()) {
+            System.out.println("- " + student.getNameFirst() + " " + student.getNameLast());
         }
     }
 
-    // Показ успешной загрузки силлабуса
-    public void displaySyllabusLoaded(Course course) {
-        System.out.println("Syllabus loaded successfully for course: " + course.getName());
+    // Выставление оценок
+    public void putMarks(String teacherId, String studentId, String courseId, double attestation1, 
+                         double attestation2, double finalExam, List<Teacher> teachers, 
+                         List<Course> courses, List<Student> students) {
+        Teacher teacher = findTeacherById(teacherId, teachers);
+        Course course = findCourseById(courseId, courses);
+        Student student = findStudentById(studentId, students);
+
+        if (teacher == null || course == null || student == null) {
+            System.out.println("Teacher, course, or student not found.");
+            return;
+        }
+
+        if (!teacher.getCourses().contains(course)) {
+            System.out.println("Teacher is not assigned to this course.");
+            return;
+        }
+
+        if (attestation1 < 0 || attestation1 > 100 || attestation2 < 0 || attestation2 > 100 || finalExam < 0 || finalExam > 100) {
+            System.out.println("Marks must be between 0 and 100.");
+            return;
+        }
+
+        Mark mark = student.getTranscript().get(course);
+        if (mark == null) {
+            mark = new Mark(student, course, attestation1, attestation2, finalExam);
+            student.getTranscript().put(course, mark);
+        } else {
+            mark.setAttestation1(attestation1);
+            mark.setAttestation2(attestation2);
+            mark.setFinalExam(finalExam);
+            mark.setTotal(attestation1 + attestation2 + finalExam);
+        }
+
+        System.out.println("Marks updated successfully for student: " + student.getNameFirst() + " " + student.getNameLast());
     }
 
-    // Показ ошибки при загрузке силлабуса
-    public void displaySyllabusError(String errorMessage) {
-        System.out.println("Error: " + errorMessage);
+    // Отправка сообщений другим сотрудникам
+    public void sendMessage(String teacherId, String recipientId, String messageText, List<Teacher> teachers, List<Employee> employees) {
+        Teacher sender = findTeacherById(teacherId, teachers);
+        Employee recipient = findEmployeeById(recipientId, employees);
+
+        if (sender == null || recipient == null) {
+            System.out.println("Sender or recipient not found.");
+            return;
+        }
+
+        Message message = new Message(sender, recipient, messageText);
+        sender.sendMessage(message);
+        System.out.println("Message sent successfully.");
     }
 
-    // Показ сообщения об отправке
-    public void displayMessageSent(String recipientId, String text) {
-        System.out.println("Message sent successfully to employee ID: " + recipientId);
-        System.out.println("Message: " + text);
+    // Отправка жалоб на студента
+    public void sendComplaint(String teacherId, String studentId, String courseId, String text, UrgencyLevel urgency, 
+                              List<Teacher> teachers, List<Student> students, List<Course> courses) {
+        Teacher teacher = findTeacherById(teacherId, teachers);
+        Student student = findStudentById(studentId, students);
+        Course course = findCourseById(courseId, courses);
+
+        if (teacher == null || student == null || course == null) {
+            System.out.println("Teacher, student, or course not found.");
+            return;
+        }
+
+        if (!teacher.getCourses().contains(course)) {
+            System.out.println("Teacher is not assigned to this course.");
+            return;
+        }
+
+        String complaint = "Complaint about student: " + student.getNameFirst() + " " + student.getNameLast() +
+                ", Course: " + course.getName() +
+                ", Urgency: " + urgency +
+                ", Text: " + text;
+
+        teacher.addComplaint(complaint);
+        System.out.println("Complaint sent successfully.");
     }
 
-    // Показ ошибки при отправке сообщения
-    public void displayMessageError(String errorMessage) {
-        System.out.println("Error: " + errorMessage);
+    // Вспомогательные методы
+    private Teacher findTeacherById(String teacherId, List<Teacher> teachers) {
+        return teachers.stream()
+                .filter(teacher -> teacher.getUserId().equals(teacherId))
+                .findFirst()
+                .orElse(null);
+    }
+
+    private Course findCourseById(String courseId, List<Course> courses) {
+        return courses.stream()
+                .filter(course -> course.getCourseId().equals(courseId))
+                .findFirst()
+                .orElse(null);
+    }
+
+    private Student findStudentById(String studentId, List<Student> students) {
+        return students.stream()
+                .filter(student -> student.getUserId().equals(studentId))
+                .findFirst()
+                .orElse(null);
+    }
+
+    private Employee findEmployeeById(String employeeId, List<Employee> employees) {
+        return employees.stream()
+                .filter(employee -> employee.getUserId().equals(employeeId))
+                .findFirst()
+                .orElse(null);
     }
 }
