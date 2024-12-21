@@ -148,6 +148,16 @@ public class Student extends User {
         teacher.addRating(rating);
     }
 
+    // Получение списка курсов студента с указанием типа (Major, Minor, Free Elective)
+public void listCoursesWithTypes() {
+    System.out.println("Courses for " + getNameFirst() + " " + getNameLast() + ":");
+    for (Course course : courses) {
+        CourseType type = course.determineCourseTypeForStudent(this);
+        System.out.println("- " + course.getName() + " (" + type + ")");
+    }
+}
+
+
     // Реализация equals и hashCode
     @Override
     public boolean equals(Object o) {
