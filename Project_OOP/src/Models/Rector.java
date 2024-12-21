@@ -1,5 +1,9 @@
 package Models;
 
+import java.util.Comparator;
+import java.util.List;
+import java.util.stream.Collectors;
+
 public class Rector extends Employee {
     private static Rector instance;
     private double universityBudget;
@@ -42,6 +46,31 @@ public class Rector extends Employee {
 
     public void signAgreement(String agreementName) {
         System.out.println("Rector " + getNameFirst() + " signed the agreement: " + agreementName);
+    }
+
+    public void printAllResearchPapers(List<Researcher> researchers, Comparator<ResearchPaper> comparator) {
+        List<ResearchPaper> allPapers = researchers.stream()
+                .flatMap(researcher -> researcher.getResearchPapers().stream())
+                .collect(Collectors.toList());
+        allPapers.sort(comparator);
+        allPapers.forEach(System.out::println);
+    }
+
+    public Researcher getTopCitedResearcherBySchool(List<Researcher> researchers, String schoolName) {
+        return researchers.stream()
+                .filter(researcher -> schoolName.equals(researcher.getFaculty()))
+                .max(Comparator.comparingInt(Researcher::calculateHIndex))
+                .orElse(null);
+    }
+
+    public Researcher getTopCitedResearcherOfYear(List<Researcher> researchers, int year) {
+        return researchers.stream()
+                .max(Comparator.comparingInt(researcher ->
+                        researcher.getResearchPapers().stream()
+                                .filter(paper -> paper.getPublicationDate().getYear() + 1900 == year)
+                                .mapToInt(ResearchPaper::getCitations)
+                                .sum()))
+                .orElse(null);
     }
 
     @Override
