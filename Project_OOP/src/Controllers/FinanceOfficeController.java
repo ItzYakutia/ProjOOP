@@ -3,7 +3,6 @@ package Controllers;
 import Models.*;
 import Views.*;
 import java.util.List;
-import java.util.Map;
 
 public class FinanceOfficeController {
 
@@ -19,23 +18,17 @@ public class FinanceOfficeController {
         view.displayProfile(financeOffice);
     }
 
-    public void processExpenseRequests(List<ExpenseRequest> requests) {
-        view.displayProcessedRequests(requests);
+    public void updateEmployeeSalary(String userId, double salary) {
+        boolean success = financeOffice.updateEmployeeSalary(userId, salary);
+        if (success) {
+            view.displayMessage("Salary updated successfully.");
+        } else {
+            view.displayMessage("Error: Employee not found.");
+        }
     }
 
     public void manageSalaries() {
-        Map<String, Double> salaries = financeOffice.getEmployeeSalaries();
-        view.displaySalaryDetails(salaries);
-    }
-
-    public void updateEmployeeSalary(String userId, double salary) {
-        Map<String, Double> salaries = financeOffice.getEmployeeSalaries();
-        if (salaries.containsKey(userId)) {
-            salaries.put(userId, salary);
-            view.displaySalaryDetails(salaries);
-        } else {
-            System.out.println("Employee not found: " + userId);
-        }
+        view.displayMessage(financeOffice.getSalaryDetails());
     }
 
     public void allocateFunds(int departmentId, double amount) {
@@ -44,6 +37,7 @@ public class FinanceOfficeController {
     }
 
     public void displayTransactionLog(List<Transaction> transactions) {
-        view.displayTransactionLog(transactions);
+        String log = financeOffice.generateTransactionLog(transactions);
+        view.displayMessage(log);
     }
 }
