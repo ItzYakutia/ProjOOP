@@ -1,6 +1,7 @@
 package Controllers;
 
 import Models.*;
+import Views.StudentView;
 
 import java.util.List;
 import java.util.Map;
@@ -8,187 +9,152 @@ import java.util.stream.Collectors;
 
 public class StudentController {
 
-    private List<Student> students;
-    private List<Course> courses;
-    private List<News> news;
-    private List<Teacher> teachers;
+    private final StudentView studentView;
 
-    public StudentController(List<Student> students, List<Course> courses, List<News> news, List<Teacher> teachers) {
-        this.students = students;
-        this.courses = courses;
-        this.news = news;
-        this.teachers = teachers;
+    public StudentController(StudentView studentView) {
+        this.studentView = studentView;
     }
 
-    // Сортировка студентов по имени (алфавитно)
-    public List<Student> sortStudentsByName() {
-        return students.stream()
-                .sorted(Comparator.comparing(Student::getNameFirst).thenComparing(Student::getNameLast))
-                .collect(Collectors.toList());
+    // Показ всех факультетов
+    public void viewFaculties() {
+        studentView.displayFaculties();
     }
 
-    // Сортировка студентов по GPA (по убыванию)
-    public List<Student> sortStudentsByGPA() {
-        return students.stream()
-                .sorted(Comparator.comparingDouble(Student::getGpa).reversed())
-                .collect(Collectors.toList());
+    // Показ специальностей для выбранного факультета
+    public void viewSpecialties(Faculty faculty) {
+        studentView.displaySpecialties(faculty);
     }
-    // Пример использования сортировки для конкретного курса
-    public List<Student> sortStudentsInCourseByGPA(String courseId) {
-        Course course = findCourseById(courseId);
-        if (course == null) {
-            throw new IllegalArgumentException("Course not found.");
+
+    // Выбор факультета и специальности для студента
+    public void chooseFacultyAndSpecialty(Student student, Faculty faculty, String specialty) {
+        boolean isValid = validateSpecialty(faculty, specialty);
+
+        if (!isValid) {
+            studentView.displaySpecialtyError("Invalid specialty for the chosen faculty.");
+            return;
         }
-        return course.getStudents().stream()
-                .sorted(Comparator.comparingDouble(Student::getGpa).reversed())
-                .collect(Collectors.toList());
+
+        student.setFaculty(faculty);
+        student.setSpecialty(specialty);
+
+        studentView.displayFacultyAndSpecialtyChosen(faculty, specialty);
     }
-    
-    // Просмотр всех доступных курсов
-    public List<Course> viewCourses() {
-        return courses;
+
+    // Проверка, соответствует ли специальность выбранному факультету
+    private boolean validateSpecialty(Faculty faculty, String specialty) {
+        switch (faculty) {
+            case SITE:
+                for (SiteSpecialty siteSpecialty : SiteSpecialty.values()) {
+                    if (siteSpecialty.getFullName().equalsIgnoreCase(specialty)) {
+                        return true;
+                    }
+                }
+                break;
+            case BS:
+                for (BsSpecialty bsSpecialty : BsSpecialty.values()) {
+                    if (bsSpecialty.getFullName().equalsIgnoreCase(specialty)) {
+                        return true;
+                    }
+                }
+                break;
+        }
+        return false;
+    }
+
+    // Показ всех доступных курсов
+    public void viewCourses(List<Course> courses) {
+        studentView.displayCourses(courses);
     }
 
     // Регистрация студента на курс
-    public void registerForCourse(String studentId, String courseId) {
-        Student student = findStudentById(studentId);
-        Course course = findCourseById(courseId);
-        if (student != null && course != null) {
-            if (student.getCredits() + course.getCredits() > 21) {
-                System.out.println("Error: Student cannot register for more than 21 credits.");
-                return;
-            }
-            student.addCourse(course);
-            course.addStudent(student);
-            System.out.println("Student registered successfully.");
-        } else {
-            System.out.println("Student or course not found.");
+    public void registerForCourse(Student student, Course course) {
+        if (student.getCredits() + course.getCredits() > 21) {
+            studentView.displayRegistrationError("Student cannot register for more than 21 credits.");
+            return;
         }
-    }
 
-    // Просмотр оценок студента по курсу
-    public List<Mark> viewMarks(String courseName, String studentId) {
-        Student student = findStudentById(studentId);
-        if (student == null) {
-            System.out.println("Student not found.");
-            return null;
-        }
-        return student.getTranscript().entrySet().stream()
-                .filter(entry -> entry.getKey().getName().equals(courseName))
-                .map(Map.Entry::getValue)
-                .collect(Collectors.toList());
+        student.addCourse(course);
+        course.addStudent(student);
+
+        studentView.displayRegistrationSuccess(course, student);
     }
 
     // Просмотр транскрипта студента
-    public void viewTranscript(String studentId) {
-        Student student = findStudentById(studentId);
-        if (student == null) {
-            System.out.println("Student not found.");
-            return;
-        }
-        if (student.getTranscript() == null || student.getTranscript().isEmpty()) {
-            System.out.println("Transcript is empty. No marks are available for this student.");
-            return;
-        }
-        student.getTranscript().forEach((course, mark) -> {
-            System.out.println("Course: " + course.getName() + ", Mark: " + mark.getTotal());
-        });
+    public void viewTranscript(Student student) {
+        studentView.displayTranscript(student);
     }
 
-    // Новый метод: Просмотр информации о преподавателе для курса
-    public void viewTeacherInfo(String courseId) {
-        Course course = findCourseById(courseId);
-        if (course == null) {
-            System.out.println("Course not found.");
-            return;
-        }
-
-        Teacher teacher = teachers.stream()
-                .filter(t -> t.getCourses().contains(course))
-                .findFirst()
-                .orElse(null);
-
-        if (teacher != null) {
-            System.out.println("Teacher for course " + course.getName() + ": " +
-                    teacher.getNameFirst() + " " + teacher.getNameLast() + " (" + teacher.getTitle() + ")");
-        } else {
-            System.out.println("No teacher assigned for this course.");
-        }
-    }
-
-    // Новый метод: Оценка преподавателя
-    public void rateTeacher(String teacherId, int rating, String feedback) {
-        Teacher teacher = findTeacherById(teacherId);
-        if (teacher == null) {
-            System.out.println("Teacher not found.");
-            return;
-        }
+    // Оценка преподавателя
+    public void rateTeacher(Teacher teacher, int rating, String feedback) {
         if (rating < 1 || rating > 5) {
-            System.out.println("Rating must be between 1 and 5.");
+            studentView.displayCourseRatingError("Rating must be between 1 and 5.");
             return;
         }
 
-        // Здесь можно реализовать сохранение рейтинга и отзыва в БД или другом хранилище
-        System.out.println("Teacher " + teacher.getNameFirst() + " " + teacher.getNameLast() +
-                " rated with " + rating + " stars. Feedback: " + feedback);
+        teacher.addRating(rating);
+        studentView.displayCourseRatingSuccess(teacher.getNameFirst() + " " + teacher.getNameLast(), rating, feedback);
     }
 
-    // Новый метод: Вступление в организацию
-    public void joinOrganization(String orgName, String studentId, boolean isHead) {
-        Student student = findStudentById(studentId);
-        if (student == null) {
-            System.out.println("Student not found.");
-            return;
-        }
-
-        // Здесь можно реализовать логику добавления студента в организацию
-        if (isHead) {
-            System.out.println(student.getNameFirst() + " " + student.getNameLast() +
-                    " has joined the organization " + orgName + " as the head.");
-        } else {
-            System.out.println(student.getNameFirst() + " " + student.getNameLast() +
-                    " has joined the organization " + orgName + ".");
-        }
+    // Показ новостей
+    public void viewNews(List<News> news) {
+        studentView.displayNews(news);
     }
 
-    // Новый метод: Проверка количества провалов
-    public void checkFailedCourses(String studentId) {
-        Student student = findStudentById(studentId);
-        if (student == null) {
-            System.out.println("Student not found.");
-            return;
-        }
+    // Пример сортировки студентов по имени
+    public void sortStudentsByName(List<Student> students) {
+        List<Student> sortedStudents = students.stream()
+                .sorted((s1, s2) -> {
+                    int firstNameComparison = s1.getNameFirst().compareToIgnoreCase(s2.getNameFirst());
+                    return firstNameComparison != 0 ? firstNameComparison :
+                            s1.getNameLast().compareToIgnoreCase(s2.getNameLast());
+                })
+                .collect(Collectors.toList());
 
+        studentView.displaySortedStudents(sortedStudents);
+    }
+
+    // Пример сортировки студентов по GPA
+    public void sortStudentsByGPA(List<Student> students) {
+        List<Student> sortedStudents = students.stream()
+                .sorted((s1, s2) -> Double.compare(s2.getGpa(), s1.getGpa())) // По убыванию
+                .collect(Collectors.toList());
+
+        studentView.displaySortedStudents(sortedStudents);
+    }
+
+    // Проверка количества проваленных курсов
+    public void checkFailedCourses(Student student) {
         long failedCourses = student.getTranscript().values().stream()
-                .filter(mark -> mark.getTotal() < 50) // Считаем, что менее 50 — это провал
+                .filter(mark -> mark.getTotal() < 50) // Менее 50 - провал
                 .count();
 
         if (failedCourses > 3) {
-            System.out.println("Student has failed more than 3 courses. Please take action.");
+            studentView.displayFailedCoursesWarning(student);
         } else {
-            System.out.println("Student has " + failedCourses + " failed courses.");
+            studentView.displayFailedCoursesResult(student, failedCourses);
         }
     }
 
-    // Вспомогательные методы для поиска студентов, курсов и преподавателей
-    private Student findStudentById(String studentId) {
+    // Вспомогательные методы для поиска
+    public Student findStudentById(List<Student> students, String studentId) {
         return students.stream()
                 .filter(student -> student.getUserId().equals(studentId))
                 .findFirst()
                 .orElse(null);
     }
 
-    private Course findCourseById(String courseId) {
+    public Course findCourseById(List<Course> courses, String courseId) {
         return courses.stream()
                 .filter(course -> course.getCourseId().equals(courseId))
                 .findFirst()
                 .orElse(null);
     }
 
-    private Teacher findTeacherById(String teacherId) {
+    public Teacher findTeacherById(List<Teacher> teachers, String teacherId) {
         return teachers.stream()
                 .filter(teacher -> teacher.getUserId().equals(teacherId))
                 .findFirst()
                 .orElse(null);
     }
 }
+
