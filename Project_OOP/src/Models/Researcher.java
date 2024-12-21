@@ -53,4 +53,22 @@ public class Researcher extends Employee {
         }
         return hIndex;
     }
+
+    // Проверка, может ли быть супервайзером
+    public boolean isEligibleSupervisor() {
+        int hIndex = calculateHIndex(); // Вычисляем текущий h-index
+        return hIndex >= 3;
+    }
+
+    // Метод для назначения супервайзера
+    public static void assignSupervisorToStudent(Student student, Researcher supervisor) {
+        if (!supervisor.isEligibleSupervisor()) {
+            throw new IllegalArgumentException("Research Supervisor must have an h-index of 3 or higher.");
+        }
+        if (student.getYear() != 4) {
+            throw new IllegalArgumentException("Only 4th-year students can have a Research Supervisor.");
+        }
+        student.setResearchSupervisor(supervisor);
+        System.out.println("Research Supervisor " + supervisor.getNameFirst() + " assigned to student: " + student.getNameFirst());
+    }
 }
