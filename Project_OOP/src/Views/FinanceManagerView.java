@@ -2,6 +2,8 @@ package Views;
 
 import java.util.List;
 
+import Models.*;
+
 public class FinanceManagerView {
 
     public void displayBudgetReport(BudgetReport report) {
