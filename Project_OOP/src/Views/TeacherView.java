@@ -81,4 +81,9 @@ public class TeacherView {
             System.out.println("- " + project.getTopic() + " (Participants: " + project.getParticipants().size() + ")");
         }
     }
+     // Отображение средней оценки преподавателя
+    public void displayAverageRating(Teacher teacher, double averageRating) {
+        System.out.println("Teacher " + teacher.getNameFirst() + " " + teacher.getNameLast() +
+                " has an average rating of " + averageRating + " stars.");
+    }
 }
