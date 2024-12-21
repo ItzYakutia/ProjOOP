@@ -15,34 +15,28 @@ public class FinanceManagerController {
     }
 
     public void viewBudgetReport() {
-        BudgetReport report = new BudgetReport(1_000_000, 600_000, 400_000);
+        double remainingBudget = financeManager.getRemainingBudget();
+        BudgetReport report = new BudgetReport(financeManager.getBudgetResponsibility(), 
+                                                financeManager.getAllocatedBudget(), 
+                                                remainingBudget);
         view.displayBudgetReport(report);
     }
 
     public void approveExpenseRequest(int requestId) {
-        boolean isApproved = true; // Simulate approval logic
+        List<ExpenseRequest> requests = financeManager.getPendingRequests();
+        if (requestId < 0 || requestId >= requests.size()) {
+            view.displayApprovalConfirmation(false);
+            return;
+        }
+
+        ExpenseRequest request = requests.get(requestId);
+        boolean isApproved = financeManager.approveExpenseRequest(request);
         view.displayApprovalConfirmation(isApproved);
     }
 
-    public void generateFinancialReport() {
-        FinancialReport report = new FinancialReport(1_000_000, 600_000, 200_000);
-        view.displayFinancialReport(report);
-    }
-
-    public void manageFinances(int departmentId, double amount) {
-        // Simulate finance management
-        Allocation allocation = new Allocation(departmentId, amount);
-        List<Allocation> allocations = List.of(allocation); // Placeholder
-        view.displayAllocations(allocations);
-    }
-
-    public void viewTransactionHistory() {
-        // Simulate transactions history
-        List<Transaction> transactions = List.of(
-            new Transaction("T001", "Purchase of supplies", 5000.0),
-            new Transaction("T002", "Team building event", 3000.0)
-        );
-        view.displayTransactionHistory(transactions);
+    public void displayPendingRequests() {
+        List<ExpenseRequest> pendingRequests = financeManager.getPendingRequests();
+        view.displayExpenseRequests(pendingRequests);
     }
 
     public void displayProfile() {
