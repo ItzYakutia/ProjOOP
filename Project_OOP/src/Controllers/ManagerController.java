@@ -1,87 +1,49 @@
 package Controllers;
 
 import Models.*;
-import java.util.ArrayList;
+import Views.ManagerView;
+
 import java.util.List;
 
 public class ManagerController {
+    private Manager manager;
+    private ManagerView view;
 
-    private List<Course> courses;
-    private List<Student> students;
-    private List<Teacher> teachers;
-
-    public ManagerController() {
-        this.courses = new ArrayList<>();
-        this.students = new ArrayList<>();
-        this.teachers = new ArrayList<>();
+    public ManagerController(Manager manager, ManagerView view) {
+        this.manager = manager;
+        this.view = view;
     }
 
-    public void createLesson(Course course) {
-        System.out.println("Lesson created for course: " + course.getName());
+    public void showManagedEmployees() {
+        List<Employee> employees = manager.getManagedEmployees();
+        view.displayManagedEmployees(employees);
     }
 
-    public void createCourse(String title) {
-        Course newCourse = new Course(title, title, title, 0, null, null, null, null);
-        courses.add(newCourse);
-        System.out.println("Course created with title: " + title);
+    public void viewEmployeeDetails(Employee employee) {
+        view.displayEmployeeDetails(employee);
     }
 
-    public void approveRegistration(String studentId, Course course, boolean isApproved) {
-        if (isApproved) {
-            System.out.println("Registration approved for student ID: " + studentId + " in course: " + course.getName());
-        } else {
-            System.out.println("Registration denied for student ID: " + studentId + " in course: " + course.getName());
-        }
+    public void createPerformanceReport(Employee employee, String feedback, int rating) {
+        PerformanceReport report = manager.createPerformanceReport(employee, feedback, rating);
+        view.displayPerformanceReport(report);
     }
 
-    public void addCourse(Course course) {
-        courses.add(course);
-        System.out.println("Course added: " + course.getName());
+    public void manageRequests() {
+        List<Request> requests = manager.getRequests();
+        view.displayRequests(requests);
     }
 
-    public void assignTeacher(String email, String lessonId) {
-        System.out.println("Teacher with email: " + email + " assigned to lesson ID: " + lessonId);
+    public void handleRequest(Request request) {
+        manager.handleRequest(request);
+        view.displayMessage("Request handled: " + request);
     }
 
-    public void manageNews(String text, String title, String type) {
-        switch (type.toLowerCase()) {
-            case "add":
-                System.out.println("News added: " + title);
-                break;
-            case "edit":
-                System.out.println("News edited: " + title);
-                break;
-            case "delete":
-                System.out.println("News deleted: " + title);
-                break;
-            default:
-                System.out.println("Invalid news management type: " + type);
-        }
+    public void viewMessages() {
+        List<Message> messages = manager.getMessages();
+        view.displayMessages(messages);
     }
 
-    public Student viewStudent(String email) {
-        for (Student student : students) {
-            if (student.getEmail().equals(email)) {
-                System.out.println("Found student: " + student);
-                return student;
-            }
-        }
-        System.out.println("No student found with email: " + email);
-        return null;
-    }
-
-    public Teacher viewTeacher(String email) {
-        for (Teacher teacher : teachers) {
-            if (teacher.getEmail().equals(email)) {
-                System.out.println("Found teacher: " + teacher);
-                return teacher;
-            }
-        }
-        System.out.println("No teacher found with email: " + email);
-        return null;
-    }
-
-    public List<Course> viewCourses() {
-        return courses;
+    public void viewProfile() {
+        view.displayProfile(manager);
     }
 }
