@@ -71,4 +71,8 @@ public class Researcher extends Employee {
         student.setResearchSupervisor(supervisor);
         System.out.println("Research Supervisor " + supervisor.getNameFirst() + " assigned to student: " + student.getNameFirst());
     }
+
+	@Override
+	public void receiveNotification(String message) {		
+	}
 }
