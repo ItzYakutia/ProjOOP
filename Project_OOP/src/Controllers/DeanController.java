@@ -20,7 +20,7 @@ public class DeanController {
 
     public void assignTeacher(String courseName, Teacher teacher) {
         dean.assignTeacher(courseName, teacher);
-        deanView.displayTeacherAssignment(teacher.getFirstName(), courseName);
+        deanView.displayTeacherAssignment(teacher.getNameFirst(), courseName);
     }
 
     public void reviewResearchProject(String projectTitle) {
