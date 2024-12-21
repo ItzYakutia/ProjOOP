@@ -38,4 +38,16 @@ public class Dean extends Employee {
         System.out.println("Dean " + getFirstName() + " is reviewing the project: " + projectTitle);
         return true;
     }
+
+    public void manageDepartment(String departmentName, boolean activate) {
+        if (activate) {
+            System.out.println("Dean " + getFirstName() + " activated the department: " + departmentName);
+        } else {
+            System.out.println("Dean " + getFirstName() + " deactivated the department: " + departmentName);
+        }
+    }
+
+    public void signDocument(String documentName) {
+        System.out.println("Dean " + getFirstName() + " signed the document: " + documentName);
+    }
 }
