@@ -3,8 +3,8 @@ package Models;
 public class Rector extends Employee {
     private double universityBudget;
 
-    public Rector(String username, String userId, String firstName, String lastName, String email, double budget) {
-        super(username, userId, firstName, lastName, email);
+    public Rector(String username, String userId, String firstName, String lastName, String email, double budget, String password) {
+        super(username, userId, firstName, lastName, email, password);
         this.universityBudget = budget;
     }
 
@@ -21,7 +21,7 @@ public class Rector extends Employee {
     }
 
     public void approveDeanDecision(String decision) {
-        System.out.println("Rector " + getFirstName() + " approved the dean's decision: " + decision);
+        System.out.println("Rector " + getNameFirst() + " approved the dean's decision: " + decision);
     }
 
     public void allocateFunding(String facultyName, double amount) throws IllegalArgumentException {
@@ -33,6 +33,10 @@ public class Rector extends Employee {
     }
 
     public void signAgreement(String agreementName) {
-        System.out.println("Rector " + getFirstName() + " signed the agreement: " + agreementName);
+        System.out.println("Rector " + getNameFirst() + " signed the agreement: " + agreementName);
     }
+
+	@Override
+	public void receiveNotification(String message) {		
+	}
 }
