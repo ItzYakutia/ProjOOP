@@ -68,8 +68,3 @@ public class ResearchPaper {
         }
     }
 }
-
-enum Format {
-    PLAINTEXT,
-    BIBTEX
-}
