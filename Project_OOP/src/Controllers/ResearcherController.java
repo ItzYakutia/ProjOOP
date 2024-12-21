@@ -1,38 +1,24 @@
 package Controllers;
 
 import Models.ResearchPaper;
-import Models.ResearchProject;
-import Models.Researcher;
-import Views.ResearcherView;
+import Models.Format;
+import Views.ResearchPaperView;
 
-import java.util.Comparator;
+public class ResearchPaperController {
+    private ResearchPaper researchPaper;
+    private ResearchPaperView researchPaperView;
 
-public class ResearcherController {
-    private Researcher researcher;
-    private ResearcherView researcherView;
-
-    public ResearcherController(Researcher researcher, ResearcherView researcherView) {
-        this.researcher = researcher;
-        this.researcherView = researcherView;
+    public ResearchPaperController(ResearchPaper researchPaper, ResearchPaperView researchPaperView) {
+        this.researchPaper = researchPaper;
+        this.researchPaperView = researchPaperView;
     }
 
-    public void addResearchPaper(ResearchPaper paper) {
-        researcher.addResearchPaper(paper);
-        researcherView.displayMessage("Added a new research paper: " + paper.getTitle());
+    public void showPaperDetails() {
+        researchPaperView.displayPaperDetails(researchPaper);
     }
 
-    public void addResearchProject(ResearchProject project) {
-        researcher.addResearchProject(project);
-        researcherView.displayMessage("Joined the research project: " + project.getTopic());
-    }
-
-    public void printPapers(Comparator<ResearchPaper> comparator) {
-        researcher.printPapers(comparator);
-        researcherView.displayResearchPapers(researcher.getResearchPapers());
-    }
-
-    public void calculateHIndex() {
-        int hIndex = researcher.calculateHIndex();
-        researcherView.displayHIndex(hIndex);
+    public void showCitation(Format format) {
+        String citation = researchPaper.getCitation(format);
+        researchPaperView.displayCitation(citation);
     }
 }
