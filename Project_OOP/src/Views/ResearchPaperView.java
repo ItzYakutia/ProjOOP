@@ -1,7 +1,6 @@
 package Views;
 
 import Models.ResearchPaper;
-import Models.Format;
 
 public class ResearchPaperView {
 
