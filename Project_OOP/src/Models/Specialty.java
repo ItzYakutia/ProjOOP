@@ -1,25 +1,26 @@
 package Models;
 
 public enum Specialty {
-    COMPUTER_SCIENCE("Computer Science"),
-    INFORMATION_TECHNOLOGY("Information Technology"),
-    SOFTWARE_ENGINEERING("Software Engineering"),
-    DATA_SCIENCE("Data Science"),
-    CYBER_SECURITY("Cyber Security"),
-    ARTIFICIAL_INTELLIGENCE("Artificial Intelligence");
+
+    SOFTWARE_ENGINEERING("Software Engineering", "SITE"),
+    COMPUTER_SCIENCE("Computer Science", "SITE"),
+    PETROLEUM_ENGINEERING("Petroleum Engineering", "Oil and Gas"),
+    MECHANICAL_ENGINEERING("Mechanical Engineering", "Engineering"),
+    ELECTRICAL_ENGINEERING("Electrical Engineering", "Engineering");
 
     private final String displayName;
+    private final String school; // Школа, к которой относится специальность
 
-    Specialty(String displayName) {
+    Specialty(String displayName, String school) {
         this.displayName = displayName;
+        this.school = school;
     }
 
     public String getDisplayName() {
         return displayName;
     }
 
-    @Override
-    public String toString() {
-        return displayName;
+    public String getSchool() {
+        return school;
     }
 }
