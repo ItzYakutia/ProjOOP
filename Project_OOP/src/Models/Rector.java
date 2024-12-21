@@ -58,7 +58,7 @@ public class Rector extends Employee {
 
     public Researcher getTopCitedResearcherBySchool(List<Researcher> researchers, String schoolName) {
         return researchers.stream()
-                .filter(researcher -> schoolName.equals(researcher.getSchool())
+                .filter(researcher -> schoolName.equals(researcher.)) // how??
                 .max(Comparator.comparingInt(Researcher::calculateHIndex))
                 .orElse(null);
     }
