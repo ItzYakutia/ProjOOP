@@ -12,35 +12,31 @@ public class RectorController {
         this.rectorView = rectorView;
     }
 
-    public void manageBudget() {
-        rectorView.manageBudget(rector);
+    public void manageBudget(double amount) {
+        try {
+            rector.manageBudget(amount);
+            rectorView.displayBudget(rector.getUniversityBudget());
+        } catch (IllegalArgumentException e) {
+            rectorView.displayError(e.getMessage());
+        }
     }
 
-    public void approveProgram() {
-        rectorView.approveProgram(rector);
+    public void approveDecision(String decision) {
+        rector.approveDeanDecision(decision);
+        rectorView.displayApproval(decision);
     }
 
-    public void revokeProgram() {
-        rectorView.revokeProgram(rector);
+    public void allocateFunding(String facultyName, double amount) {
+        try {
+            rector.allocateFunding(facultyName, amount);
+            rectorView.displayFundingAllocation(facultyName, amount);
+        } catch (IllegalArgumentException e) {
+            rectorView.displayError(e.getMessage());
+        }
     }
 
-    public void appointDean() {
-        rectorView.appointDean(rector);
-    }
-
-    public void overseeResearchProjects() {
-        rectorView.overseeResearchProjects(rector);
-    }
-
-    public void addressUniversityIssues() {
-        rectorView.addressUniversityIssues(rector);
-    }
-
-    public void signDocument() {
-        rectorView.signDocument(rector);
-    }
-
-    public void displayMenu() {
-        rectorView.displayMenu(rector);
+    public void signAgreement(String agreementName) {
+        rector.signAgreement(agreementName);
+        rectorView.displaySignedAgreement(agreementName);
     }
 }
