@@ -24,7 +24,7 @@ public class Course {
         this.teachers = new ArrayList<>();
     }
 
-    // Геттеры и сеттеры
+    // Геттеры
     public String getCourseId() {
         return courseId;
     }
@@ -53,24 +53,56 @@ public class Course {
         return teachers;
     }
 
-    public void addTeacher(Teacher teacher) {
-        if (!teachers.contains(teacher)) {
-            teachers.add(teacher);
+    // Добавление студента
+    public boolean addStudent(Student student) {
+        if (students.contains(student)) {
+            return false; // Студент уже зарегистрирован
         }
+        students.add(student);
+        return true;
     }
 
-    public void addStudent(Student student) {
-        if (!students.contains(student)) {
-            students.add(student);
+    // Добавление преподавателя
+    public boolean addTeacher(Teacher teacher) {
+        if (teachers.contains(teacher)) {
+            return false; // Преподаватель уже назначен
         }
+        teachers.add(teacher);
+        return true;
     }
 
-    // Реализация equals 
+    // Удаление студента
+    public boolean removeStudent(Student student) {
+        return students.remove(student);
+    }
+
+    // Удаление преподавателя
+    public boolean removeTeacher(Teacher teacher) {
+        return teachers.remove(teacher);
+    }
+
+    // Переопределение equals и hashCode
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Course course = (Course) o;
         return courseId.equals(course.courseId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(courseId);
+    }
+
+    @Override
+    public String toString() {
+        return "Course{" +
+                "courseId='" + courseId + '\'' +
+                ", name='" + name + '\'' +
+                ", credits=" + credits +
+                ", students=" + students.size() +
+                ", teachers=" + teachers.size() +
+                '}';
     }
 }
