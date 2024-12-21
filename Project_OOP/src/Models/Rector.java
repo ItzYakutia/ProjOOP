@@ -65,7 +65,7 @@ public class Rector extends Employee {
         System.out.println("Resolving university issue: " + issue);
     }
 
-    // Document Signing
+    // Document Signin
     public void signDocument(String document) {
         System.out.println("Document signed by Rector: " + document);
     }
