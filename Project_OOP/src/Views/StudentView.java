@@ -2,6 +2,7 @@ package Views;
 
 import Models.*;
 
+import java.util.List;
 import java.util.Map;
 
 public class StudentView {
@@ -31,6 +32,16 @@ public class StudentView {
                 " is now " + (isHead ? "the Head of an Organization." : "no longer the Head of an Organization."));
     }
 
+    // Показ успешной регистрации на курс
+    public void displayCourseRegistrationSuccess(Course course, Student student) {
+        System.out.println("Student " + student.getNameFirst() + " successfully registered for course: " + course.getName());
+    }
+
+    // Показ успешного удаления с курса
+    public void displayCourseUnregistrationSuccess(Course course, Student student) {
+        System.out.println("Student " + student.getNameFirst() + " successfully unregistered from course: " + course.getName());
+    }
+
     // Показ транскрипта
     public void displayTranscript(Student student) {
         System.out.println("Transcript for " + student.getNameFirst() + " " + student.getNameLast() + ":");
@@ -43,12 +54,37 @@ public class StudentView {
         }
     }
 
+    // Показ отсортированных курсов
+    public void displaySortedCoursesByName(List<Course> courses, Student student) {
+        System.out.println("Courses sorted by name for " + student.getNameFirst() + ":");
+        for (Course course : courses) {
+            System.out.println("- " + course.getName());
+        }
+    }
+
+    // Показ превышения лимита провалов
+    public void displayFailLimitExceeded(Student student) {
+        System.out.println("Student " + student.getNameFirst() + " has exceeded the fail limit!");
+    }
+
+    // Показ допустимого лимита провалов
+    public void displayFailLimitOk(Student student) {
+        System.out.println("Student " + student.getNameFirst() + " is within the fail limit.");
+    }
+
+    // Показ успешной оценки преподавателя
+    public void displayTeacherRatedSuccess(Teacher teacher, int rating) {
+        System.out.println("Teacher " + teacher.getNameFirst() + " " + teacher.getNameLast() +
+                " successfully rated with " + rating + " stars.");
+    }
+
     // Показ информации о преподавателе
     public void displayTeacherInfo(Teacher teacher) {
         System.out.println("Teacher Information:");
         System.out.println("Name: " + teacher.getNameFirst() + " " + teacher.getNameLast());
         System.out.println("Title: " + teacher.getTitle());
         System.out.println("Courses: " + teacher.getCourses().size());
+        System.out.println("Average Rating: " + teacher.getAverageRating());
     }
 
     // Показ ошибки
