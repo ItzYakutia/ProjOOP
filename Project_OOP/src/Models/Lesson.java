@@ -1,25 +1,32 @@
 package Models;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class Lesson {
 
     private String lessonId; // Уникальный идентификатор занятия
     private LessonType type; // Тип занятия (например, Лекция или Практика)
-    private LocalDateTime dateTime; // Дата и время занятия
+    private LocalDateTime startTime; // Время начала занятия
+    private LocalDateTime endTime;   // Время окончания занятия
     private Course course; // Курс, к которому относится занятие
     private Teacher teacher; // Преподаватель, проводящий занятие
     private String room; // Аудитория для занятия
 
-    public Lesson(String lessonId, LessonType type, LocalDateTime dateTime, Course course, Teacher teacher, String room) {
+    // Конструктор
+    public Lesson(String lessonId, LessonType type, LocalDateTime startTime, LocalDateTime endTime, Course course, Teacher teacher, String room) {
         this.lessonId = lessonId;
         this.type = type;
-        this.dateTime = dateTime;
+        this.startTime = startTime;
+        this.endTime = endTime;
         this.course = course;
         this.teacher = teacher;
         this.room = room;
+
+        validateLessonTime();
     }
 
+    // Геттеры и сеттеры
     public String getLessonId() {
         return lessonId;
     }
@@ -36,12 +43,22 @@ public class Lesson {
         this.type = type;
     }
 
-    public LocalDateTime getDateTime() {
-        return dateTime;
+    public LocalDateTime getStartTime() {
+        return startTime;
     }
 
-    public void setDateTime(LocalDateTime dateTime) {
-        this.dateTime = dateTime;
+    public void setStartTime(LocalDateTime startTime) {
+        this.startTime = startTime;
+        validateLessonTime();
+    }
+
+    public LocalDateTime getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(LocalDateTime endTime) {
+        this.endTime = endTime;
+        validateLessonTime();
     }
 
     public Course getCourse() {
@@ -68,6 +85,26 @@ public class Lesson {
         this.room = room;
     }
 
+    // Проверка времени урока (начало должно быть до окончания)
+    private void validateLessonTime() {
+        if (startTime.isAfter(endTime)) {
+            throw new IllegalArgumentException("Lesson start time must be before end time.");
+        }
+    }
+
+    // Проверка пересечения времени с другим уроком
+    public boolean isOverlapping(Lesson otherLesson) {
+        return this.room.equals(otherLesson.room) && // Один и тот же кабинет
+                this.startTime.isBefore(otherLesson.endTime) &&
+                this.endTime.isAfter(otherLesson.startTime);
+    }
+
+    // Метод для форматирования даты и времени
+    public String getFormattedTime() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        return startTime.format(formatter) + " - " + endTime.format(formatter);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -86,9 +123,9 @@ public class Lesson {
         return "Lesson{" +
                 "lessonId='" + lessonId + '\'' +
                 ", type=" + type +
-                ", dateTime=" + dateTime +
-                ", course=" + course +
-                ", teacher=" + teacher +
+                ", time=" + getFormattedTime() +
+                ", course=" + course.getName() +
+                ", teacher=" + teacher.getNameLast() + " " + teacher.getNameFirst().charAt(0) + "." +
                 ", room='" + room + '\'' +
                 '}';
     }
