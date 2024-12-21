@@ -10,6 +10,7 @@ public class Teacher extends Employee {
     private List<Course> courses; // Курсы, которые ведет преподаватель
     private List<String> complaints; // Жалобы на студентов
     private Researcher researcherProfile; // Профиль исследователя (если есть)
+    private List<Integer> ratings; // Оценки преподавателю (1-5)
 
     // Конструктор
     public Teacher(String username, String password, String userId, String nameFirst, String nameLast, String email,
@@ -114,19 +115,25 @@ public class Teacher extends Employee {
         return researcherProfile.calculateHIndex();
     }
 
-    
-    // Добавление оценки преподавателю
-    public void addRating(int rating) {
-        if (rating < 1 || rating > 5) {
-            throw new IllegalArgumentException("Rating must be between 1 and 5.");
-        }
-        ratings.add(rating);
+    //добавление рейтинга
+public void addRating(int rating) {
+    // Проверяем, чтобы оценка находилась в диапазоне от 1 до 5
+    if (rating < 1 || rating > 5) {
+        throw new IllegalArgumentException("Rating must be between 1 and 5.");
     }
+    ratings.add(rating); // Добавляем оценку в список
+}
 
-    // Вычисление средней оценки преподавателя
-    public double getAverageRating() {
-        return ratings.isEmpty() ? 0.0 : ratings.stream().mapToInt(Integer::intValue).average().orElse(0.0);
+//Метод вычисления средней оценки:
+public double getAverageRating() {
+    // Если список пустой, возвращаем 0.0
+    if (ratings.isEmpty()) {
+        return 0.0;
     }
+    // Вычисляем среднее значение всех оценок в списке
+    return ratings.stream().mapToInt(Integer::intValue).average().orElse(0.0);
+}
+
     
     // Переопределение методов equals, hashCode и toString
     @Override
