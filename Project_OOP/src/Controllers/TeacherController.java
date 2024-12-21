@@ -92,6 +92,19 @@ public class TeacherController {
         }
     }
 
+     // Метод для получения средней оценки преподавателя
+    public void displayAverageRating(Teacher teacher) {
+        double averageRating = teacher.getAverageRating();
+        teacherView.displayAverageRating(teacher, averageRating);
+    }
+
+    // Метод для студента, чтобы поставить оценку преподавателю
+    public void rateTeacher(Student student, Teacher teacher, int rating) {
+        student.rateTeacher(teacher, rating); // Вызываем метод в Student
+        teacherView.displayRatingAdded(teacher, rating);
+    }
+
+
     // Присоединение преподавателя к исследовательскому проекту
     public void joinResearchProject(Teacher teacher, ResearchProject project) {
         try {
