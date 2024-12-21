@@ -11,7 +11,6 @@ public class Teacher extends Employee {
     private List<String> complaints; // Жалобы на студентов
     private Researcher researcherProfile; // Профиль исследователя (если есть)
     private List<Integer> ratings; // Оценки преподавателю (1-5)
-    private List<ResearchProject> researchProjects; // Список исследовательских проектов
 
 
     // Конструктор
@@ -94,104 +93,41 @@ public class Teacher extends Employee {
             mark.setTotal(attestation1 + attestation2 + finalExam);
         }
     }
-//создать новый проект и добавить его в свой список:
-    public void addResearchProject(ResearchProject project) {
-    if (project == null) {
-        throw new IllegalArgumentException("Project cannot be null.");
-    }
-    if (!researchProjects.contains(project)) {
-        researchProjects.add(project); // Добавляем проект в список
-        System.out.println("Research project '" + project.getTitle() + "' added successfully.");
-    } else {
-        throw new IllegalArgumentException("This project is already in the teacher's list.");
-    }
-}
-//преподавателю присоединиться к существующему проекту:
-    public void joinResearchProject(ResearchProject project) {
-    if (project == null) {
-        throw new IllegalArgumentException("Project cannot be null.");
-    }
-    if (!researchProjects.contains(project)) {
-        researchProjects.add(project); // Присоединяем преподавателя к проекту
-        project.addMember(this); // Добавляем преподавателя как участника проекта
-        System.out.println("Successfully joined the research project: " + project.getTitle());
-    } else {
-        throw new IllegalArgumentException("Teacher is already part of this project.");
-    }
-}
-    //список всех научных статей, связанных с преподавателем:
-    public void getResearchPapers() {
-    if (!isResearcher()) {
-        throw new IllegalStateException("This teacher is not a Researcher.");
-    }
-
-    System.out.println("Research papers for " + getNameFirst() + " " + getNameLast() + ":");
-    researcherProfile.printPapers(null); // Вывод всех статей через профиль исследователя
-}
-
-
-
-    // Методы работы с научными статьями
-    public void addResearchPaper(ResearchPaper paper) {
-        if (!isResearcher()) {
-            throw new IllegalStateException("This teacher is not a Researcher.");
-        }
-        researcherProfile.addResearchPaper(paper);
-    }
-
-    public void printResearchPapers(Comparator<ResearchPaper> comparator) {
-        if (!isResearcher()) {
-            throw new IllegalStateException("This teacher is not a Researcher.");
-        }
-        researcherProfile.printPapers(comparator);
-    }
-
-    public int calculateHIndex() {
-        if (!isResearcher()) {
-            throw new IllegalStateException("This teacher is not a Researcher.");
-        }
-        return researcherProfile.calculateHIndex();
-    }
-
-    //добавление рейтинга
-public void addRating(int rating) {
-    // Проверяем, чтобы оценка находилась в диапазоне от 1 до 5
-    if (rating < 1 || rating > 5) {
-        throw new IllegalArgumentException("Rating must be between 1 and 5.");
-    }
-    ratings.add(rating); // Добавляем оценку в список
-}
-
-//Метод вычисления средней оценки:
-public double getAverageRating() {
-    // Если список пустой, возвращаем 0.0
-    if (ratings.isEmpty()) {
-        return 0.0;
-    }
-    // Вычисляем среднее значение всех оценок в списке
-    return ratings.stream().mapToInt(Integer::intValue).average().orElse(0.0);
-}
-
-//удаление учителя из курса 
-public void removeCourse(Course course) {
-    if (courses.contains(course)) {
-        courses.remove(course); // Удаляем курс из списка курсов преподавателя
-    } else {
-        throw new IllegalArgumentException("Course not found for this teacher.");
-    }
-}
-//добавление учителя в курс 
-public void addCourse(Course course) {
-    if (!courses.contains(course)) { // Проверяем, есть ли уже этот курс в списке
-        courses.add(course); // Добавляем курс в список курсов преподавателя
-    } else {
-        throw new IllegalArgumentException("This course is already assigned to the teacher.");
-    }
-}
-
-
-
-    
+	    //добавление рейтинга
+	public void addRating(int rating) {
+	    // Проверяем, чтобы оценка находилась в диапазоне от 1 до 5
+	    if (rating < 1 || rating > 5) {
+	        throw new IllegalArgumentException("Rating must be between 1 and 5.");
+	    }
+	    ratings.add(rating); // Добавляем оценку в список
+	}
+	
+	//Метод вычисления средней оценки:
+	public double getAverageRating() {
+	    // Если список пустой, возвращаем 0.0
+	    if (ratings.isEmpty()) {
+	        return 0.0;
+	    }
+	    // Вычисляем среднее значение всех оценок в списке
+	    return ratings.stream().mapToInt(Integer::intValue).average().orElse(0.0);
+	}
+	
+	//удаление учителя из курса 
+	public void removeCourse(Course course) {
+	    if (courses.contains(course)) {
+	        courses.remove(course); // Удаляем курс из списка курсов преподавателя
+	    } else {
+	        throw new IllegalArgumentException("Course not found for this teacher.");
+	    }
+	}
+	//добавление учителя в курс 
+	public void addCourse(Course course) {
+	    if (!courses.contains(course)) { // Проверяем, есть ли уже этот курс в списке
+	        courses.add(course); // Добавляем курс в список курсов преподавателя
+	    } else {
+	        throw new IllegalArgumentException("This course is already assigned to the teacher.");
+	    }
+	}
     // Переопределение методов equals, hashCode и toString
     @Override
     public boolean equals(Object o) {
