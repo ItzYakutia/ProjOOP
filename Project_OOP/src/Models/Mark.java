@@ -66,6 +66,10 @@ public class Mark {
     public double getTotal() {
         return total;
     }
+    
+    public void setTotal(double total) {
+    	this.total = total;
+    }
 
     private void calculateTotal() {
         this.total = attestation1 * 0.3 + attestation2 * 0.3 + finalExam * 0.4;
