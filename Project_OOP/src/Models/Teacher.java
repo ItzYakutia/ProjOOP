@@ -134,6 +134,25 @@ public double getAverageRating() {
     return ratings.stream().mapToInt(Integer::intValue).average().orElse(0.0);
 }
 
+//удаление учителя из курса 
+public void removeCourse(Course course) {
+    if (courses.contains(course)) {
+        courses.remove(course); // Удаляем курс из списка курсов преподавателя
+    } else {
+        throw new IllegalArgumentException("Course not found for this teacher.");
+    }
+}
+//добавление учителя в курс 
+public void addCourse(Course course) {
+    if (!courses.contains(course)) { // Проверяем, есть ли уже этот курс в списке
+        courses.add(course); // Добавляем курс в список курсов преподавателя
+    } else {
+        throw new IllegalArgumentException("This course is already assigned to the teacher.");
+    }
+}
+
+
+
     
     // Переопределение методов equals, hashCode и toString
     @Override
