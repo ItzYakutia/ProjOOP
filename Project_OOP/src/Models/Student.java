@@ -151,14 +151,14 @@ public class Student extends User {
         }
     }
     
-    // Получение списка курсов студента с указанием типа (Major, Minor, Free Elective)
-public void listCoursesWithTypes() {
-    System.out.println("Courses for " + getNameFirst() + " " + getNameLast() + ":");
-    for (Course course : courses) {
-        CourseType type = course.determineCourseTypeForStudent(this);
-        System.out.println("- " + course.getName() + " (" + type + ")");
-    }
-}
+	// Получение списка курсов студента с указанием типа (Major, Minor, Free Elective)
+	public void listCoursesWithTypes() {
+	    System.out.println("Courses for " + getNameFirst() + " " + getNameLast() + ":");
+	    for (Course course : courses) {
+	        CourseType type = course.determineCourseTypeForStudent(this);
+	        System.out.println("- " + course.getName() + " (" + type + ")");
+	    }
+	}
 
 
     // Реализация equals и hashCode
@@ -189,4 +189,8 @@ public void listCoursesWithTypes() {
                 ", isHeadOfOrganization=" + isHeadOfOrganization +
                 '}';
     }
+
+	@Override
+	public void receiveNotification(String message) {
+	}
 }
