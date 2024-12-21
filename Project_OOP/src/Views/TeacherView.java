@@ -39,19 +39,6 @@ public class TeacherView {
         }
     }
 
-    // Метод для отображения научных статей
-    public void displayResearchPapers(List<ResearchPaper> researchPapers, Comparator<ResearchPaper> comparator) {
-        System.out.println("Research Papers (sorted):");
-        researchPapers.stream().sorted(comparator).forEach(paper -> {
-            System.out.println("- " + paper.getTitle() + " (Citations: " + paper.getCitations() + ")");
-        });
-    }
-
-    // Метод для отображения h-индекса преподавателя
-    public void displayHIndex(Teacher teacher, int hIndex) {
-        System.out.println("H-Index for " + teacher.getNameFirst() + " " + teacher.getNameLast() + ": " + hIndex);
-    }
-
     // Метод для отображения сообщений об успехе
     public void displaySuccessMessage(String message) {
         System.out.println("SUCCESS: " + message);
@@ -68,18 +55,10 @@ public class TeacherView {
         System.out.println("- Name: " + course.getName());
         System.out.println("- Credits: " + course.getCredits());
         System.out.println("- Instructors: ");
-        for (Teacher teacher : course.getInstructors()) {
+        for (Teacher teacher : course.getAssignedTeachers()) {
             System.out.println("  * " + teacher.getNameFirst() + " " + teacher.getNameLast());
         }
-        System.out.println("- Students Enrolled: " + course.getStudents().size());
-    }
-
-    // Метод для отображения списка исследовательских проектов
-    public void displayResearchProjects(List<ResearchProject> projects) {
-        System.out.println("Research Projects:");
-        for (ResearchProject project : projects) {
-            System.out.println("- " + project.getTopic() + " (Participants: " + project.getParticipants().size() + ")");
-        }
+        System.out.println("- Students Enrolled: " + course.getEnrolledStudents().size());
     }
      // Отображение средней оценки преподавателя
     public void displayAverageRating(Teacher teacher, double averageRating) {
