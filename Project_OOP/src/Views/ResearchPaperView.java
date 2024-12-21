@@ -1,14 +1,23 @@
 package Views;
 
-import java.util.List;
-
-import Models.*;
+import Models.ResearchPaper;
+import Models.Format;
 
 public class ResearchPaperView {
-    public void displayResearchPapers(List<ResearchPaper> papers) {
-        System.out.println("Research Papers:");
-        for (ResearchPaper paper : papers) {
-            System.out.println("- " + paper.getTitle() + " (" + paper.getCitations() + " citations)");
-        }
+
+    public void displayPaperDetails(ResearchPaper paper) {
+        System.out.println("Research Paper Details:");
+        System.out.println("- Title: " + paper.getTitle());
+        System.out.println("- Authors: " + String.join(", ", paper.getAuthors()));
+        System.out.println("- Journal: " + paper.getJournal());
+        System.out.println("- Date: " + paper.getDate());
+        System.out.println("- Citations: " + paper.getCitations());
+        System.out.println("- Pages: " + paper.getPages());
+        System.out.println("- DOI: " + paper.getDoi());
+    }
+
+    public void displayCitation(String citation) {
+        System.out.println("Citation:");
+        System.out.println(citation);
     }
 }
