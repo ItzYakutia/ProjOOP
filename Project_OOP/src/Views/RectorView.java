@@ -1,5 +1,8 @@
 package Views;
 
+import Models.ResearchPaper;
+import Models.Researcher;
+
 public class RectorView {
     public void displayBudget(double budget) {
         System.out.println("Current University Budget: " + budget);
@@ -15,6 +18,18 @@ public class RectorView {
 
     public void displaySignedAgreement(String agreementName) {
         System.out.println("Agreement signed: " + agreementName);
+    }
+
+    public void displayResearchPaper(ResearchPaper paper) {
+        System.out.println(paper.toString());
+    }
+
+    public void displayTopCitedResearcher(Researcher researcher) {
+        if (researcher != null) {
+            System.out.println("Top Cited Researcher: " + researcher.getNameFirst() + " " + researcher.getNameLast());
+        } else {
+            System.out.println("No top researcher found.");
+        }
     }
 
     public void displayError(String message) {
