@@ -1,6 +1,7 @@
 package Views;
 
 import Models.*;
+
 import java.util.List;
 
 public class ManagerView {
@@ -25,35 +26,12 @@ public class ManagerView {
     public void displayCreateReportForm(Employee employee) {
         System.out.println("Create a new Performance Report for Employee:");
         System.out.println("Employee: " + employee.getNameFirst() + " " + employee.getNameLast());
-        System.out.println("Please enter the report details.");
-    }
-
-    public void displayReportConfirmation(boolean success) {
-        if (success) {
-            System.out.println("Performance report created successfully.");
-        } else {
-            System.out.println("Failed to create the performance report.");
-        }
     }
 
     public void displayRequests(List<Request> requests) {
         System.out.println("Requests:");
         for (Request request : requests) {
             System.out.println(request);
-        }
-    }
-
-    public void displayRequestApprovalForm(Request request) {
-        System.out.println("Review Request:");
-        System.out.println(request);
-        System.out.println("Approve or deny this request.");
-    }
-
-    public void displayApprovalConfirmation(boolean success) {
-        if (success) {
-            System.out.println("Request approved successfully.");
-        } else {
-            System.out.println("Failed to approve the request.");
         }
     }
 
@@ -67,5 +45,16 @@ public class ManagerView {
     public void displayProfile(Manager manager) {
         System.out.println("Manager Profile:");
         System.out.println(manager);
+    }
+
+    public void displayCourses(List<Course> courses) {
+        System.out.println("Courses:");
+        for (Course course : courses) {
+            System.out.println(course);
+        }
+    }
+
+    public void displayMessage(String message) {
+        System.out.println(message);
     }
 }
