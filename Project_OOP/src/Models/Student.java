@@ -140,14 +140,17 @@ public class Student extends User {
                 .toList();
     }
 
-    // Оценка преподавателя
+     // Метод для оценки преподавателя
     public void rateTeacher(Teacher teacher, int rating) {
-        if (rating < 1 || rating > 5) {
-            throw new IllegalArgumentException("Rating must be between 1 and 5.");
+        try {
+            teacher.addRating(rating); // Передаём оценку в метод преподавателя
+            System.out.println("Student " + getNameFirst() + " rated Teacher " +
+                    teacher.getNameFirst() + " with " + rating + " stars.");
+        } catch (IllegalArgumentException e) {
+            System.out.println("Error while rating teacher: " + e.getMessage());
         }
-        teacher.addRating(rating);
     }
-
+    
     // Получение списка курсов студента с указанием типа (Major, Minor, Free Elective)
 public void listCoursesWithTypes() {
     System.out.println("Courses for " + getNameFirst() + " " + getNameLast() + ":");
