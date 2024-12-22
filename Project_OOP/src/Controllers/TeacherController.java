@@ -14,6 +14,14 @@ public class TeacherController {
         this.teacherView = teacherView;
     }
 
+
+    public void generateReport(Teacher teacher, Course course) {
+        try {
+            teacher.generateCourseReport(course);
+        } catch (IllegalArgumentException e) {
+            teacherView.displayError(e.getMessage());
+        }
+    }
     // Сортировка преподавателей по фамилии (алфавитно)
     public void sortTeachersByLastName(List<Teacher> teachers) {
         teachers.sort(Comparator.comparing(Teacher::getNameLast));
