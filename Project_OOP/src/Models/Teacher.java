@@ -175,4 +175,9 @@ public class Teacher extends Employee {
     public void receiveNotification(String message) {
         System.out.println("Notification for Teacher " + getNameFirst() + ": " + message);
     }
+    
+    @Override
+    public void sendMessage(String recipientUserId, String message) {
+        System.out.println("Message from " + getUserId() + " to " + recipientUserId + ": " + message);
+    }
 }
