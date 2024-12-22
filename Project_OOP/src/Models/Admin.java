@@ -23,4 +23,9 @@ public class Admin extends User {
     public int hashCode() {
         return Objects.hash(super.hashCode(), getUsername());
     }
+
+    @Override
+    public void sendMessage(String recipientUserId, String message) {
+        System.out.println("Message from " + getUserId() + " to " + recipientUserId + ": " + message);
+    }
 }
