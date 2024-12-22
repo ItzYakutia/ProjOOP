@@ -4,7 +4,6 @@ import Models.*;
 import java.util.List;
 
 public class AdminView {
-
     public void displayUserAccounts(List<User> users) {
         System.out.println("User Accounts:");
         for (User user : users) {
@@ -62,5 +61,9 @@ public class AdminView {
     public void displayProfile(Admin admin) {
         System.out.println("Admin Profile:");
         System.out.println(admin);
+    }
+
+    public void displayError(String errorMessage) {
+        System.out.println("Error: " + errorMessage);
     }
 }
