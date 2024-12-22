@@ -9,13 +9,9 @@ import java.util.List;
 public class CourseController {
 
     private final CourseView courseView;
-    private final TeacherView teacherView;
 
     public CourseController(CourseView courseView) {
         this.courseView = courseView;
-    }
-     public TeacherController(TeacherView teacherView) {
-        this.teacherView = teacherView;
     }
 
 
