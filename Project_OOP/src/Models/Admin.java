@@ -151,6 +151,8 @@ public class Admin extends User{
                 return new Dean(userId, firstName, lastName, email, email, School.valueOf(parts[6]), parts[7]);
             case "RESEARCHER":
                 return new Researcher(userId, firstName, lastName, email, parts[6], email);
+            case "FINANCEMANAGER":
+            	return new FinanceManager(email, email, email, email, email, email, email, 0, email, 0);
             default:
                 throw new IllegalArgumentException("Unknown user type: " + type);
         }
