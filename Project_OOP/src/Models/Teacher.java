@@ -11,6 +11,7 @@ public class Teacher extends Employee {
     private List<String> complaints; // Жалобы на студентов
     private Researcher researcherProfile; // Профиль исследователя (если есть)
     private List<Integer> ratings; // Оценки преподавателю (1-5)
+    private List<Lesson> schedule; // Список уроков в расписании
 
 
     // Конструктор
@@ -20,6 +21,7 @@ public class Teacher extends Employee {
         this.title = title;
         this.courses = new ArrayList<>();
         this.complaints = new ArrayList<>();
+        this.schedule = new ArrayList<>();
         // Если учитель является PROFESSOR, создаём профиль Researcher
         if (title == Title.PROFESSOR) {
             this.researcherProfile = new Researcher(username, userId, nameFirst, nameLast, email, password);
@@ -41,6 +43,10 @@ public class Teacher extends Employee {
 
     public List<String> getComplaints() {
         return complaints;
+    }
+    
+    public List<Lesson> getSchedule() {
+        return schedule;
     }
 
     public Researcher getResearcherProfile() {
@@ -73,7 +79,17 @@ public class Teacher extends Employee {
                 ", Text: " + text;
         complaints.add(complaint);
     }
-    
+
+	
+    public void addLessonToSchedule(Lesson lesson) {
+        if (!schedule.contains(lesson)) {
+            schedule.add(lesson);
+        }
+    }
+
+    public void removeLessonFromSchedule(Lesson lesson) {
+        schedule.remove(lesson);
+    }
     // Методы работы с оценками
     public void assignMark(Student student, Course course, double attestation1, double attestation2, double finalExam) {
         if (!courses.contains(course)) {
