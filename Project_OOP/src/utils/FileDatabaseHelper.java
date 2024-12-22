@@ -41,4 +41,33 @@ public class FileDatabaseHelper {
         }
         return records;
     }
+    
+    public static void updateDetails(String userId, String newDetails) throws IOException {
+        List<String> records = getAllRecords();
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(DATABASE_FILE))) {
+            for (String record : records) {
+                if (record.startsWith(userId + ":")) {
+                    // Replace old details with new details
+                    writer.write(newDetails);
+                } else {
+                    writer.write(record);
+                }
+                writer.newLine();
+            }
+        }
+    }
+    
+    public static void deleteRecord(String userId) throws IOException {
+        List<String> records = getAllRecords();
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(DATABASE_FILE))) {
+            for (String record : records) {
+                if (!record.startsWith(userId + ":")) {
+                    writer.write(record);
+                    writer.newLine();
+                }
+            }
+        }
+    }
+
+
 }
