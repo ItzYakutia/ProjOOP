@@ -26,19 +26,37 @@ public class LessonController {
             }
         }
         lessons.add(newLesson);
-        lessonView.displaySuccessMessage("Lesson added successfully for course: " + course.getName());
+        teacher.addLessonToSchedule(newLesson); // Добавляем урок в расписание преподавателя
+
+    // Добавляем урок в расписание каждого студента, зарегистрированного на курс
+    for (Student student : course.getEnrolledStudents()) {
+        student.addLessonToSchedule(newLesson);
     }
 
-    // Удаление урока
-    public void removeLesson(String lessonId, List<Lesson> lessons) {
-        Lesson lessonToRemove = findLessonById(lessonId, lessons);
-        if (lessonToRemove == null) {
-            lessonView.displayErrorMessage("Lesson not found.");
-        } else {
-            lessons.remove(lessonToRemove);
-            lessonView.displaySuccessMessage("Lesson removed successfully: " + lessonToRemove.getLessonId());
-        }
+        lessonView.displaySuccessMessage("Lesson added successfully for course: " + course.getName());
+        
     }
+    
+    //удаление урока
+    public void removeLesson(String lessonId, List<Lesson> lessons) {
+    Lesson lessonToRemove = findLessonById(lessonId, lessons);
+
+    if (lessonToRemove == null) {
+        lessonView.displayErrorMessage("Lesson not found.");
+        return;
+    }
+
+    lessons.remove(lessonToRemove);
+    lessonToRemove.getTeacher().removeLessonFromSchedule(lessonToRemove); // Удаляем из расписания преподавателя
+
+    // Удаляем урок из расписаний студентов
+    for (Student student : lessonToRemove.getCourse().getEnrolledStudents()) {
+        student.removeLessonFromSchedule(lessonToRemove);
+    }
+
+    lessonView.displaySuccessMessage("Lesson removed successfully: " + lessonToRemove.getLessonId());
+}
+
 
     // Просмотр расписания студента
     public void viewStudentSchedule(Student student, List<Lesson> lessons) {
