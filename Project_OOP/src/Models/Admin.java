@@ -109,6 +109,7 @@ public class Admin extends User{
             String record = FileDatabaseHelper.findRecord(user.getUserId());
             if (record != null) {
                 String updatedRecord = record.replace(user.toString(), user.setDetails(newEmail, newPassword));
+                
                 FileDatabaseHelper.saveAllRecords(FileDatabaseHelper.getAllRecords());
                 return true;
             }
@@ -181,7 +182,6 @@ public class Admin extends User{
         }
     }
 
-    // Method to get all news
     public List<News> getAllNews() {
         try {
             return FileDatabaseHelper.getAllRecords().stream()
@@ -194,7 +194,6 @@ public class Admin extends User{
         }
     }
 
-    // Method to get a specific news item by title
     public News getNewsByTitle(String title) {
         List<News> newsList = getAllNews();
 		if (newsList != null) {
