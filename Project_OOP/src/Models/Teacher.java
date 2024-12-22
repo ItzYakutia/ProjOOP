@@ -81,13 +81,13 @@ public class Teacher extends Employee {
     }
 
 	
-    public void addLessonToSchedule(Lesson lesson) {
+      public void addLesson(Lesson lesson) {
         if (!schedule.contains(lesson)) {
             schedule.add(lesson);
         }
     }
 
-    public void removeLessonFromSchedule(Lesson lesson) {
+    public void removeLesson(Lesson lesson) {
         schedule.remove(lesson);
     }
     // Методы работы с оценками
