@@ -16,6 +16,7 @@ public class Student extends User {
     private List<String> organizations; // Организации, членом которых является студент
     private boolean isHeadOfOrganization; // Является ли студент главой какой-либо организации
     private Researcher researchSupervisor; // Супервизор для студентов 4-го курса
+    private List<Lesson> schedule; // Список уроков в расписании
 
     public Student(String username, String password, String userId, String nameFirst, String nameLast, String email,
                    double gpa, int year, int credits, List<Course> courses, Map<Course, Mark> transcript, Specialty specialty) {
@@ -28,6 +29,7 @@ public class Student extends User {
         this.specialty = specialty;
         this.organizations = new ArrayList<>();
         this.isHeadOfOrganization = false;
+	this.schedule = new ArrayList<>();
     }
 
     // Геттеры и сеттеры
@@ -62,6 +64,10 @@ public class Student extends User {
     public void setCredits(int credits) {
         this.credits = credits;
     }
+	
+     public List<Lesson> getSchedule() {
+        return schedule;
+    }
 
     public List<Course> getCourses() {
         return courses;
@@ -94,6 +100,18 @@ public class Student extends User {
     public void setResearchSupervisor(Researcher researchSupervisor) {
         this.researchSupervisor = researchSupervisor;
     }
+
+      public void addLessonToSchedule(Lesson lesson) {
+        if (!schedule.contains(lesson)) {
+            schedule.add(lesson);
+        }
+    }
+
+    public void removeLessonFromSchedule(Lesson lesson) {
+        schedule.remove(lesson);
+    }
+
+	
 
     // Добавление студента в организацию
     public void joinOrganization(String organizationName) {
