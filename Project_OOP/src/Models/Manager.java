@@ -74,4 +74,9 @@ public class Manager extends User {
     @Override
     public void receiveNotification(String message) {
     }
+    
+    @Override
+    public void sendMessage(String recipientUserId, String message) {
+        System.out.println("Message from " + getUserId() + " to " + recipientUserId + ": " + message);
+    }
 }
