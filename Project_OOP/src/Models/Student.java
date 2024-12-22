@@ -17,6 +17,7 @@ public class Student extends User {
     private boolean isHeadOfOrganization; // Является ли студент главой какой-либо организации
     private Researcher researchSupervisor; // Супервизор для студентов 4-го курса
     private List<Lesson> schedule; // Список уроков в расписании
+    private Researcher researcherProfile;
 
     public Student(String username, String password, String userId, String nameFirst, String nameLast, String email,
                    double gpa, int year, int credits, List<Course> courses, Map<Course, Mark> transcript, Specialty specialty) {
@@ -99,6 +100,19 @@ public class Student extends User {
 
     public void setResearchSupervisor(Researcher researchSupervisor) {
         this.researchSupervisor = researchSupervisor;
+    }
+	
+    public void becomeResearcher() {
+        if (researcherProfile == null) {
+            this.researcherProfile = new Researcher(getUsername(), getUserId(), getNameFirst(), getNameLast(), getEmail(), getPassword());
+            System.out.println("Student " + getNameFirst() + " " + getNameLast() + " became a Researcher.");
+        } else {
+            System.out.println("Student " + getNameFirst() + " " + getNameLast() + " is already a Researcher.");
+        }
+    }
+
+    public Researcher getResearcherProfile() {
+        return researcherProfile;
     }
 
   
