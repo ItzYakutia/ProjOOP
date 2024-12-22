@@ -19,7 +19,13 @@ public class StudentView {
         System.out.println("Organizations: " + student.getOrganizations());
         System.out.println("Head of Organization: " + (student.isHeadOfOrganization() ? "Yes" : "No"));
     }
+    public void displayResearcherProfileCreated(Researcher researcher) {
+        System.out.println("Researcher profile created for Student: " + researcher.getNameFirst() + " " + researcher.getNameLast());
+    }
 
+    public void displayResearcherAssignmentError(String errorMessage) {
+        System.out.println("Error: " + errorMessage);
+    }
     // Показ успешного добавления студента в организацию
     public void displayOrganizationJoined(String organizationName, Student student) {
         System.out.println("Student " + student.getNameFirst() + " " + student.getNameLast() +
