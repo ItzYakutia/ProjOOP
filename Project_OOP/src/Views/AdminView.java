@@ -66,4 +66,59 @@ public class AdminView {
     public void displayError(String errorMessage) {
         System.out.println("Error: " + errorMessage);
     }
+    
+    public void displayNews(List<News> newsList) {
+        if (newsList != null && !newsList.isEmpty()) {
+            System.out.println("News Articles:");
+            for (News news : newsList) {
+                System.out.println(news);
+            }
+        } else {
+            System.out.println("No news articles found.");
+        }
+    }
+
+    public void displayNewsDetails(News news) {
+        if (news != null) {
+            System.out.println("News Details:");
+            System.out.println(news);
+        } else {
+            System.out.println("News not found.");
+        }
+    }
+
+    public void displayNewsCreationForm() {
+        System.out.println("Create New News:");
+        System.out.println("Please fill in the required details.");
+    }
+
+    public void displayNewsCreationConfirmation(boolean success) {
+        if (success) {
+            System.out.println("News creation successful.");
+        } else {
+            System.out.println("News creation failed.");
+        }
+    }
+
+    public void displayNewsUpdateForm(String title, String currentContent) {
+        System.out.println("Update News Details for Title: " + title);
+        System.out.println("Current Content: " + currentContent);
+        System.out.println("Please enter the new content.");
+    }
+
+    public void displayNewsUpdateConfirmation(boolean success) {
+        if (success) {
+            System.out.println("News updated successfully.");
+        } else {
+            System.out.println("News update failed.");
+        }
+    }
+
+    public void displayNewsDeletionConfirmation(boolean success) {
+        if (success) {
+            System.out.println("News deleted successfully.");
+        } else {
+            System.out.println("News deletion failed.");
+        }
+    }
 }
