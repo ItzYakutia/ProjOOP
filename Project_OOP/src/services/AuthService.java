@@ -2,10 +2,8 @@ package services;
 
 import java.io.IOException;
 
-
-
-
-
+import Models.*;
+import utils.FileDatabaseHelper;
 
 public class AuthService {
 
@@ -24,8 +22,14 @@ public class AuthService {
                 String additionalInfo = parts[6];
 
                 return switch (type) {
-                    case "DEAN" -> new Dean(userId, firstName, lastName, email, additionalInfo);
-                    case "RECTOR" -> new Rector(userId, firstName, lastName, email, Double.parseDouble(additionalInfo));
+                    case "DEAN" -> new Dean(userId, firstName, lastName, email, additionalInfo, null, additionalInfo);
+                    case "RECTOR" -> Rector.getInstance(userId, firstName, lastName, email, additionalInfo, 23.4, additionalInfo);
+                    case "ADMIN" -> new Admin(additionalInfo, additionalInfo, additionalInfo, additionalInfo, additionalInfo, additionalInfo);
+                    case "STUDENT" -> new Student(additionalInfo, additionalInfo, additionalInfo, additionalInfo, additionalInfo, additionalInfo, 0, 0, 0, null, null, null);
+                    case "TEACHER" -> new Teacher(additionalInfo, additionalInfo, additionalInfo, additionalInfo, additionalInfo, additionalInfo, null);
+                    case "RESEARCHER" -> new Researcher(additionalInfo, additionalInfo, additionalInfo, additionalInfo, additionalInfo, additionalInfo);
+                    case "MANAGER" -> new Manager(additionalInfo, additionalInfo, additionalInfo, additionalInfo, additionalInfo, additionalInfo, additionalInfo, 0);
+                    case "FINANCEMANAGER" -> new FinanceManager(additionalInfo, additionalInfo, additionalInfo, additionalInfo, additionalInfo, additionalInfo, aadditionalInfo, 0, additionalInfo, 0);
                     default -> null;
                 };
             }
