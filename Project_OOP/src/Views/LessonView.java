@@ -17,20 +17,30 @@ public class LessonView {
     }
 
     // Отображение расписания студента
-    public void displayStudentSchedule(Student student, List<Lesson> lessons) {
-        System.out.println("Schedule for Student: " + student.getNameFirst() + " " + student.getNameLast());
-        lessons.stream()
-                .filter(lesson -> lesson.getCourse().getEnrolledStudents().contains(student))
-                .forEach(this::displayLessonInfo);
+ public void displayStudentSchedule(Student student) {
+    System.out.println("Schedule for Student: " + student.getNameFirst() + " " + student.getNameLast());
+    if (student.getSchedule().isEmpty()) {
+        System.out.println("No lessons scheduled.");
+    } else {
+        for (Lesson lesson : student.getSchedule()) {
+            displayLessonInfo(lesson);
+        }
     }
+}
+
 
     // Отображение расписания преподавателя
-    public void displayTeacherSchedule(Teacher teacher, List<Lesson> lessons) {
-        System.out.println("Schedule for Teacher: " + teacher.getNameFirst() + " " + teacher.getNameLast());
-        lessons.stream()
-                .filter(lesson -> lesson.getTeacher().equals(teacher))
-                .forEach(this::displayLessonInfo);
+    public void displayTeacherSchedule(Teacher teacher) {
+    System.out.println("Schedule for Teacher: " + teacher.getNameFirst() + " " + teacher.getNameLast());
+    if (teacher.getSchedule().isEmpty()) {
+        System.out.println("No lessons scheduled.");
+    } else {
+        for (Lesson lesson : teacher.getSchedule()) {
+            displayLessonInfo(lesson);
+        }
     }
+}
+
 
     // Вывод информации об уроке
     public void displayLessonInfo(Lesson lesson) {
