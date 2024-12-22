@@ -111,9 +111,13 @@ public class Student extends User {
     public void removeLesson(Lesson lesson) {
         schedule.remove(lesson);
     }
-}
 
-	
+
+
+
+     public void confirmAttendance(Lesson lesson) {
+         lesson.confirmAttendance(this);
+    }
 
     // Добавление студента в организацию
     public void joinOrganization(String organizationName) {
