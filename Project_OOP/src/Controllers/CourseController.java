@@ -9,11 +9,23 @@ import java.util.List;
 public class CourseController {
 
     private final CourseView courseView;
+    private final TeacherView teacherView;
 
     public CourseController(CourseView courseView) {
         this.courseView = courseView;
     }
+     public TeacherController(TeacherView teacherView) {
+        this.teacherView = teacherView;
+    }
 
+
+    public void generateReport(Teacher teacher, Course course) {
+        try {
+            teacher.generateCourseReport(course);
+        } catch (IllegalArgumentException e) {
+            teacherView.displayError(e.getMessage());
+        }
+    }
     // Добавление курса
     public void addCourse(Course course, List<Course> courses) {
         if (courses.contains(course)) {
