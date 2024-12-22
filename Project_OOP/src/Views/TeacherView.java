@@ -7,6 +7,15 @@ import java.util.List;
 
 public class TeacherView {
 
+    public void displayResearcherProfileCreated(Researcher researcher) {
+        System.out.println("Researcher profile created for Teacher: " + researcher.getNameFirst() + " " + researcher.getNameLast());
+    }
+
+    public void displayResearcherAssignmentError(String errorMessage) {
+        System.out.println("Error: " + errorMessage);
+    }
+
+    
     // Метод для отображения списка преподавателей (например, после сортировки)
     public void displaySortedTeachers(List<Teacher> teachers) {
         System.out.println("Sorted Teachers:");
