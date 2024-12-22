@@ -45,6 +45,15 @@ public abstract class User implements MessageSender{
     public void setUsername(String username) {
         this.username = username;
     }
+    
+    public void setDetails(String newEmail, String newPassword) {
+        if (newEmail != null && !newEmail.isEmpty()) {
+            this.email = newEmail;
+        }
+        if (newPassword != null && !newPassword.isEmpty()) {
+            this.password = newPassword;
+        }
+    }
 
     public void setPassword(String currentPassword, String newPassword) {
         if (currentPassword != null && currentPassword.equals(this.password)) {
