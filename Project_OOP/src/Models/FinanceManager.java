@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class FinanceManager extends Manager {
+public class FinanceManager extends Manager{
     private double budgetResponsibility;
     private double allocatedBudget;
     private List<ExpenseRequest> expenseRequests;
@@ -85,5 +85,10 @@ public class FinanceManager extends Manager {
         return super.toString() +
                "\nBudget Responsibility: " + budgetResponsibility +
                "\nAllocated Budget: " + allocatedBudget;
+    }
+    
+    @Override
+    public void sendMessage(String recipientUserId, String message) {
+        System.out.println("Message from " + getUserId() + " to " + recipientUserId + ": " + message);
     }
 }
