@@ -53,6 +53,17 @@ public class Teacher extends Employee {
         return researcherProfile;
     }
 
+	    public void markAttendance(Lesson lesson, Student student) {
+        if (!lesson.getTeacher().equals(this)) {
+            throw new IllegalArgumentException("You are not assigned to this lesson.");
+        }
+        if (!lesson.getAttendanceMap().containsKey(student)) {
+            throw new IllegalArgumentException("Student is not registered for this lesson.");
+        }
+        lesson.getAttendanceMap().put(student, true); // Manually mark the student as present
+    }
+
+
     // Метод для проверки, является ли преподаватель Researcher
     public boolean isResearcher() {
         return researcherProfile != null;
