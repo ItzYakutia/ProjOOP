@@ -1,7 +1,4 @@
-DEAN:D001:John:Doe:john_doe:password123:Engineering
-RECTOR:R001:Sarah:Smith:sarah_smith:unipass:500000
-STUDENT:S001:Alice:Brown:alice_brown:studentpass:3.8:4:18:[]
-TEACHER:T001:Robert:White:robert_white:teacherpass:PROFESSOR
-ADMIN:A001:Admin:User:admin_user:adminpass
-MANAGER:M001:Laura:Green:laura_green:managerpass:HR:10
-RESEARCHER:RES001:Michael:Johnson:michael_johnson:researcherpass
+TEACHER:T001:John:Smith:john.smith@university.com:password123:PROFESSOR
+TEACHER:T002:Jane:Doe:jane.doe@university.com:password456:LECTOR
+STUDENT:S001:Emily:Brown:emily.brown@university.com:password789:3.9:2:18:Computer Science
+STUDENT:S002:Michael:Johnson:michael.johnson@university.com:password101:4.0:4:21:Engineering
