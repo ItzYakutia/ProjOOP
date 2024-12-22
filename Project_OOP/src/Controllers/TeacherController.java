@@ -13,7 +13,14 @@ public class TeacherController {
     public TeacherController(TeacherView teacherView) {
         this.teacherView = teacherView;
     }
-
+    
+    public void createResearcherProfile() {
+        try {
+            teacher.createResearcherProfile(); // Используем метод модели
+            teacherView.displayResearcherProfileCreated(teacher.getResearcherProfile());
+        } catch (IllegalArgumentException e) {
+            teacherView.displayResearcherAssignmentError(e.getMessage());
+        }
 
     public void generateReport(Teacher teacher, Course course) {
         try {
