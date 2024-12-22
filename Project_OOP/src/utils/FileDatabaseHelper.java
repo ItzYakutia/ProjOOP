@@ -69,5 +69,12 @@ public class FileDatabaseHelper {
         }
     }
 
-
+    public static void saveAllRecords(List<String> records) throws IOException {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(DATABASE_FILE))) {
+            for (String record : records) {
+                writer.write(record);
+                writer.newLine();
+            }
+        }
+    }
 }
