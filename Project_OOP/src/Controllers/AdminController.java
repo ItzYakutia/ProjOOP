@@ -115,4 +115,52 @@ public class AdminController {
             System.out.println("User not found.");
         }
     }
+    
+    public void createNews(String title, String content, String author, NewsType type, String timestamp) {
+        News news = new News(title, content, author, type, timestamp);
+        boolean success = admin.saveNews(news);
+        if (success) {
+            System.out.println("News created successfully.");
+        } else {
+            System.out.println("Failed to create news.");
+        }
+    }
+
+    public void displayAllNews() {
+        List<News> newsList = admin.getAllNews();
+        if (newsList != null) {
+            for (News news : newsList) {
+                System.out.println(news);
+            }
+        } else {
+            System.out.println("No news found.");
+        }
+    }
+
+    public void displayNewsDetails(String title) {
+        News news = admin.getNewsByTitle(title);
+        if (news != null) {
+            System.out.println(news);
+        } else {
+            System.out.println("News not found.");
+        }
+    }
+
+    public void updateNews(String title, String newContent) {
+        boolean success = admin.updateNews(title, newContent);
+        if (success) {
+            System.out.println("News updated successfully.");
+        } else {
+            System.out.println("Failed to update news.");
+        }
+    }
+
+    public void deleteNews(String title) {
+        boolean success = admin.deleteNews(title);
+        if (success) {
+            System.out.println("News deleted successfully.");
+        } else {
+            System.out.println("Failed to delete news.");
+        }
+    }
 }
