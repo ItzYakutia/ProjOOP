@@ -10,11 +10,20 @@ public class StudentController {
     private final Student student;
     private final StudentView studentView;
 
+    
+
     public StudentController(Student student, StudentView studentView) {
         this.student = student;
         this.studentView = studentView;
     }
 
+     public void createResearcherProfile() {
+        try {
+            student.createResearcherProfile(); // Используем метод модели
+            studentView.displayResearcherProfileCreated(student.getResearcherProfile());
+        } catch (IllegalArgumentException e) {
+            studentView.displayResearcherAssignmentError(e.getMessage());
+        }
     // Регистрация студента в организации
     public void joinOrganization(String organizationName) {
         try {
