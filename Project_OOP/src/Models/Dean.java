@@ -47,4 +47,9 @@ public class Dean extends Employee {
     public void receiveNotification(String message) {
         System.out.println("Dean " + getNameFirst() + " received notification: " + message);
     }
+    
+    @Override
+    public void sendMessage(String recipientUserId, String message) {
+        System.out.println("Message from " + getUserId() + " to " + recipientUserId + ": " + message);
+    }
 }
