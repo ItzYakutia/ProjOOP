@@ -12,6 +12,8 @@ public class Lesson {
     private Course course; // Курс, к которому относится занятие
     private Teacher teacher; // Преподаватель, проводящий занятие
     private String room; // Аудитория для занятия
+    private Map<Student, Boolean> attendanceMap; // Tracks attendance for each student
+    
 
     // Конструктор
     public Lesson(String lessonId, LessonType type, LocalDateTime startTime, LocalDateTime endTime, Course course, Teacher teacher, String room) {
@@ -22,6 +24,7 @@ public class Lesson {
         this.course = course;
         this.teacher = teacher;
         this.room = room;
+        this.attendanceMap = new HashMap<>();
 
         validateLessonTime();
     }
@@ -84,7 +87,44 @@ public class Lesson {
     public void setRoom(String room) {
         this.room = room;
     }
+    public Map<Student, Boolean> getAttendanceMap() {
+        return attendanceMap;
+    }
+    
+//attendance 
+     public boolean isAttendanceWindowOpen() {
+        LocalDateTime now = LocalDateTime.now();
+        return !now.isBefore(startTime) && !now.isAfter(endTime);
+    }
 
+    public void addStudentToAttendance(Student student) {
+        attendanceMap.put(student, false); // Initially, the student is not marked as present
+    }
+
+    
+    public void confirmAttendance(Student student) {
+        if (!isAttendanceWindowOpen()) {
+            throw new IllegalStateException("Attendance window is closed for this lesson.");
+        }
+        if (!attendanceMap.containsKey(student)) {
+            throw new IllegalArgumentException("Student is not registered for this lesson.");
+        }
+        attendanceMap.put(student, true); // Mark the student as present
+    }
+
+
+    public List<Student> getPresentStudents() {
+        List<Student> presentStudents = new ArrayList<>();
+        for (Map.Entry<Student, Boolean> entry : attendanceMap.entrySet()) {
+            if (entry.getValue()) {
+                presentStudents.add(entry.getKey());
+            }
+        }
+        return presentStudents;
+    }
+}
+
+    
     // Проверка времени урока (начало должно быть до окончания)
     private void validateLessonTime() {
         if (startTime.isAfter(endTime)) {
