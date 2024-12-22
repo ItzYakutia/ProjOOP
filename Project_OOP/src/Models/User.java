@@ -1,6 +1,6 @@
 package Models;
 
-public abstract class User {
+public abstract class User implements MessageSender{
     private String username;
     protected String password;
     private String userId;
