@@ -12,6 +12,7 @@ public class Teacher extends Employee {
     private Researcher researcherProfile; // Профиль исследователя (если есть)
     private List<Integer> ratings; // Оценки преподавателю (1-5)
     private List<Lesson> schedule; // Список уроков в расписании
+    private Researcher researcherProfile;
 
 
     // Конструктор
@@ -24,7 +25,7 @@ public class Teacher extends Employee {
         this.schedule = new ArrayList<>();
         // Если учитель является PROFESSOR, создаём профиль Researcher
         if (title == Title.PROFESSOR) {
-            this.researcherProfile = new Researcher(username, userId, nameFirst, nameLast, email, password);
+            becomeResearcher();
         }
     }
 
@@ -47,6 +48,15 @@ public class Teacher extends Employee {
     
     public List<Lesson> getSchedule() {
         return schedule;
+    }
+
+   public void becomeResearcher() {
+        if (researcherProfile == null) {
+            this.researcherProfile = new Researcher(getUsername(), getUserId(), getNameFirst(), getNameLast(), getEmail(), getPassword());
+            System.out.println("Teacher " + getNameFirst() + " " + getNameLast() + " became a Researcher.");
+        } else {
+            System.out.println("Teacher " + getNameFirst() + " " + getNameLast() + " is already a Researcher.");
+        }
     }
 
     public Researcher getResearcherProfile() {
