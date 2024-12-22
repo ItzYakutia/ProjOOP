@@ -26,11 +26,11 @@ public class LessonController {
             }
         }
         lessons.add(newLesson);
-        teacher.addLessonToSchedule(newLesson); // Добавляем урок в расписание преподавателя
+        teacher.addLesson(newLesson); // Добавляем урок в расписание преподавателя
 
     // Добавляем урок в расписание каждого студента, зарегистрированного на курс
     for (Student student : course.getEnrolledStudents()) {
-        student.addLessonToSchedule(newLesson);
+        student.addLesson(newLesson);
     }
 
         lessonView.displaySuccessMessage("Lesson added successfully for course: " + course.getName());
@@ -47,11 +47,11 @@ public class LessonController {
     }
 
     lessons.remove(lessonToRemove);
-    lessonToRemove.getTeacher().removeLessonFromSchedule(lessonToRemove); // Удаляем из расписания преподавателя
+    lessonToRemove.getTeacher().removeLesson(lessonToRemove); // Удаляем из расписания преподавателя
 
     // Удаляем урок из расписаний студентов
     for (Student student : lessonToRemove.getCourse().getEnrolledStudents()) {
-        student.removeLessonFromSchedule(lessonToRemove);
+        student.removeLesson(lessonToRemove);
     }
 
     lessonView.displaySuccessMessage("Lesson removed successfully: " + lessonToRemove.getLessonId());
@@ -59,13 +59,13 @@ public class LessonController {
 
 
     // Просмотр расписания студента
-    public void viewStudentSchedule(Student student, List<Lesson> lessons) {
-        lessonView.displayStudentSchedule(student, lessons);
+    public void viewStudentSchedule(Student student) {
+        lessonView.displayStudentSchedule(student);
     }
 
     // Просмотр расписания преподавателя
-    public void viewTeacherSchedule(Teacher teacher, List<Lesson> lessons) {
-        lessonView.displayTeacherSchedule(teacher, lessons);
+    public void viewTeacherSchedule(Teacher teacher) {
+        lessonView.displayTeacherSchedule(teacher);
     }
 
     // Вспомогательный метод для поиска урока по ID
