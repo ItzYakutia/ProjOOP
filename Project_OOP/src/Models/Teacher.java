@@ -53,6 +53,7 @@ public class Teacher extends Employee {
         return researcherProfile;
     }
 
+	
 	    public void markAttendance(Lesson lesson, Student student) {
         if (!lesson.getTeacher().equals(this)) {
             throw new IllegalArgumentException("You are not assigned to this lesson.");
@@ -155,6 +156,51 @@ public class Teacher extends Employee {
 	        throw new IllegalArgumentException("This course is already assigned to the teacher.");
 	    }
 	}
+
+    public void generateCourseReport(Course course) {
+        if (!courses.contains(course)) {
+            throw new IllegalArgumentException("This course is not assigned to the teacher.");
+        }
+
+        System.out.println("Report for Course: " + course.getName());
+        System.out.println("Teacher: " + getNameFirst() + " " + getNameLast());
+        System.out.println("----------------------------------------------------");
+
+        List<Student> students = course.getStudents();
+        if (students.isEmpty()) {
+            System.out.println("No students enrolled in this course.");
+            return;
+        }
+
+        for (Student student : students) {
+            Mark mark = student.getTranscript().get(course);
+            double attendance = calculateAttendancePercentage(student, course);
+
+            System.out.println("Student: " + student.getNameFirst() + " " + student.getNameLast());
+            System.out.println("ID: " + student.getUserId());
+            if (mark != null) {
+                System.out.println("Marks: Attestation 1 = " + mark.getAttestation1() +
+                                   ", Attestation 2 = " + mark.getAttestation2() +
+                                   ", Final Exam = " + mark.getFinalExam() +
+                                   ", Total = " + mark.getTotal());
+            } else {
+                System.out.println("Marks: Not available.");
+            }
+            System.out.println("Attendance: " + attendance + "%");
+            System.out.println("----------------------------------------------------");
+        }
+    }
+
+    private double calculateAttendancePercentage(Student student, Course course) {
+        List<Lesson> lessons = course.getLessons();
+        long attendedLessons = lessons.stream()
+                .filter(lesson -> lesson.getAttendanceMap().getOrDefault(student, false))
+                .count();
+
+        return lessons.isEmpty() ? 0 : ((double) attendedLessons / lessons.size()) * 100;
+    }
+}
+	
     // Переопределение методов equals, hashCode и toString
     @Override
     public boolean equals(Object o) {
