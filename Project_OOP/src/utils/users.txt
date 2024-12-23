@@ -1,4 +1,4 @@
-TEACHER:T001:John:Smith:john.smith@university.com:password123:PROFESSOR
-TEACHER:T002:Jane:Doe:jane.doe@university.com:password456:LECTOR
-STUDENT:S001:Emily:Brown:emily.brown@university.com:password789:3.9:2:18:Computer Science
-STUDENT:S002:Michael:Johnson:michael.johnson@university.com:password101:4.0:4:21:Engineering
+TEACHER:T001:John:Smith:john_smith:password123:PROFESSOR
+TEACHER:T002:Jane:Doe:jane_doe:password456:LECTOR
+STUDENT:S001:Emily:Brown:emily_brown:password789:3.9:2:18:Computer Science
+STUDENT:S002:Michael:Johnson:michael_johnson:password101:4.0:4:21:Engineering
